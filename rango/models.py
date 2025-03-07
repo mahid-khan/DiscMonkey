@@ -40,5 +40,91 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+
+# database for new project disc monkey
+# 
+# .
+class User(models.Model):
+    username = models.CharField(max_length=255)
+    password = models.CharField(max_length=255)
+    bio = models.CharField(max_length=255)
+
+    #maybe consider password hashing
+
+    password = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    #profile picture
+
+
+class Album(models.Model):
+    
+
+    albumName = models.CharField(max_length=255)
+    artist = models.CharField(max_length=255)
+    releaseDate = models.CharField(max_length=255)
+    #cover art
+
+class Review(models.Model):
+    #just one review using composite key  UserID/AlbumID
+
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    AlbumID = models.ForeignKey(Album, on_delete=models.CASCADE)
+    reviewText = models.CharField(max_length=255)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
+
+
+class Vote(models.Model):
+    #composite primary key (UserID/AlbumID)
+    #make uniqe key constraint instead of composite primary key
+
+
+
+    voteType = models.CharField(max_length=255)
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
+
+class Genre(models.Model):
+    genreName = models.CharField(max_length=255)
+    genreDescription = models.CharField(max_length=255)
+
+class FavoriteAlbum(models.Model):
+
+
+    dateAdded = models.DateField(max_length=255)
+    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueFavAlbumID') ]
+
+class GenreAlbum(models.Model):
+
+    
+    albumname = models.CharField(max_length=255)
+    genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    albumID  = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['genreID', 'albumID'], name='uniqueGenreAlbum') ]
+
+
+class FavoriteGenre(models.Model):
+    
+    
+    dateAdded = models.DateField(max_length=255)
+
+    
+    genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
+    userID  = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [models.UniqueConstraint(fields=['userID', 'genreID'], name='uniqueFavoriteGenre') ]
+
 
     
