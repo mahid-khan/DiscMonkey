@@ -3,62 +3,149 @@
 {% load rango_template_tags %}
 {% load bootstrap5 %}
 
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        DiscMonkey -
+        DiscMonkey - 
         {% block title_block %}
             How to Disc with Monkey!
         {% endblock %}
     </title>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            background-color: #ffffff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-bottom: 20px;
+        }
+        .content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            margin-bottom: 20px;
+        }
+        .navbar {
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+        }
+        .footer {
+            margin-top: 30px;
+            padding: 10px 0;
+            color: #6c757d;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+        }
+        .navbar-brand {
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Navigation Bar -->
     <div class="container">
-        <ul class="nav bg-info">
-            <li class="nav-item">
-                <a class="nav-link link-light" href="{% url 'rango:index' %}">HOME</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link link-light" href="{% url 'rango:about' %}">ABOUT</a>
-            </li>
-            {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="{% url 'rango:restricted' %}">Restricted Page</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="{% url 'rango:logout' %}">Logout</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="{% url 'rango:add_category' %}">Add New Category</a>
-                </li>
-            {% else %}
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="{% url 'rango:register' %}">Sign Up</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link link-light" href="{% url 'rango:login' %}">Login</a>
-                </li>
-            {% endif %}
-        </ul>
+        <!-- Navigation Bar -->
+        <nav class="navbar navbar-expand-lg navbar-dark bg-info">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'rango:index' %}">
+                    <i class="bi bi-disc"></i> DiscMonkey
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'rango:index' %}">
+                                <i class="bi bi-house-door"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'rango:about' %}">
+                                <i class="bi bi-info-circle"></i> About
+                            </a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'rango:add_category' %}">
+                                    <i class="bi bi-plus-circle"></i> Add Category
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'rango:restricted' %}">
+                                    <i class="bi bi-lock"></i> Restricted
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    
+                    <div class="navbar-nav">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="bi bi-person-circle"></i> {{ user.username }}
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                    <li><a class="dropdown-item" href="{% url 'rango:logout' %}">
+                                        <i class="bi bi-box-arrow-right"></i> Logout
+                                    </a></li>
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'rango:login' %}">
+                                    <i class="bi bi-box-arrow-in-right"></i> Login
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'rango:register' %}">
+                                    <i class="bi bi-person-plus"></i> Sign Up
+                                </a>
+                            </li>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 order-md-1 order-2">
+                <div class="sidebar">
+                    <h4>Categories</h4>
+                    {% block sidebar_block %}
+                        {% get_category_list category %}
+                    {% endblock %}
+                </div>
+            </div>
+            
+            <!-- Main Content -->
+            <div class="col-md-9 order-md-2 order-1">
+                <div class="content">
+                    {% block body_block %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="container">
+                <p>DiscMonkey &copy; {{ "now"|date:"Y" }} - A Django Project</p>
+                <p class="text-muted">Current time: {% now "Y-m-d H:i" %}</p>
+            </div>
+        </footer>
     </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        {% block body_block %}
-        {% endblock %}
-    </div>
-
-    <!-- Sidebar -->
-    <div class="container">
-        {% block sidebar_block %}
-            {% get_category_list category %}
-        {% endblock %}
-    </div>
-
-    <hr />
 </body>
 </html>
