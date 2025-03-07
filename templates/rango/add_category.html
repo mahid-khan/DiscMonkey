@@ -2,11 +2,11 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    Add a Category
+    Add an Album
 {% endblock %}
 
 {% block body_block %}
-    <h1>Add a Category</h1>
+    <h1>Add an Album</h1>
     <div>
         <form id="category_form" method="post" action="{% url 'rango:add_category' %}">
             {% csrf_token %}
@@ -20,7 +20,7 @@
                 {{ field.help_text }}
                 {{ field }}<br />
             {% endfor %}
-            <input type="submit" name="submit" value="Create Category" />
+            <input type="submit" name="submit" value="Add" />
         </form>
     </div>
 {% endblock %}
