@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Rango says...</h1>
+    <h1>Monkey says...</h1>
     <div>
         {% if user.is_authenticated %}
             howdy {{ user.username }}! <br />
         {% else %}
-            hey there partner! <br />
+            hey there disc partner! <br />
         {% endif %}
         <strong>{{ boldmessage }}</strong><br />
     </div>
