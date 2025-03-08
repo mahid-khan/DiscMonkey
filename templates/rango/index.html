@@ -16,18 +16,23 @@
         <strong>Take a look at what's trending below!</strong><br />
     </div>
 
+    
+
     <div>
-        <h2>Most Liked Categories, [this will be our 'albums']</h2>
-        {% if categories %}
+        <h2>Most Liked Albums</h2>
+        {% if albums %}
             <ul>
-                {% for category in categories %}
-                    <li><a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a></li>
+                {% for album in albums %}
+                    
+                        <li>{{ album.albumName }} by {{ album.artist }}</li>
+                    
                 {% endfor %}
             </ul>
         {% else %}
-            <strong>There are no liked genres present.</strong>
+            <strong>There are no albums present.</strong>
         {% endif %}
     </div>
+
 
     <div>
         <h2>Most Viewed Pages</h2>

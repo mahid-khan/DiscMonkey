@@ -45,16 +45,24 @@ class UserProfile(models.Model):
 # database for new project disc monkey
 # 
 # .
-class User(models.Model):
+
+
+
+
+
+class UserProfile1(models.Model):
     username = models.CharField(max_length=255)
     password = models.CharField(max_length=255)
     bio = models.CharField(max_length=255)
 
     #maybe consider password hashing
 
-    password = models.CharField(max_length=255)
     email = models.CharField(max_length=255)
     #profile picture
+
+    
+
+
 
 
 class Album(models.Model):
@@ -65,11 +73,15 @@ class Album(models.Model):
     releaseDate = models.CharField(max_length=255)
     #cover art
 
+   
+
+""""
+
 class Review(models.Model):
     #just one review using composite key  UserID/AlbumID
 
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
-    AlbumID = models.ForeignKey(Album, on_delete=models.CASCADE)
+    userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
+    albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
     reviewText = models.CharField(max_length=255)
 
     class Meta:
@@ -83,7 +95,7 @@ class Vote(models.Model):
 
 
     voteType = models.CharField(max_length=255)
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
 
     class Meta:
@@ -97,7 +109,7 @@ class FavoriteAlbum(models.Model):
 
 
     dateAdded = models.DateField(max_length=255)
-    userID = models.ForeignKey(User, on_delete=models.CASCADE)
+    userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
 
     class Meta:
@@ -121,10 +133,13 @@ class FavoriteGenre(models.Model):
 
     
     genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    userID  = models.ForeignKey(User, on_delete=models.CASCADE)
+    userID  = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'genreID'], name='uniqueFavoriteGenre') ]
 
 
     
+
+"""
+
