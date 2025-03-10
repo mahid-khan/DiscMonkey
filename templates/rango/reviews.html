@@ -6,25 +6,48 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1> Here are some of the hottest reviews being written by the hottest of the hot</h1>
-    <div>
-         
-        
-    </div>
+    <style>
+    /* Set the background image for the entire page */
+        body {
+            background-image: url("{% static 'images/calmChicken.jpg' %}");
+            background-size: 40% auto;
+            background-position: center; 
+            background-repeat: no-repeat; 
+            background-attachment: fixed; 
+            margin: 0; 
+            padding: 0; 
+     }
 
-    <div>
-        <h2>Most Liked Albums</h2>
-        {% if reviews %}
-            <ul>
-                {% for review in reviews %}
-                    
-                        <li>{{ review.reviewText }} said user  {{review.userID.username}} about the album {{review.albumID.albumName}}</li>
-                    
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no albums present.</strong>
-        {% endif %}
+    
+        .content {
+        background-color: rgba(255, 255, 255, 0.8); 
+        padding: 20px;
+        border-radius: 10px;
+        margin: 20px;
+    }
+    </style>
+
+    <div class="content"
+        
+        <div>
+            <h3>Here are some of the hottest reviews being written by the hottest of the hot</h3>
+            
+        </div>
+
+        <div>
+           
+            {% if reviews %}
+                <ul>
+                    {% for review in reviews %}
+                        
+                            <li>{{ review.reviewText }} said user  {{review.userID.username}} about the album {{review.albumID.albumName}}</li>
+                        
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <strong>There are no albums present.</strong>
+            {% endif %}
+        </div>
     </div>
 
 {% endblock %}
