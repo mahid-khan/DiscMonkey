@@ -75,7 +75,7 @@ class Album(models.Model):
 
    
 
-""""
+
 
 class Review(models.Model):
     #just one review using composite key  UserID/AlbumID
@@ -86,6 +86,9 @@ class Review(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
+
+
+"""
 
 
 class Vote(models.Model):

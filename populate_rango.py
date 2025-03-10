@@ -3,7 +3,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.setti
 
 import django
 django.setup()
-from rango.models import Category, Page, UserProfile1, Album
+from rango.models import Category, Page, UserProfile1, Album, Review
 
 def populate():
     python_pages = [
@@ -50,6 +50,10 @@ def populate():
 
     # albums contain name, artist and relsease date
     albums = [["Parklife", "Blur", "1994"],[" Straight From The Heart", "Ann Peebles", "1972"]]
+
+    #reveiws contain UserID, AlbumID, reviewText
+
+    reviews = [["1","1", "this is so bad turn it off!!! turn it offff!!!"],["1","2", "this is so good turn it up bai"]]
     
     
     
@@ -67,6 +71,9 @@ def populate():
 
     for a in albums:
         a = add_album(a[0],a[1], a[2])
+
+    for r in reviews:
+        r = add_reveiw(r[0],r[1],r[2])
 
 def add_page(cat, title, url, views=0):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
@@ -87,7 +94,7 @@ def add_user(username, password, bio, email):
         username=username,
         defaults={'email': email, 'bio': bio, 'password': password}
     )
-    if created: # Hash the password
+    if created:
         user.save()
     return user
 
@@ -96,9 +103,25 @@ def add_album(albumName, artist, releaseYear):
         albumName=albumName,
         defaults={'artist': artist, 'releaseDate': releaseYear}
     )
-    if created: # Hash the password
+    if created: 
         album.save()
     return album
+
+def add_reveiw(userID, albumID, reveiwText):
+
+    user = UserProfile1.objects.get(pk=userID)
+    album = Album.objects.get(pk=albumID)
+
+
+
+    review, created = Review.objects.get_or_create(
+        userID=user,
+        albumID=album,
+        
+        defaults={'reviewText': reveiwText}
+    )
+
+    return review
 
 # Start execution here!
 if __name__ == '__main__':

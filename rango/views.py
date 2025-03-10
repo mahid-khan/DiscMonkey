@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from rango.models import Category, Page, Album
+from rango.models import Category, Page, Album, Review
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -45,6 +45,14 @@ def show_category(request, category_name_slug):
         context_dict['category'] = None
     
     return render(request, 'rango/category.html', context=context_dict)
+
+def reviews(request):
+    review_list = Review.objects.order_by("userID")
+    context_dict = {}
+    context_dict['reviews'] = review_list
+
+    return render(request, 'rango/reviews.html', context=context_dict)
+
 
 @login_required
 def add_category(request):
