@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
-    <style>
+    <!-- <style>
     /* Set the background image for the entire page */
         body {
             background-image: url("{% static 'images/calmChicken.jpg' %}");
@@ -25,7 +25,7 @@
         border-radius: 10px;
         margin: 20px;
     }
-    </style>
+    </style> -->
 
     <div class="content"
         
@@ -48,6 +48,9 @@
                 <strong>There are no albums present.</strong>
             {% endif %}
         </div>
+
+        url("{% static 'images/calmChicken.jpg' %}");
+        <img src="{% static 'images/calmChicken.jpg' %}" alt="My Image">
     </div>
 
 {% endblock %}

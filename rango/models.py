@@ -88,7 +88,7 @@ class Review(models.Model):
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
 
 
-"""
+
 
 
 class Vote(models.Model):
@@ -104,9 +104,13 @@ class Vote(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
 
+
+
 class Genre(models.Model):
     genreName = models.CharField(max_length=255)
     genreDescription = models.CharField(max_length=255)
+
+
 
 class FavoriteAlbum(models.Model):
 
@@ -118,6 +122,8 @@ class FavoriteAlbum(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueFavAlbumID') ]
 
+
+
 class GenreAlbum(models.Model):
 
     
@@ -127,6 +133,8 @@ class GenreAlbum(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['genreID', 'albumID'], name='uniqueGenreAlbum') ]
+
+
 
 
 class FavoriteGenre(models.Model):
@@ -144,5 +152,5 @@ class FavoriteGenre(models.Model):
 
     
 
-"""
+
 

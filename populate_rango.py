@@ -2,8 +2,9 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
 
 import django
+import datetime
 django.setup()
-from rango.models import Category, Page, UserProfile1, Album, Review
+from rango.models import Category, Page, UserProfile1, Album, Review, Vote,Genre, FavoriteAlbum
 
 def populate():
     python_pages = [
@@ -54,6 +55,18 @@ def populate():
     #reveiws contain UserID, AlbumID, reviewText
 
     reviews = [["1","1", "this is so bad turn it off!!! turn it offff!!!"],["1","2", "this is so good turn it up bai"]]
+
+    #votes contain UserID AlbumID and votetype(either 1 for yes or 0 for no)
+
+    votes = [["1","1","0"], ["1","2","1"]]
+
+    #genre contains name and description
+
+    genre = [["Irish traditional","Irish folk music often using traditional instruments"],["Soul","idk how to explain"]]
+
+    #favoriteAlbum contains date added UserID and AlbumID but date added is made automaticaly 
+
+    favoriteAlbums = [["1","2"]]
     
     
     
@@ -74,6 +87,17 @@ def populate():
 
     for r in reviews:
         r = add_reveiw(r[0],r[1],r[2])
+
+    for v in votes:
+        v = add_vote(v[0], v[1], v[2])
+
+    for g in genre:
+        g = add_genre(g[0],g[1])
+
+    for fa in favoriteAlbums:
+        fa = add_favoriteAlbum(fa[0], fa[1])
+
+    #
 
 def add_page(cat, title, url, views=0):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
@@ -122,6 +146,56 @@ def add_reveiw(userID, albumID, reveiwText):
     )
 
     return review
+
+def add_vote(userID, albumID, voteType):
+
+    user = UserProfile1.objects.get(pk=userID)
+    album = Album.objects.get(pk=albumID)
+
+
+
+    review, created = Vote.objects.get_or_create(
+        userID=user,
+        albumID=album,
+        
+        defaults={'voteType': voteType}
+    )
+
+    return review
+
+def add_genre(genreName , genreDescription):
+
+    
+
+
+
+    genre, created = Genre.objects.get_or_create(
+        genreName=genreName,
+        genreDescription=genreDescription,
+        
+        
+    )
+
+    return genre
+
+def add_favoriteAlbum(userID , albumID):
+
+    user = UserProfile1.objects.get(pk=userID)
+    album = Album.objects.get(pk=albumID)
+
+
+
+
+    genre, created = FavoriteAlbum.objects.get_or_create(
+        userID=user,
+        albumID=album,
+
+        defaults={'dateAdded': datetime.datetime.now()}
+        
+        
+    )
+
+    return genre
 
 # Start execution here!
 if __name__ == '__main__':
