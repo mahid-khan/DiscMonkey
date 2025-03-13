@@ -22,6 +22,10 @@ def index(request):
 
     return render(request, 'rango/index.html', context=context_dict)
 
+def all_albums(request):
+    context_dict = {}
+    return render(request, 'rango/all_albums.html', context=context_dict)
+
 def about(request):
     context_dict = {}
     visitor_cookie_handler(request)
