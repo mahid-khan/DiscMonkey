@@ -3,6 +3,8 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.setti
 
 import django
 import datetime
+from django.core.files import File
+
 django.setup()
 from rango.models import Category, Page, UserProfile1, Album, Review, Vote,Genre, FavoriteAlbum
 
@@ -48,9 +50,19 @@ def populate():
     users = [['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 'doctorBob@Medical.com'], ['Paddy Mcguinness', 'wolfeTones1954',
      'Paddy Mcguinness acomplished cow tipper', 'paddymcguinnes@country.com']]
     
+    image_dir = r'C:\Users\Finn McInroy\Documents\Uni\year 3\Sem 2\albumCovers'
+
+    image_files = os.listdir(image_dir)
+
+   
 
     # albums contain name, artist and relsease date
-    albums = [["Parklife", "Blur", "1994"],[" Straight From The Heart", "Ann Peebles", "1972"]]
+    albums = [["Parklife", "Blur", "1994", r"C:\Users\Finn McInroy\Documents\Uni\year 3\Sem 2\albumCovers\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"C:\Users\Finn McInroy\Documents\Uni\year 3\Sem 2\albumCovers\mrBeanAlbum.jpg"]]
+
+    #filelocation parklife = "C:\Users\Finn McInroy\Downloads\BlurParklife.jpg"
+    #filelocation Straight from the heart = "C:\Users\Finn McInroy\Downloads\mrBeanAlbum2.jpg"
+
+
 
     #reveiws contain UserID, AlbumID, reviewText
 
@@ -82,8 +94,40 @@ def populate():
     for u in users:
         u = add_user(u[0],u[1], u[2], u[3])
 
+    
     for a in albums:
-        a = add_album(a[0],a[1], a[2])
+        print("codeRan")
+        a = add_album(*a)
+       
+        
+        
+
+    
+
+    """
+
+    for i, image_file in enumerate(image_files):
+        # Full path to the image file
+        image_path = os.path.join(image_dir, image_file)
+
+        # Open the image file
+        with open(image_path, 'rb') as f:
+            # Create a Django File object
+            django_file = File(f)
+
+            # Create a model instance
+            album = Album(
+                title=f'Album {i + 1}',
+                artist=f'Artist {i + 1}',
+            )
+
+            # Assign the image to the ImageField
+            album.cover_image.save(image_file, django_file, save=True)
+
+            print(f'Created {album.title} with image {image_file}')
+
+
+    """
 
     for r in reviews:
         r = add_reveiw(r[0],r[1],r[2])
@@ -122,13 +166,27 @@ def add_user(username, password, bio, email):
         user.save()
     return user
 
-def add_album(albumName, artist, releaseYear):
-    album, created = Album.objects.get_or_create(
-        albumName=albumName,
-        defaults={'artist': artist, 'releaseDate': releaseYear}
-    )
-    if created: 
-        album.save()
+def add_album(albumName, artist, releaseYear, albumCoverPath):
+
+    with open(albumCoverPath, 'rb') as f:
+        print("codeRan2")
+
+        djangoFile = File(f)
+
+        album, created = Album.objects.get_or_create(
+            albumName=albumName,
+            
+            defaults={'artist': artist, 'releaseDate': releaseYear}
+         )
+            
+        album.albumCover.save(os.path.basename(albumCoverPath), djangoFile, save=True)
+
+        djangoFile.close()  
+
+    
+        
+    
+
     return album
 
 def add_reveiw(userID, albumID, reveiwText):

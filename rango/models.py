@@ -71,7 +71,7 @@ class Album(models.Model):
     albumName = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
     releaseDate = models.CharField(max_length=255)
-    #cover art
+    albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
 
    
 
