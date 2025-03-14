@@ -40,6 +40,9 @@
                                         <div class="album-info">
                                             <span class="album-name">{{ album.albumName }}</span>
                                             <span class="album-artist">by {{ album.artist }}</span>
+                                            <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
+                                            
+
                                         </div>
                                     </div>
                                 {% endfor %}
