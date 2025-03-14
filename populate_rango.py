@@ -57,7 +57,7 @@ def populate():
    
 
     # albums contain name, artist and relsease date
-    albums = [["Parklife", "Blur", "1994", r"C:\Users\Finn McInroy\Documents\Uni\year 3\Sem 2\albumCovers\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"C:\Users\Finn McInroy\Documents\Uni\year 3\Sem 2\albumCovers\mrBeanAlbum.jpg"]]
+    albums = [["Parklife", "Blur", "1994", r"albumCoversForPopulating\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"albumCoversForPopulating/mrBeanAlbum.jpg"]]
 
     #filelocation parklife = "C:\Users\Finn McInroy\Downloads\BlurParklife.jpg"
     #filelocation Straight from the heart = "C:\Users\Finn McInroy\Downloads\mrBeanAlbum2.jpg"
