@@ -6,51 +6,94 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Monkey says...</h1>
-    <div>
-        {% if user.is_authenticated %}
-            Howdy, {{ user.username }}! <br />
-        {% else %}
-            Hey there, disc enjoyer! <br />
-        {% endif %}
-        <strong>Take a look at what's trending below!</strong><br />
+    <div class="welcome-section">
+        <h1>
+            <i class="bi bi-disc-fill"></i>
+            Monkey says...
+        </h1>
+        <div class="welcome-message">
+            {% if user.is_authenticated %}
+                <h2>Howdy, <span class="username">{{ user.username }}</span>!</h2>
+            {% else %}
+                <h2>Hey there, disc enjoyer!</h2>
+            {% endif %}
+            <p class="lead">Take a look at what's trending below!</p>
+        </div>
     </div>
 
-    
+    <div class="trending-section">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="trending-card">
+                    <div class="trending-header">
+                        <h2>
+                            <i class="bi bi-heart-fill"></i>
+                            Most Liked Albums
+                        </h2>
+                    </div>
+                    <div class="trending-content">
+                        {% if albums %}
+                            <div class="album-list">
+                                {% for album in albums %}
+                                    <div class="album-item">
+                                        <i class="bi bi-vinyl"></i>
+                                        <div class="album-info">
+                                            <span class="album-name">{{ album.albumName }}</span>
+                                            <span class="album-artist">by {{ album.artist }}</span>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="bi bi-emoji-neutral"></i>
+                                <p>There are no albums present.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
 
-    <div>
-        <h2>Most Liked Albums</h2>
-        {% if albums %}
-            <ul>
-                {% for album in albums %}
-                    
-                        <li>{{ album.albumName }} by {{ album.artist }}</li>
-                    
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no albums present.</strong>
-        {% endif %}
+            <div class="col-md-6">
+                <div class="trending-card">
+                    <div class="trending-header">
+                        <h2>
+                            <i class="bi bi-eye-fill"></i>
+                            Most Viewed Pages
+                        </h2>
+                    </div>
+                    <div class="trending-content">
+                        {% if pages %}
+                            <div class="page-list">
+                                {% for page in pages %}
+                                    <div class="page-item">
+                                        <a href="{{ page.url }}" class="page-link">
+                                            <i class="bi bi-link-45deg"></i>
+                                            {{ page.title }}
+                                        </a>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="bi bi-emoji-neutral"></i>
+                                <p>No albums have been viewed.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-
-    <div>
-        <h2>Most Viewed Pages</h2>
-        {% if pages %}
-            <ul>
-                {% for page in pages %}
-                    <li><a href="{{ page.url }}">{{ page.title }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>No albums have been viewed.</strong>
-        {% endif %}
+    <div class="action-buttons">
+        <a href="{% url 'rango:reviews' %}" class="btn btn-primary action-btn">
+            <i class="bi bi-chat-square-text"></i>
+            New Reviews
+        </a>
+        <a href="{% url 'rango:all_albums' %}" class="btn btn-primary action-btn">
+            <i class="bi bi-collection"></i>
+            View All Albums
+        </a>
     </div>
-
-    <a href="{% url 'rango:reviews' %}">New reviews</a>
-
-    <div>
-        <a href="{% url 'rango:all_albums' %}">View All Albums</a>
-    </div>
-
 {% endblock %}

@@ -1,6 +1,9 @@
 from django import forms
 from rango.models import Page, Category, UserProfile
 from django.contrib.auth.models import User
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
+import re
 
 class CategoryForm(forms.ModelForm):
     name = forms.CharField(
@@ -25,7 +28,8 @@ class PageForm(forms.ModelForm):
     )
     url = forms.URLField(
         max_length=Page.URL_MAX_LENGTH,
-        help_text="Please enter the URL of the page."
+        help_text="Please enter the URL of the page.",
+        validators=[URLValidator(schemes=['http', 'https'])]
     )
     views = forms.IntegerField(widget=forms.HiddenInput(), initial=0)
 
@@ -35,15 +39,18 @@ class PageForm(forms.ModelForm):
 
         exclude = ('category',)
 
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        url = cleaned_data.get('url')
-
-        if url and not url.startswith('http://'):
-            url = f'http://{url}'
-            cleaned_data['url'] = url
-
-        return cleaned_data
+    def clean_url(self):
+        url = self.cleaned_data.get('url')
+        if url:
+            # 如果URL不以http://或https://开头，添加http://
+            if not re.match(r'https?://', url):
+                url = f'http://{url}'
+            try:
+                # 使用更宽松的URL验证
+                URLValidator(schemes=['http', 'https'])(url)
+            except ValidationError:
+                raise ValidationError('Please enter a valid URL.')
+        return url
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())

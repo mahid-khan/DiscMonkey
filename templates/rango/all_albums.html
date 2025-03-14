@@ -6,9 +6,63 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>All Albums</h1>
-    <div>
-        All albums should be displayed here! <br />
-    </div>
+    <div class="albums-container">
+        <div class="albums-header">
+            <div class="header-content">
+                <h1>
+                    <i class="bi bi-collection-play"></i>
+                    All Albums
+                </h1>
+                <p class="albums-subtitle">Discover and explore our music collection</p>
+            </div>
+            
+            {% if user.is_authenticated %}
+            <a href="{% url 'rango:add_category' %}" class="add-album-btn">
+                <i class="bi bi-plus-lg"></i>
+                Add New Album
+            </a>
+            {% endif %}
+        </div>
 
+        {% if categories %}
+            <div class="albums-grid">
+                {% for category in categories %}
+                    <div class="album-card">
+                        <div class="album-cover">
+                            <i class="bi bi-disc"></i>
+                        </div>
+                        <div class="album-info">
+                            <h3 class="album-title">{{ category.name }}</h3>
+                            <div class="album-stats">
+                                <span class="stat">
+                                    <i class="bi bi-eye"></i>
+                                    {{ category.views }} views
+                                </span>
+                                <span class="stat">
+                                    <i class="bi bi-heart"></i>
+                                    {{ category.likes }} likes
+                                </span>
+                            </div>
+                            <a href="{% url 'rango:show_category' category.slug %}" class="view-album-btn">
+                                View Details
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-albums">
+                <i class="bi bi-music-note-list"></i>
+                <h2>No Albums Yet</h2>
+                <p>Be the first to add an album to our collection!</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'rango:add_category' %}" class="add-album-btn">
+                        <i class="bi bi-plus-lg"></i>
+                        Add New Album
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

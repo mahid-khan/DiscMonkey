@@ -6,21 +6,61 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Add a Page to: {{ category.name }}</h1>
-    <div>
-        <form id="add_page_form" method="post" action="{% url 'rango:add_page' category.slug %}">
-            {% csrf_token %}
-            <!-- Render hidden fields -->
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-            <!-- Render visible fields -->
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}<br />
-            {% endfor %}
-            <input type="submit" name="submit" value="Add Page" />
-        </form>
+    <div class="form-container">
+        <div class="form-card">
+            <div class="form-header">
+                <i class="bi bi-link-45deg form-icon"></i>
+                <h1>Add a Page to: {{ category.name }}</h1>
+                <p class="form-subtitle">Share interesting content with other fans</p>
+            </div>
+            
+            <form id="add_page_form" method="post" action="{% url 'rango:add_page' category.slug %}" class="custom-form">
+                {% csrf_token %}
+                
+                <div class="form-fields">
+                    {% for hidden in form.hidden_fields %}
+                        {{ hidden }}
+                    {% endfor %}
+                    
+                    {% for field in form.visible_fields %}
+                        <div class="form-field">
+                            <label for="{{ field.id_for_label }}">
+                                {% if field.name == 'title' %}
+                                    <i class="bi bi-type"></i>
+                                {% else %}
+                                    <i class="bi bi-link"></i>
+                                {% endif %}
+                                {{ field.label }}
+                            </label>
+                            
+                            {{ field }}
+                            
+                            {% if field.errors %}
+                                <div class="field-errors">
+                                    {% for error in field.errors %}
+                                        <div class="error-message">
+                                            <i class="bi bi-exclamation-circle"></i>
+                                            {{ error }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            
+                            {% if field.help_text %}
+                                <span class="field-help">
+                                    <i class="bi bi-info-circle"></i>
+                                    {{ field.help_text }}
+                                </span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" name="submit" class="form-button">
+                    <i class="bi bi-plus-circle"></i>
+                    Add Page
+                </button>
+            </form>
+        </div>
     </div>
 {% endblock %}

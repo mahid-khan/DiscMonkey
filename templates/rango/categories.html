@@ -1,17 +1,20 @@
-<ul class="list-group">
+<div class="categories-sidebar">
     {% if categories %}
-        {% for c in categories %}
-            {% if c == current_category %}
-            <li class="list-group-item active">
-                <a class="text-white" href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a>
-            </li>
-            {% else %}
-            <li class="list-group-item">
-                <a href="{% url 'rango:show_category' c.slug %}">{{ c.name }}</a>
-            </li>
-            {% endif %}
-        {% endfor %}
+        <div class="categories-list">
+            {% for c in categories %}
+                <div class="category-sidebar-item {% if c == current_category %}active{% endif %}">
+                    <a href="{% url 'rango:show_category' c.slug %}" class="category-sidebar-link">
+                        <i class="bi bi-disc"></i>
+                        <span class="category-name">{{ c.name }}</span>
+                        <i class="bi bi-chevron-right category-arrow"></i>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
     {% else %}
-        <li class="list-group-item">There are no categories present.</li>
+        <div class="categories-empty">
+            <i class="bi bi-collection"></i>
+            <p>There are no categories present.</p>
+        </div>
     {% endif %}
-</ul>
+</div>
