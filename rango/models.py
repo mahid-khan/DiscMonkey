@@ -59,6 +59,8 @@ class UserProfile1(models.Model):
 
     email = models.CharField(max_length=255)
     #profile picture
+    
+    profilePicture = models.ImageField(upload_to='profilePicture/', default='default_pro_pic.jpg')
 
     
 

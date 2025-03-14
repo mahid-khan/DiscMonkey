@@ -47,12 +47,10 @@ def populate():
     
     #users contain (username, password, bio, email)
 
-    users = [['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 'doctorBob@Medical.com'], ['Paddy Mcguinness', 'wolfeTones1954',
-     'Paddy Mcguinness acomplished cow tipper', 'paddymcguinnes@country.com']]
+    users = [['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 'doctorBob@Medical.com', r'profilePicsForPopulating\drBob.jpg'], ['Paddy Mcguinness', 'wolfeTones1954',
+     'Paddy Mcguinness acomplished cow tipper', 'paddymcguinnes@country.com', r'profilePicsForPopulating\paddyMcG.jpg']]
     
-    image_dir = r'C:\Users\Finn McInroy\Documents\Uni\year 3\Sem 2\albumCovers'
-
-    image_files = os.listdir(image_dir)
+    
 
    
 
@@ -92,7 +90,7 @@ def populate():
             print(f'- {c}: {p}')
 
     for u in users:
-        u = add_user(u[0],u[1], u[2], u[3])
+        u = add_user(*u)
 
     
     for a in albums:
@@ -157,14 +155,21 @@ def add_cat(name, views=0, likes=0):
     c.save()
     return c
 
-def add_user(username, password, bio, email):
-    user, created = UserProfile1.objects.get_or_create(
-        username=username,
-        defaults={'email': email, 'bio': bio, 'password': password}
-    )
-    if created:
-        user.save()
-    return user
+def add_user(username, password, bio, email, profilePicPath):
+
+    with open(profilePicPath, 'rb') as f:
+
+        djangoFile = File(f)
+
+        user1, created = UserProfile1.objects.get_or_create(
+            username=username,
+            defaults={'email': email, 'bio': bio, 'password': password}
+        )
+        
+        user1.profilePicture.save(os.path.basename(profilePicPath), djangoFile, save=True)
+
+
+    return user1
 
 def add_album(albumName, artist, releaseYear, albumCoverPath):
 
