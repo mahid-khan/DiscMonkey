@@ -4,9 +4,10 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.setti
 import django
 import datetime
 from django.core.files import File
+from pathlib import Path
 
 django.setup()
-from rango.models import Category, Page, UserProfile1, Album, Review, Vote,Genre, FavoriteAlbum
+from rango.models import Category, Page, UserProfile1, Album, Review, Vote, Genre, FavoriteAlbum
 
 def populate():
     python_pages = [
@@ -46,20 +47,36 @@ def populate():
             'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16} }
     
     #users contain (username, password, bio, email)
-
-    users = [['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 'doctorBob@Medical.com', r'profilePicsForPopulating\drBob.jpg'], ['Paddy Mcguinness', 'wolfeTones1954',
-     'Paddy Mcguinness acomplished cow tipper', 'paddymcguinnes@country.com', r'profilePicsForPopulating\paddyMcG.jpg']]
+    #      !!!!!!!!! BAD EXAMPLE OF WRITING PATHS - NOT COMPATIBLE WITH ALL OS'S !!!!!!!!! :
+    # users = [['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 'doctorBob@Medical.com', r'profilePicsForPopulating\drBob.jpg'], ['Paddy Mcguinness', 'wolfeTones1954',
+    #  'Paddy Mcguinness acomplished cow tipper', 'paddymcguinnes@country.com', r'profilePicsForPopulating\paddyMcG.jpg']]
     
+    # how it should be done: !
+
+    users = [
+        ['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 
+         'doctorBob@Medical.com', os.path.join('profilePicsForPopulating', 'drBob.jpg')],
+        ['Paddy Mcguinness', 'wolfeTones1954', 'Paddy Mcguinness acomplished cow tipper', 
+         'paddymcguinnes@country.com', os.path.join('profilePicsForPopulating', 'paddyMcG.jpg')]
+    ]
     
 
    
-
+    #      !!!!!!!!! BAD EXAMPLE OF WRITING PATHS - NOT COMPATIBLE WITH ALL OS'S !!!!!!!!! :
     # albums contain name, artist and relsease date
-    albums = [["Parklife", "Blur", "1994", r"albumCoversForPopulating\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"albumCoversForPopulating/mrBeanAlbum.jpg"]]
+    # albums = [["Parklife", "Blur", "1994", r"albumCoversForPopulating\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"albumCoversForPopulating/mrBeanAlbum.jpg"]]
 
-    #filelocation parklife = "C:\Users\Finn McInroy\Downloads\BlurParklife.jpg"
-    #filelocation Straight from the heart = "C:\Users\Finn McInroy\Downloads\mrBeanAlbum2.jpg"
 
+    # how it should be done: 
+    albums = [
+        ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg')],
+        [" Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'mrBeanAlbum.jpg')]
+    ]
+
+    #       
+    #filelocation parklife = "C:\Users\Finn McInroy\Downloads\BlurParklife.jpg".   -  no, use ospathjoin
+    #filelocation Straight from the heart = "C:\Users\Finn McInroy\Downloads\mrBeanAlbum2.jpg".  - no, use ospathjoin
+ 
 
 
     #reveiws contain UserID, AlbumID, reviewText
@@ -156,43 +173,44 @@ def add_cat(name, views=0, likes=0):
     return c
 
 def add_user(username, password, bio, email, profilePicPath):
-
-    with open(profilePicPath, 'rb') as f:
-
-        djangoFile = File(f)
-
+    try:
+        with open(profilePicPath, 'rb') as f:
+            djangoFile = File(f)
+            
+            user1, created = UserProfile1.objects.get_or_create(
+                username=username,
+                defaults={'email': email, 'bio': bio, 'password': password}
+            )
+            
+            user1.profilePicture.save(os.path.basename(profilePicPath), djangoFile, save=True)
+        return user1
+    except FileNotFoundError:
+        print(f"Warning: Profile picture file not found at {profilePicPath}. Creating user without image.")
         user1, created = UserProfile1.objects.get_or_create(
             username=username,
             defaults={'email': email, 'bio': bio, 'password': password}
         )
-        
-        user1.profilePicture.save(os.path.basename(profilePicPath), djangoFile, save=True)
-
-
-    return user1
+        return user1
 
 def add_album(albumName, artist, releaseYear, albumCoverPath):
-
-    with open(albumCoverPath, 'rb') as f:
-        print("codeRan2")
-
-        djangoFile = File(f)
-
+    try:
+        with open(albumCoverPath, 'rb') as f:
+            djangoFile = File(f)
+            
+            album, created = Album.objects.get_or_create(
+                albumName=albumName,
+                defaults={'artist': artist, 'releaseDate': releaseYear}
+            )
+                
+            album.albumCover.save(os.path.basename(albumCoverPath), djangoFile, save=True)
+        return album
+    except FileNotFoundError:
+        print(f"Warning: Album cover file not found at {albumCoverPath}. Creating album without image.")
         album, created = Album.objects.get_or_create(
             albumName=albumName,
-            
             defaults={'artist': artist, 'releaseDate': releaseYear}
-         )
-            
-        album.albumCover.save(os.path.basename(albumCoverPath), djangoFile, save=True)
-
-        djangoFile.close()  
-
-    
-        
-    
-
-    return album
+        )
+        return album
 
 def add_reveiw(userID, albumID, reveiwText):
 
