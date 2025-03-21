@@ -14,5 +14,7 @@ urlpatterns = [
     path('login/', views.user_login, name='login'),
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
-    path('all_albums', views.all_albums, name='all_albums'),
+    path('all_albums/', views.all_albums, name='all_albums'),
+    path('profile/<int:user_id>/', views.user_profile, name='user_profile'),
+    #path('profile/<int:user_id>/edit', views.edit_profile, name='edit_profile')
 ]

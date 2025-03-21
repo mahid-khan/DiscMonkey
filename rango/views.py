@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from rango.models import Category, Page, Album, Review
+from rango.models import Category, Page, Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
@@ -57,6 +57,43 @@ def reviews(request):
 
     return render(request, 'rango/reviews.html', context=context_dict)
 
+def user_profile(request, user_id):
+    context_dict = {}
+
+    try:
+        profile_owner = UserProfile1.objects.get(pk=user_id)
+
+    except UserProfile1.DoesNotExist:
+        context_dict['profile_owner'] = None
+        context_dict['reviews'] = None
+        context_dict['fav_album'] = None
+        context_dict['fav_genre'] = None
+    else:
+        try:
+            reviews = Review.objects.filter(userID=user_id)
+        except Review.DoesNotExist:
+            reviews = None
+
+        try:
+            fav_album = FavoriteAlbum.objects.filter(userID=user_id)
+        except FavoriteAlbum.DoesNotExist:
+            fav_album = None
+
+        try:
+            fav_genre = FavoriteGenre.objects.filter(userID=user_id)
+        except FavoriteGenre.DoesNotExist:
+            fav_genre = None
+
+        context_dict['profile_owner'] = profile_owner
+        context_dict['reviews'] = reviews
+        context_dict['fav_album'] = fav_album
+        context_dict['fav_genre'] = fav_genre
+
+    return render(request, 'rango/user_profile.html', context=context_dict)
+
+@login_required
+def edit_profile(request):
+    pass
 
 @login_required
 def add_category(request):

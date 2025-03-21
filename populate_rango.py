@@ -7,6 +7,7 @@ from django.core.files import File
 from pathlib import Path
 
 django.setup()
+from django.contrib.auth.models import User
 from rango.models import Category, Page, UserProfile1, Album, Review, Vote, Genre, FavoriteAlbum
 
 def populate():
@@ -145,7 +146,7 @@ def populate():
     """
 
     for r in reviews:
-        r = add_reveiw(r[0],r[1],r[2])
+        r = add_review(r[0],r[1],r[2])
 
     for v in votes:
         v = add_vote(v[0], v[1], v[2])
@@ -177,20 +178,32 @@ def add_user(username, password, bio, email, profilePicPath):
         with open(profilePicPath, 'rb') as f:
             djangoFile = File(f)
             
-            user1, created = UserProfile1.objects.get_or_create(
+            user1 = User.objects.create_user(
                 username=username,
-                defaults={'email': email, 'bio': bio, 'password': password}
+                email=email,
+                password=password
+            )
+
+            userProfile1, created = UserProfile1.objects.get_or_create(
+                user=User.objects.get(username=username),
+                defaults={'bio': bio}
             )
             
-            user1.profilePicture.save(os.path.basename(profilePicPath), djangoFile, save=True)
-        return user1
+            userProfile1.profilePicture.save(os.path.basename(profilePicPath), djangoFile, save=True)
+        return userProfile1
     except FileNotFoundError:
         print(f"Warning: Profile picture file not found at {profilePicPath}. Creating user without image.")
-        user1, created = UserProfile1.objects.get_or_create(
+        user1 = User.objects.create_user(
             username=username,
-            defaults={'email': email, 'bio': bio, 'password': password}
+            email=email,
+            password=password
         )
-        return user1
+
+        userProfile1, created = UserProfile1.objects.get_or_create(
+            user=User.objects.get(username=username),
+            defaults={'bio': bio}
+        )
+        return userProfile1
 
 def add_album(albumName, artist, releaseYear, albumCoverPath):
     try:
@@ -212,7 +225,7 @@ def add_album(albumName, artist, releaseYear, albumCoverPath):
         )
         return album
 
-def add_reveiw(userID, albumID, reveiwText):
+def add_review(userID, albumID, reviewText):
 
     user = UserProfile1.objects.get(pk=userID)
     album = Album.objects.get(pk=albumID)
@@ -223,7 +236,7 @@ def add_reveiw(userID, albumID, reveiwText):
         userID=user,
         albumID=album,
         
-        defaults={'reviewText': reveiwText}
+        defaults={'reviewText': reviewText}
     )
 
     return review

@@ -51,16 +51,17 @@ class UserProfile(models.Model):
 
 
 class UserProfile1(models.Model):
-    username = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length=255)
 
     #maybe consider password hashing
 
-    email = models.CharField(max_length=255)
     #profile picture
     
     profilePicture = models.ImageField(upload_to='profilePicture/', default='default_pro_pic.jpg')
+
+    def __str__(self):
+        return self.user.username
 
     
 
@@ -75,6 +76,9 @@ class Album(models.Model):
     releaseDate = models.CharField(max_length=255)
     albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
 
+    def __str__(self):
+        return self.albumName
+
    
 
 
@@ -88,6 +92,9 @@ class Review(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
+
+    def __str__(self):
+        return self.userID.user.username + ", " + self.albumID.albumName
 
 
 
@@ -106,11 +113,17 @@ class Vote(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
 
+    def __str__(self):
+        return self.userID.user.username + ", " + self.albumID.albumName
+
 
 
 class Genre(models.Model):
     genreName = models.CharField(max_length=255)
     genreDescription = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.genreName
 
 
 
@@ -124,6 +137,9 @@ class FavoriteAlbum(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueFavAlbumID') ]
 
+    def __str__(self):
+        return self.userID.user.username
+
 
 
 class GenreAlbum(models.Model):
@@ -135,6 +151,9 @@ class GenreAlbum(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['genreID', 'albumID'], name='uniqueGenreAlbum') ]
+
+    def __str__(self):
+        return self.albumname
 
 
 
@@ -150,6 +169,9 @@ class FavoriteGenre(models.Model):
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'genreID'], name='uniqueFavoriteGenre') ]
+
+    def __str__(self):
+        return self.userID.user.username
 
 
     

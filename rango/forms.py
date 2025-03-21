@@ -1,5 +1,5 @@
 from django import forms
-from rango.models import Page, Category, UserProfile
+from rango.models import Page, Category, UserProfile1
 from django.contrib.auth.models import User
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
@@ -61,5 +61,5 @@ class UserForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
-        fields = ('website', 'picture',)
+        model = UserProfile1
+        fields = ('bio', 'profilePicture',)
