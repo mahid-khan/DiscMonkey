@@ -24,27 +24,27 @@
             {% endif %}
         </div>
 
-        {% if categories %}
+        {% if albums %}
             <div class="albums-grid">
-                {% for category in categories %}
+                {% for album in albums %}
                     <div class="album-card">
                         <div class="album-cover">
                             <i class="bi bi-disc"></i>
                         </div>
                         <div class="album-info">
-                            <h3 class="album-title">{{ category.name }}</h3>
+                            <h3 class="album-title">{{ album.albumName }}</h3>
                             <div class="album-stats">
                                 <span class="stat">
                                     <i class="bi bi-eye"></i>
-                                    {{ category.views }} views
+                                    Artist: {{ album.artist }}
                                 </span>
                                 <span class="stat">
                                     <i class="bi bi-heart"></i>
                                     {{ category.likes }} likes
                                 </span>
                             </div>
-                            <a href="{% url 'rango:show_category' category.slug %}" class="view-album-btn">
-                                View Details
+                            <a href="{% url 'rango:album' album_name_slug=album.slug %}" class="view-album-btn">
+                                View Album
                                 <i class="bi bi-arrow-right"></i>
                             </a>
                         </div>

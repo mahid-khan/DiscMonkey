@@ -1,0 +1,23 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Album
+{% endblock %}
+
+{% block body_block %}
+    <div>
+        <strong>An album should be displayed here.</strong>
+    </div>
+
+    {% if album %}
+
+        <h1>{{ album.albumName }}</h1>
+    
+    {% else %}
+
+        <strong>Album doesn't exist.</strong>
+
+    {% endif %}
+
+{% endblock %}
