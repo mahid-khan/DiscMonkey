@@ -69,13 +69,16 @@ class UserProfile1(models.Model):
 
 class Album(models.Model):
     
-
+    slug = models.SlugField(unique=True,blank=True)
     albumName = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
     releaseDate = models.CharField(max_length=255)
     albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
 
-   
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.albumName)
+            super(Album, self).save(*args, **kwargs)
 
 
 

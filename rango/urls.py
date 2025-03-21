@@ -15,4 +15,5 @@ urlpatterns = [
     path('restricted/', views.restricted, name='restricted'),
     path('logout/', views.user_logout, name='logout'),
     path('all_albums', views.all_albums, name='all_albums'),
+    path('album/<slug:album_name_slug>/', views.album, name='album'),
 ]

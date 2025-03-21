@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from rango.models import Category, Page, Album, Review
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
@@ -24,7 +24,15 @@ def index(request):
 
 def all_albums(request):
     context_dict = {}
+    album_list = Album.objects.order_by('albumName')
+    context_dict['albums'] = album_list
     return render(request, 'rango/all_albums.html', context=context_dict)
+
+def album(request, album_name_slug):
+    context_dict = {}
+    album = get_object_or_404(Album, slug=album_name_slug)
+    context_dict['album'] = album
+    return render(request, 'rango/album.html', context=context_dict)
 
 def about(request):
     context_dict = {}
