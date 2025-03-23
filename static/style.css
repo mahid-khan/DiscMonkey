@@ -51,22 +51,27 @@ body {
     margin-bottom: 25px !important;
     border-radius: 10px !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-    background: linear-gradient(135deg, #ff0000 0%, #00ff00 100%) !important;
+    background: linear-gradient(135deg, #ffffff 0%, #e2b4f0 100%) !important;
+    font-family: "Inter", sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px;
+    font-weight: 300 !important; /* Apply the extralight weight */
 }
 
 .navbar-brand {
-    font-weight: 700 !important;
+    font-weight: 350 !important; /* Apply the extralight weight */
     font-size: 1.5rem !important;
-    color: #00ff00 !important;
+    color: #aa63c4 !important;
 }
 
 .navbar-nav .nav-link {
-    color: rgba(255, 255, 255, 0.9) !important;
-    transition: all 0.3s ease !important;
+    font-weight: 300 !important; /* Apply the extralight weight */
+    color: rgba(0, 0, 0, 0.9) !important;
+    transition: color 0.3s ease, transform 0.3s ease !important;
 }
 
 .navbar-nav .nav-link:hover {
-    color: #ffffff !important;
+    color: #000000 !important;
     transform: translateY(-2px) !important;
 }
 
