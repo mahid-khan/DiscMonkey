@@ -103,12 +103,12 @@ def user_profile(request, user_id):
             reviews = None
 
         try:
-            fav_album = FavoriteAlbum.objects.filter(userID=user_id)
+            fav_album = FavoriteAlbum.objects.get(userID=user_id)
         except FavoriteAlbum.DoesNotExist:
             fav_album = None
 
         try:
-            fav_genre = FavoriteGenre.objects.filter(userID=user_id)
+            fav_genre = FavoriteGenre.objects.get(userID=user_id)
         except FavoriteGenre.DoesNotExist:
             fav_genre = None
 

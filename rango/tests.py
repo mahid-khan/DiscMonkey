@@ -1,10 +1,13 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 from rango.models import Album, User, UserProfile1, Review, Genre, FavoriteAlbum, FavoriteGenre
 from django.core.files import File
+from django.db import IntegrityError
 import os
 import datetime
+import shutil
 
+TEST_DIR = 'test_media'
 
 def add_album(name, artist, year):
     album = Album.objects.get_or_create(albumName=name, artist=artist, releaseDate=year)[0]
@@ -29,7 +32,6 @@ def add_review(username, album_name, text):
 def add_genre(name, description):
     genre = Genre.objects.get_or_create(genreName=name, genreDescription=description)
     return genre
-    
 
 def add_fav_album(username, album_name):
     user = User.objects.get(username=username)
@@ -70,8 +72,43 @@ def populate_fav_genres():
     add_fav_genre('Paddy Mcguinness', 'Alternative rock')
 
 
+class ModelTests(TestCase):
 
-class IndexTests(TestCase):
+    @override_settings(MEDIA_ROOT=(TEST_DIR))
+    def setUp(self):
+        populate_albums()
+        populate_users()
+        populate_reviews()
+
+    def test_review_uniqueness(self):
+        """
+        Checks that an IntegrityError is raised if the uniqueness constraints of the Review model are violated
+        """
+        self.assertRaises(IntegrityError, add_review, 'Dr  bob', 'AM', 'I should not be able to add a second review')
+
+    def test_fav_album_uniqueness(self):
+        """
+        Checks that an IntegrityError is raised if the uniqueness constraints of the FavoriteAlbum model are violated
+        """
+        populate_fav_albums()
+        self.assertRaises(IntegrityError, add_fav_album, 'Dr  bob', 'AM')
+
+    def test_fav_genre_uniqueness(self):
+        """
+        Checks that an IntegrityError is raised if the uniqueness constraints of the FavoriteGenre model are violated
+        """
+        populate_genres()
+        populate_fav_genres()
+        self.assertRaises(IntegrityError, add_fav_genre, 'Dr  bob', 'Indie rock')
+
+    #add tests for vote and albumgenre unqiueness after they are properly implemented
+
+    def tearDown(self):
+        shutil.rmtree(TEST_DIR)
+        
+
+
+class IndexPageTests(TestCase):
     def test_index_view_no_albums(self):
         """
         Checks if correct message displays when database contains no albums
@@ -101,11 +138,22 @@ class IndexTests(TestCase):
         self.assertEqual(num_albums, 2)
 
 
-class NewReviewsEmptyDatabaseTests(TestCase):
+class AboutPageTests(TestCase):
+    def setUp(self):
+        self.response = self.client.get(reverse('rango:about'))
+    
+    def test_about_page_loads(self):
+        """
+        Checks if the status code of the returned HttpResponse is 200
+        """
+
+        self.assertEqual(self.response.status_code, 200)
+
+class NewReviewsPageEmptyDatabaseTests(TestCase):
     def setUp(self):
         self.response = self.client.get(reverse('rango:reviews'))
     
-    def test_new_reviews_view_loads(self):
+    def test_new_reviews_page_loads(self):
         """
         Checks if the status code of the returned HttpResponse is 200
         """
@@ -120,7 +168,8 @@ class NewReviewsEmptyDatabaseTests(TestCase):
         self.assertContains(self.response, 'There are no albums present.')
         self.assertQuerysetEqual(self.response.context['reviews'], [])
 
-class NewReviewsPopulatedDatabaseTests(TestCase):
+class NewReviewsPagePopulatedDatabaseTests(TestCase):
+    @override_settings(MEDIA_ROOT=(TEST_DIR))
     def setUp(self):
         populate_albums()
         populate_users()
@@ -128,7 +177,7 @@ class NewReviewsPopulatedDatabaseTests(TestCase):
 
         self.response = self.client.get(reverse('rango:reviews'))
 
-    def test_new_reviews_view_loads(self):
+    def test_new_reviews_page_loads(self):
         """
         Checks if the status code of the returned HttpResponse is 200
         """
@@ -168,7 +217,10 @@ class NewReviewsPopulatedDatabaseTests(TestCase):
         num_reviews = len(self.response.context['reviews'])
         self.assertEqual(num_reviews, 2)
 
-class AllAlbumsEmptyDatabaseTest(TestCase):
+    def tearDown(self):
+        shutil.rmtree(TEST_DIR)
+
+class AllAlbumsPageEmptyDatabaseTest(TestCase):
     def setUp(self):
         self.response = self.client.get(reverse('rango:all_albums'))
     
@@ -193,7 +245,7 @@ class AllAlbumsEmptyDatabaseTest(TestCase):
 
         self.assertQuerysetEqual(self.response.context['albums'], [])
 
-class AllAlbumsPopulatedDatabaseTests(TestCase):
+class AllAlbumsPagePopulatedDatabaseTests(TestCase):
     def setUp(self):
         populate_albums()
 
@@ -217,7 +269,8 @@ class AllAlbumsPopulatedDatabaseTests(TestCase):
 
     # TBF
 
-class UserProfileTest(TestCase):
+class UserProfilePageTest(TestCase):
+    @override_settings(MEDIA_ROOT=(TEST_DIR))
     def setUp(self):
         populate_users()
         populate_albums()
@@ -230,7 +283,7 @@ class UserProfileTest(TestCase):
         user_profile = UserProfile1.objects.get(user=user)
         self.client.login(username=user.username, password=user.password)
         
-        self.response = self.client.get(reverse('rango:user_profile', args=user_profile.pk))
+        self.response = self.client.get(reverse('rango:user_profile', args=[user_profile.pk]))
 
     def test_own_user_profile_view_loads(self):
         """
@@ -272,16 +325,20 @@ class UserProfileTest(TestCase):
         Checks if all user's reviews are in the context dictionary
         """
 
-        review_num = self.response.context['reviews']
-        self.assertContains(review_num, 1)        
+        review_num = len(self.response.context['reviews'])
+        self.assertEqual(review_num, 1)        
     
     def test_user_profile_shows_review_texts(self):
         """
         Checks if all user's reviews are in the context dictionary
         """
 
-        review_num = self.response.context['reviews']
-        self.assertContains(review_num, 1)     
+        self.assertContains(self.response, "this is so bad turn it off!!! turn it offff!!!")     
+
+    def tearDown(self):
+        shutil.rmtree(TEST_DIR)
+
+    
 
 
 
