@@ -2,53 +2,9 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-class Category(models.Model):
-    NAME_MAX_LENGTH = 128
-
-    name = models.CharField(max_length=NAME_MAX_LENGTH, unique=True)
-    views = models.IntegerField(default=0)
-    likes = models.IntegerField(default=0)
-    slug = models.SlugField(unique=True)
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Category, self).save(*args, **kwargs)
-
-    class Meta:
-        verbose_name_plural = 'categories'
-        
-    def __str__(self):
-        return self.name
-    
-class Page(models.Model):
-    TITLE_MAX_LENGTH = 128
-    URL_MAX_LENGTH = 200
-
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    title = models.CharField(max_length=TITLE_MAX_LENGTH)
-    url = models.URLField()
-    views = models.IntegerField(default=0)
-
-    def __str__(self):
-        return self.title
-    
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-
-    website = models.URLField(blank=True)
-    picture = models.ImageField(upload_to='profile_images', blank=True)
-
-    def __str__(self):
-        return self.user.username
-    
-
 # database for new project disc monkey
 # 
 # .
-
-
-
-
 
 class UserProfile1(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
@@ -62,10 +18,6 @@ class UserProfile1(models.Model):
 
     def __str__(self):
         return self.user.username
-
-    
-
-
 
 
 # class Album(models.Model):
@@ -101,7 +53,6 @@ class Album(models.Model):
         super(Album, self).save(*args, **kwargs)
 
 
-
 class Review(models.Model):
     #just one review using composite key  UserID/AlbumID
     TEXT_MAX_LENGTH = 255
@@ -114,9 +65,6 @@ class Review(models.Model):
 
     def __str__(self):
         return self.userID.user.username + ", " + self.albumID.albumName
-
-
-
 
 
 # class Vote(models.Model):
@@ -180,8 +128,6 @@ class Vote(models.Model):
                     
         album.save()
 
-
-
 class Genre(models.Model):
     genreName = models.CharField(max_length=255)
     genreDescription = models.CharField(max_length=255)
@@ -189,11 +135,7 @@ class Genre(models.Model):
     def __str__(self):
         return self.genreName
 
-
-
 class FavoriteAlbum(models.Model):
-
-
     dateAdded = models.DateField(max_length=255)
     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
@@ -204,11 +146,7 @@ class FavoriteAlbum(models.Model):
     def __str__(self):
         return self.userID.user.username
 
-
-
 class GenreAlbum(models.Model):
-
-    
     albumname = models.CharField(max_length=255)
     genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
     albumID  = models.ForeignKey(Album, on_delete=models.CASCADE)
@@ -219,15 +157,8 @@ class GenreAlbum(models.Model):
     def __str__(self):
         return self.albumname
 
-
-
-
 class FavoriteGenre(models.Model):
-    
-    
     dateAdded = models.DateField(max_length=255)
-
-    
     genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
     userID  = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
 
@@ -236,9 +167,3 @@ class FavoriteGenre(models.Model):
 
     def __str__(self):
         return self.userID.user.username
-
-
-    
-
-
-

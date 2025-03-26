@@ -23,7 +23,7 @@
 
     <div class="trending-section">
         <div class="row">
-            <div class="col-md-6">
+            {% comment %} <div class="col-md-6"> {% endcomment %}
                 <div class="trending-card">
                     <div class="trending-header">
                         <h2>
@@ -34,18 +34,20 @@
                     <div class="trending-content">
                         {% if albums %}
                             <div class="album-list">
+                                <div class="row">
                                 {% for album in albums %}
-                                    <div class="album-item">
-                                        <i class="bi bi-vinyl"></i>
-                                        <div class="album-info">
-                                            <span class="album-name">{{ album.albumName }}</span>
-                                            <span class="album-artist">by {{ album.artist }}</span>
-                                            <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
-                                            
-
+                                    <div class="col-sm-3">
+                                        <div class="album-item">
+                                            <i class="bi bi-vinyl"></i>
+                                            <div class="album-info">
+                                                <span class="album-name">{{ album.albumName }}</span>
+                                                <span class="album-artist">by {{ album.artist }}</span>
+                                                <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
+                                            </div>
                                         </div>
                                     </div>
                                 {% endfor %}
+                                </div>
                             </div>
                         {% else %}
                             <div class="empty-state">
@@ -55,9 +57,9 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
+            {% comment %} </div> {% endcomment %}
 
-            <div class="col-md-6">
+            {% comment %} <div class="col-md-6">
                 <div class="trending-card">
                     <div class="trending-header">
                         <h2>
@@ -85,7 +87,7 @@
                         {% endif %}
                     </div>
                 </div>
-            </div>
+            </div> {% endcomment %}
         </div>
     </div>
 

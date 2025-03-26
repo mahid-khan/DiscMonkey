@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-{% load rango_template_tags %}
+{% comment %} {% load rango_template_tags %} {% endcomment %}
 {% load bootstrap5 %}
 
 <html lang="en">
@@ -50,18 +50,13 @@
                                 <i class="bi bi-info-circle"></i> ABOUT
                             </a>
                         </li>
-                        {% if user.is_authenticated %}
+                        {% comment %} {% if user.is_authenticated %}
                             <li class="nav-item">
                                 <a class="nav-link" href="{% url 'rango:add_category' %}">
-                                    <i class="bi bi-plus-circle"></i> Add Category
+                                    <i class="bi bi-plus-circle"></i> Add album
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'rango:restricted' %}">
-                                    <i class="bi bi-lock"></i> Restricted
-                                </a>
-                            </li>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
                     </ul>
                     
                     <div class="navbar-nav">
@@ -98,23 +93,26 @@
         
         <div class="row">
             <!-- Sidebar -->
-            <div class="col-md-3 order-md-1 order-2">
+            {% comment %} <div class="col-md-3 order-md-1 order-2">
                 <div class="sidebar">
                     <h4>Categories</h4>
                     {% block sidebar_block %}
                         {% include 'rango/categories.html' %}
                     {% endblock %}
                 </div>
-            </div>
+            </div> {% endcomment %}
             
             <!-- Main Content -->
-            <div class="col-md-9 order-md-2 order-1">
+            {% comment %} <div class="col-md-9 order-md-2 order-1"> 
+            <div class="col-md-9 order-md-2 order-1"> {% endcomment %}
                 <div class="content">
                     {% block body_block %}
                     {% endblock %}
                 </div>
-            </div>
+            {% comment %} </div> {% endcomment %}
         </div>
+
+        
         
         <!-- Footer -->
         <footer class="footer">
