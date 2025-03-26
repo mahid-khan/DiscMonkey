@@ -1055,3 +1055,55 @@ tr:hover {
 }
 
 /* -------------------- ------------ ------------ ------------------------------ */
+
+/* Voting styles ------------ ------------ -------------------------------------- */ 
+.vote-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    transition: all 0.2s;
+}
+
+.vote-btn:hover {
+    transform: scale(1.2);
+}
+
+.upvote-btn {
+    color: #777;
+}
+
+.downvote-btn {
+    color: #777;
+}
+
+.upvote-btn.active {
+    color: #4CAF50;
+}
+
+.downvote-btn.active {
+    color: #F44336;
+}
+
+.album-score {
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+.album-score.positive {
+    color: #4CAF50;
+}
+
+.album-score.negative {
+    color: #F44336;
+}
+
+.score-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+/* -------------------- ------------ ------------ ------------------------------ */

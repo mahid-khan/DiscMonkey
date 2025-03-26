@@ -68,13 +68,29 @@ class UserProfile1(models.Model):
 
 
 
-class Album(models.Model):
+# class Album(models.Model):
     
-    slug = models.SlugField(unique=True,blank=True)
+#     slug = models.SlugField(unique=True,blank=True)
+#     albumName = models.CharField(max_length=255)
+#     artist = models.CharField(max_length=255)
+#     releaseDate = models.CharField(max_length=255)
+#     albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
+
+#     def __str__(self):
+#         return self.albumName
+
+#     def save(self, *args, **kwargs):
+#         if not self.slug:
+#             self.slug = slugify(self.albumName)
+#             super(Album, self).save(*args, **kwargs)
+
+class Album(models.Model):
+    slug = models.SlugField(unique=True, blank=True)
     albumName = models.CharField(max_length=255)
     artist = models.CharField(max_length=255)
     releaseDate = models.CharField(max_length=255)
     albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
+    score = models.IntegerField(default=0)  # Add this field to track the total score
 
     def __str__(self):
         return self.albumName
@@ -82,7 +98,7 @@ class Album(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = slugify(self.albumName)
-            super(Album, self).save(*args, **kwargs)
+        super(Album, self).save(*args, **kwargs)
 
 
 
@@ -103,21 +119,66 @@ class Review(models.Model):
 
 
 
+# class Vote(models.Model):
+#     #composite primary key (UserID/AlbumID)
+#     #make uniqe key constraint instead of composite primary key
+
+
+
+#     voteType = models.CharField(max_length=255)
+#     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
+#     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+#     class Meta:
+#         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
+
+#     def __str__(self):
+#         return self.userID.user.username + ", " + self.albumID.albumName
+
 class Vote(models.Model):
-    #composite primary key (UserID/AlbumID)
-    #make uniqe key constraint instead of composite primary key
-
-
-
-    voteType = models.CharField(max_length=255)
+    VOTE_TYPES = (
+        ('up', 'Upvote'),
+        ('down', 'Downvote'),
+    )
+    
+    voteType = models.CharField(max_length=4, choices=VOTE_TYPES)
     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
 
     class Meta:
-        constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
+        constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID')]
 
     def __str__(self):
-        return self.userID.user.username + ", " + self.albumID.albumName
+        return f"{self.userID.user.username}, {self.albumID.albumName}, {self.voteType}"
+    
+    def save(self, *args, **kwargs):
+        # Check if this is a new vote
+        is_new = self.pk is None
+        
+        # Get old vote if updating
+        old_vote = None
+        if not is_new:
+            old_vote = Vote.objects.get(pk=self.pk)
+            
+        # Save the vote
+        super(Vote, self).save(*args, **kwargs)
+        
+        # Update album score
+        album = self.albumID
+        
+        if is_new:  # New vote
+            if self.voteType == 'up':
+                album.score += 1
+            else:
+                album.score -= 1
+        else:  # Changed vote
+            if old_vote and old_vote.voteType != self.voteType:
+                if self.voteType == 'up':
+                    album.score += 2  # -1 to +1 = change of 2
+                else:
+                    album.score -= 2  # +1 to -1 = change of 2
+                    
+        album.save()
 
 
 

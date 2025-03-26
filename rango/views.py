@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from rango.models import Category, Page, Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre
+from django.http import HttpResponse, JsonResponse
+from rango.models import Category, Page, Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre, Vote
 from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm, ReviewForm
 from django.urls import reverse
 from django.contrib import messages
@@ -197,6 +197,51 @@ def add_page(request, category_name_slug):
 
     context_dict = {'form': form, 'category': category}
     return render(request, 'rango/add_page.html', context=context_dict)
+
+@login_required
+def vote_album(request):
+    if request.method == 'POST':
+        album_id = request.POST.get('album_id')
+        vote_type = request.POST.get('vote_type')
+        
+        album = get_object_or_404(Album, id=album_id)
+        user_profile = request.user.userprofile1
+        
+        if vote_type not in ['up', 'down']:
+            return JsonResponse({'status': 'error', 'message': 'Invalid vote type'})
+            
+        # Check if user already voted
+        try:
+            vote = Vote.objects.get(userID=user_profile, albumID=album)
+            
+            # If same vote type, remove the vote (toggle)
+            if vote.voteType == vote_type:
+                if vote_type == 'up':
+                    album.score -= 1
+                else:
+                    album.score += 1
+                vote.delete()
+                album.save()
+                return JsonResponse({'status': 'success', 'action': 'removed', 'new_score': album.score})
+                
+            # Otherwise, change the vote
+            old_vote = vote.voteType
+            vote.voteType = vote_type
+            vote.save()  # The score will be updated in the save method
+            
+            return JsonResponse({'status': 'success', 'action': 'changed', 'new_score': album.score})
+            
+        except Vote.DoesNotExist:
+            # New vote
+            vote = Vote.objects.create(
+                userID=user_profile,
+                albumID=album,
+                voteType=vote_type
+            )
+            
+            return JsonResponse({'status': 'success', 'action': 'added', 'new_score': album.score})
+    
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'})
 
 def register(request):
 

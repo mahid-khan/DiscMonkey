@@ -54,12 +54,23 @@
                             <h3 class="album-title">{{ album.albumName }}</h3>
                             <div class="album-stats">
                                 <span class="stat">
-                                    <i class="bi bi-eye"></i>
+                                    <i class="bi bi-person"></i>
                                     Artist: {{ album.artist }}
                                 </span>
-                                <span class="stat">
-                                    <i class="bi bi-heart"></i>
-                                    {{ category.likes }} likes
+                                <span class="stat score-container">
+                                    {% if user.is_authenticated %}
+                                        <button class="vote-btn upvote-btn" data-album-id="{{ album.id }}" data-vote-type="up">
+                                            <i class="bi bi-arrow-up-circle"></i>
+                                        </button>
+                                    {% endif %}
+                                    <span class="album-score {% if album.score < 0 %}negative{% elif album.score > 0 %}positive{% endif %}">
+                                        {{ album.score }}
+                                    </span>
+                                    {% if user.is_authenticated %}
+                                        <button class="vote-btn downvote-btn" data-album-id="{{ album.id }}" data-vote-type="down">
+                                            <i class="bi bi-arrow-down-circle"></i>
+                                        </button>
+                                    {% endif %}
                                 </span>
                             </div>
                             <a href="{% url 'rango:album' album_name_slug=album.slug %}" class="view-album-btn">

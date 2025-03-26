@@ -41,18 +41,9 @@ def populate():
          'url':'http://flask.pocoo.org',
          'views': 57} ]
     
-
-    
     cats = {'Python': {'pages': python_pages, 'views': 128, 'likes': 64},
             'Django': {'pages': django_pages, 'views': 64, 'likes': 32},
             'Other Frameworks': {'pages': other_pages, 'views': 32, 'likes': 16} }
-    
-    #users contain (username, password, bio, email)
-    #      !!!!!!!!! BAD EXAMPLE OF WRITING PATHS - NOT COMPATIBLE WITH ALL OS'S !!!!!!!!! :
-    # users = [['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 'doctorBob@Medical.com', r'profilePicsForPopulating\drBob.jpg'], ['Paddy Mcguinness', 'wolfeTones1954',
-    #  'Paddy Mcguinness acomplished cow tipper', 'paddymcguinnes@country.com', r'profilePicsForPopulating\paddyMcG.jpg']]
-    
-    # how it should be done: !
 
     users = [
         ['Dr bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 
@@ -60,23 +51,16 @@ def populate():
         ['Paddy Mcguinness', 'wolfeTones1954', 'Paddy Mcguinness acomplished cow tipper', 
          'paddymcguinnes@country.com', os.path.join('profilePicsForPopulating', 'paddyMcG.jpg')]
     ]
-    
-    #      !!!!!!!!! BAD EXAMPLE OF WRITING PATHS - NOT COMPATIBLE WITH ALL OS'S !!!!!!!!! :
-    # albums contain name, artist and relsease date
-    # albums = [["Parklife", "Blur", "1994", r"albumCoversForPopulating\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"albumCoversForPopulating/mrBeanAlbum.jpg"]]
-
-
-    # how it should be done: 
+ 
     albums = [
         ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg')],
         [" Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'mrBeanAlbum.jpg')]
     ]
 
-    #       
-    #filelocation parklife = "C:\Users\Finn McInroy\Downloads\BlurParklife.jpg".   -  no, use ospathjoin
-    #filelocation Straight from the heart = "C:\Users\Finn McInroy\Downloads\mrBeanAlbum2.jpg".  - no, use ospathjoin
- 
-
+    albums = [
+    ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), 30],  # Positive score
+    ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'mrBeanAlbum.jpg'), -23]  # Negative score
+]
 
     #reveiws contain UserID, AlbumID, reviewText
 
@@ -109,35 +93,10 @@ def populate():
         u = add_user(*u)
 
     
+    # Create albums
     for a in albums:
-        print("codeRan")
-        a = add_album(*a)
+        add_album(*a)  # This will now pass all parameters including score
        
-
-    """
-
-    for i, image_file in enumerate(image_files):
-        # Full path to the image file
-        image_path = os.path.join(image_dir, image_file)
-
-        # Open the image file
-        with open(image_path, 'rb') as f:
-            # Create a Django File object
-            django_file = File(f)
-
-            # Create a model instance
-            album = Album(
-                title=f'Album {i + 1}',
-                artist=f'Artist {i + 1}',
-            )
-
-            # Assign the image to the ImageField
-            album.cover_image.save(image_file, django_file, save=True)
-
-            print(f'Created {album.title} with image {image_file}')
-
-
-    """
 
     for r in reviews:
         r = add_review(r[0],r[1],r[2])
@@ -151,7 +110,30 @@ def populate():
     for fa in favoriteAlbums:
         fa = add_favoriteAlbum(fa[0], fa[1])
 
-    #
+    # Create users and store their IDs
+    users_ids = []
+    for u in users:
+        user_profile = add_user(*u)
+        if user_profile:
+            users_ids.append(user_profile.id)
+
+    # # First album - lots of upvotes (positive score)
+    # for i in range(35):  # 35 upvotes
+    #     if users_ids:
+    #         add_vote(random.choice(users_ids), 1, 'up')
+        
+    # for i in range(5):  # 5 downvotes
+    #     if users_ids:
+    #         add_vote(random.choice(users_ids), 1, 'down')
+        
+    # # Second album - lots of downvotes (negative score)
+    # for i in range(8):  # 8 upvotes
+    #     if users_ids:
+    #         add_vote(random.choice(users_ids), 2, 'up')
+        
+    # for i in range(31):  # 31 downvotes
+    #     if users_ids:
+    #         add_vote(random.choice(users_ids), 2, 'down')
 
 def add_page(cat, title, url, views=0):
     p = Page.objects.get_or_create(category=cat, title=title)[0]
@@ -167,57 +149,113 @@ def add_cat(name, views=0, likes=0):
     c.save()
     return c
 
-def add_user(username, password, bio, email, profilePicPath):
+def add_user(username, password, bio, email, profilePicPath=None):
+    # Check if user already exists
+    if User.objects.filter(username=username).exists():
+        # Get existing user
+        user = User.objects.get(username=username)
+        
+        # Check if profile exists
+        try:
+            user_profile = UserProfile1.objects.get(user=user)
+        except UserProfile1.DoesNotExist:
+            # Create profile if it doesn't exist
+            user_profile = UserProfile1.objects.create(
+                user=user,
+                bio=bio
+            )
+        
+        return user_profile
+    
+    # Create new user if doesn't exist
     try:
-        with open(profilePicPath, 'rb') as f:
-            djangoFile = File(f)
-            
-            user1 = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password
-            )
-
-            userProfile1, created = UserProfile1.objects.get_or_create(
-                user=User.objects.get(username=username),
-                defaults={'bio': bio}
-            )
-            
-            userProfile1.profilePicture.save(os.path.basename(profilePicPath), djangoFile, save=True)
-        return userProfile1
-    except FileNotFoundError:
-        print(f"Warning: Profile picture file not found at {profilePicPath}. Creating user without image.")
-        user1 = User.objects.create_user(
+        # Create User
+        user = User.objects.create_user(
             username=username,
             email=email,
             password=password
         )
 
-        userProfile1, created = UserProfile1.objects.get_or_create(
-            user=User.objects.get(username=username),
-            defaults={'bio': bio}
+        # Create UserProfile1
+        user_profile = UserProfile1.objects.create(
+            user=user,
+            bio=bio
         )
-        return userProfile1
-
-def add_album(albumName, artist, releaseYear, albumCoverPath):
-    try:
-        with open(albumCoverPath, 'rb') as f:
-            djangoFile = File(f)
-            
-            album, created = Album.objects.get_or_create(
-                albumName=albumName,
-                defaults={'artist': artist, 'releaseDate': releaseYear}
-            )
+        
+        # Add profile picture if path provided
+        if profilePicPath:
+            try:
+                with open(profilePicPath, 'rb') as f:
+                    django_file = File(f)
+                    user_profile.profilePicture.save(
+                        os.path.basename(profilePicPath), 
+                        django_file, 
+                        save=True
+                    )
+            except FileNotFoundError:
+                print(f"Warning: Profile picture file not found at {profilePicPath}")
                 
-            album.albumCover.save(os.path.basename(albumCoverPath), djangoFile, save=True)
-        return album
-    except FileNotFoundError:
-        print(f"Warning: Album cover file not found at {albumCoverPath}. Creating album without image.")
+        return user_profile
+    
+    except Exception as e:
+        print(f"Error creating user {username}: {e}")
+        return None
+
+# def add_album(albumName, artist, releaseYear, albumCoverPath):
+#     try:
+#         with open(albumCoverPath, 'rb') as f:
+#             djangoFile = File(f)
+            
+#             album, created = Album.objects.get_or_create(
+#                 albumName=albumName,
+#                 defaults={'artist': artist, 'releaseDate': releaseYear}
+#             )
+                
+#             album.albumCover.save(os.path.basename(albumCoverPath), djangoFile, save=True)
+#         return album
+#     except FileNotFoundError:
+#         print(f"Warning: Album cover file not found at {albumCoverPath}. Creating album without image.")
+#         album, created = Album.objects.get_or_create(
+#             albumName=albumName,
+#             defaults={'artist': artist, 'releaseDate': releaseYear}
+#         )
+#         return album
+
+def add_album(albumName, artist, releaseYear, albumCoverPath, score=0):
+    try:
+        # First, check if album already exists
         album, created = Album.objects.get_or_create(
             albumName=albumName,
-            defaults={'artist': artist, 'releaseDate': releaseYear}
+            defaults={
+                'artist': artist,
+                'releaseDate': releaseYear,
+                'score': score  # Use the score parameter
+            }
         )
+        
+        # If album already exists, update its fields
+        if not created:
+            album.artist = artist
+            album.releaseDate = releaseYear
+            album.score = score  # Update the score
+            album.save()
+        
+        # Try to add the cover image if a path is provided
+        if os.path.exists(albumCoverPath):
+            with open(albumCoverPath, 'rb') as f:
+                django_file = File(f)
+                album.albumCover.save(
+                    os.path.basename(albumCoverPath),
+                    django_file,
+                    save=True
+                )
+        else:
+            print(f"Warning: Album cover file not found at {albumCoverPath}")
+            
         return album
+    except Exception as e:
+        print(f"Error creating album {albumName}: {e}")
+        return None
 
 def add_review(userID, albumID, reviewText):
 
@@ -265,6 +303,18 @@ def add_genre(genreName , genreDescription):
     )
 
     return genre
+
+def add_vote(user_id, album_id, vote_type):
+    user = UserProfile1.objects.get(pk=user_id)
+    album = Album.objects.get(pk=album_id)
+    
+    vote, created = Vote.objects.get_or_create(
+        userID=user,
+        albumID=album,
+        defaults={'voteType': vote_type}
+    )
+    
+    return vote
 
 def add_favoriteAlbum(userID , albumID):
 
