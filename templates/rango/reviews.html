@@ -38,7 +38,7 @@
                 <ul>
                     {% for review in reviews %}
                         
-                            <li>{{ review.reviewText }} said {{ review.userID.user }} about the album {{review.albumID.albumName}}</li>
+                            <li>{{ review.reviewText }} said user  {{review.userID.user.username}} about the album {{review.albumID.albumName}}</li>
                         
                     {% endfor %}
                 </ul>

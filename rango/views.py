@@ -285,6 +285,7 @@ def register(request):
                            'registered': registered})
 
 def user_login(request):
+    context_dict = {}
 
     if request.method == 'POST':
 
@@ -300,7 +301,8 @@ def user_login(request):
                 return HttpResponse("Your Rango account is disabled.")
         else:
             print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            context_dict['login_status'] = "Invalid login details provided"
+            return render(request, 'rango/login.html', context=context_dict)
     else:
         return render(request, 'rango/login.html')
     

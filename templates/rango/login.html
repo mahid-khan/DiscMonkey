@@ -11,6 +11,9 @@
             <div class="auth-header">
                 <i class="bi bi-disc-fill auth-icon"></i>
                 <h1>Login to DiscMonkey</h1>
+                {% if login_status %}
+                <p><i class="bi bi-exclamation-square-fill"></i> {{ login_status }}</p>
+                {% endif %}
             </div>
             
             <form id="login_form" method="post" action="{% url 'rango:login' %}" class="auth-form">
