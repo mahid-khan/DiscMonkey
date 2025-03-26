@@ -105,24 +105,6 @@ def edit_profile(request):
     pass
 
 @login_required
-def add_category(request):
-
-    form = CategoryForm()
-
-    if request.method == 'POST':
-        form = CategoryForm(request.POST)
-
-        if form.is_valid():
-
-            form.save(commit=True)
-
-            return redirect('/rango/')
-        else:
-            print(form.errors)
-
-    return render(request, 'rango/add_category.html', {'form': form})
-
-@login_required
 def add_review(request, album_id):
     album = get_object_or_404(Album, id=album_id)
     user_profile = get_object_or_404(UserProfile1, user=request.user)

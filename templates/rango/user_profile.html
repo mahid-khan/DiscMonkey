@@ -20,7 +20,7 @@
                 {{ profile_owner.user.username }}'s profile
             </h1>
             {% if profile_owner.profilePicture%}
-            <img src="{{ profile_owner.profilePicture }}" alt="{{ profile_owner.user.username }}' profile picture" class="album-cover">
+            <img src="{{ profile_owner.profilePicture.url }}" alt="{{ profile_owner.user.username }}' profile picture" class="album-cover">
             {% endif %}
             <p class="albums-subtitle">{{ profile_owner.bio }}</p>
         </div>
