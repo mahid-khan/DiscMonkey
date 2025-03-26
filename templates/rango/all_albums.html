@@ -11,9 +11,28 @@
             <div class="header-content">
                 <h1>
                     <i class="bi bi-collection-play"></i>
-                    All Albums
+                    {% if query %}
+                        Search Results for "{{ query }}"
+                    {% else %}
+                        All Albums
+                    {% endif %}
                 </h1>
-                <p class="albums-subtitle">Discover and explore our music collection</p>
+                <p class="albums-subtitle">
+                    {% if query %}
+                        Found {{ albums|length }} album(s) matching your search
+                    {% else %}
+                        Discover and explore our music collection
+                    {% endif %}
+                </p>
+            </div>
+            
+            <div class="search-container">
+                <form action="{% url 'rango:all_albums' %}" method="GET" class="search-form">
+                    <input type="text" name="q" placeholder="Search albums..." value="{{ query }}">
+                    <button type="submit" class="search-btn">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
             </div>
             
             {% if user.is_authenticated %}
@@ -54,8 +73,13 @@
         {% else %}
             <div class="empty-albums">
                 <i class="bi bi-music-note-list"></i>
-                <h2>No Albums Yet</h2>
-                <p>Be the first to add an album to our collection!</p>
+                {% if query %}
+                    <h2>No Albums Found</h2>
+                    <p>We couldn't find any albums matching "{{ query }}"</p>
+                {% else %}
+                    <h2>No Albums Yet</h2>
+                    <p>Be the first to add an album to our collection!</p>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <a href="{% url 'rango:add_category' %}" class="add-album-btn">
                         <i class="bi bi-plus-lg"></i>

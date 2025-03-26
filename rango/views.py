@@ -23,10 +23,27 @@ def index(request):
 
     return render(request, 'rango/index.html', context=context_dict)
 
+# def all_albums(request):
+#     context_dict = {}
+#     album_list = Album.objects.order_by('albumName')
+#     context_dict['albums'] = album_list
+#     return render(request, 'rango/all_albums.html', context=context_dict)
+
 def all_albums(request):
-    context_dict = {}
-    album_list = Album.objects.order_by('albumName')
-    context_dict['albums'] = album_list
+    query = request.GET.get('q', '')  # Get the search query from the URL
+    
+    if query:
+        # Filter albums by name or artist (case-insensitive)
+        albums = Album.objects.filter(albumName__icontains=query) | Album.objects.filter(artist__icontains=query)
+    else:
+        # Get all albums if no query is provided
+        albums = Album.objects.order_by('albumName')
+
+    context_dict = {
+        'albums': albums,
+        'query': query,
+    }
+    
     return render(request, 'rango/all_albums.html', context=context_dict)
 
 def album(request, album_name_slug):
