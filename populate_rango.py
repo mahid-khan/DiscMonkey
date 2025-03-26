@@ -55,14 +55,12 @@ def populate():
     # how it should be done: !
 
     users = [
-        ['Dr  bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 
+        ['Dr bob', 'drBobsSecretPassword', 'hey im dr bob a profesional doctor man', 
          'doctorBob@Medical.com', os.path.join('profilePicsForPopulating', 'drBob.jpg')],
         ['Paddy Mcguinness', 'wolfeTones1954', 'Paddy Mcguinness acomplished cow tipper', 
          'paddymcguinnes@country.com', os.path.join('profilePicsForPopulating', 'paddyMcG.jpg')]
     ]
     
-
-   
     #      !!!!!!!!! BAD EXAMPLE OF WRITING PATHS - NOT COMPATIBLE WITH ALL OS'S !!!!!!!!! :
     # albums contain name, artist and relsease date
     # albums = [["Parklife", "Blur", "1994", r"albumCoversForPopulating\BlurParklife.jpg" ],[" Straight From The Heart", "Ann Peebles", "1972", r"albumCoversForPopulating/mrBeanAlbum.jpg"]]
@@ -115,10 +113,6 @@ def populate():
         print("codeRan")
         a = add_album(*a)
        
-        
-        
-
-    
 
     """
 

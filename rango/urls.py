@@ -17,5 +17,6 @@ urlpatterns = [
     path('all_albums/', views.all_albums, name='all_albums'),
     path('album/<slug:album_name_slug>/', views.album, name='album'),
     path('profile/<int:user_id>/', views.user_profile, name='user_profile'),
+    path('add_review/<int:album_id>/', views.add_review, name='add_review'),
     #path('profile/<int:user_id>/edit', views.edit_profile, name='edit_profile')
 ]

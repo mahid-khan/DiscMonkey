@@ -2,8 +2,9 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from rango.models import Category, Page, Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre
-from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm
+from rango.forms import CategoryForm, PageForm, UserForm, UserProfileForm, ReviewForm
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -31,7 +32,9 @@ def all_albums(request):
 def album(request, album_name_slug):
     context_dict = {}
     album = get_object_or_404(Album, slug=album_name_slug)
+    reviews = Review.objects.filter(albumID=album)
     context_dict['album'] = album
+    context_dict['reviews'] = reviews
     return render(request, 'rango/album.html', context=context_dict)
 
 def about(request):
@@ -120,6 +123,32 @@ def add_category(request):
             print(form.errors)
 
     return render(request, 'rango/add_category.html', {'form': form})
+
+@login_required
+def add_review(request, album_id):
+    album = get_object_or_404(Album, id=album_id)
+    user_profile = get_object_or_404(UserProfile1, user=request.user)
+    form = ReviewForm()
+
+    if Review.objects.filter(albumID=album, userID=user_profile).exists():
+        messages.info(request, "You have already written a review for this album.")
+        return redirect('rango:album', album_name_slug=album.slug)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.userID = user_profile
+            review.albumID = album 
+            review.save()
+
+            return redirect('rango:album', album_name_slug=album.slug)
+        else:
+            print(form.errors)
+
+    return render(request, 'rango/add_review.html', {'form':form, 'album': album})
+
 
 @login_required
 def add_page(request, category_name_slug):

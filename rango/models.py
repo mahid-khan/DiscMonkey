@@ -88,10 +88,10 @@ class Album(models.Model):
 
 class Review(models.Model):
     #just one review using composite key  UserID/AlbumID
-
+    TEXT_MAX_LENGTH = 255
     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
-    reviewText = models.CharField(max_length=255)
+    reviewText = models.CharField(max_length=TEXT_MAX_LENGTH)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]

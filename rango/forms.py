@@ -1,5 +1,5 @@
 from django import forms
-from rango.models import Page, Category, UserProfile1
+from rango.models import Page, Category, UserProfile1, Review, Album
 from django.contrib.auth.models import User
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
@@ -63,3 +63,15 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile1
         fields = ('bio', 'profilePicture',)
+
+class ReviewForm(forms.ModelForm):
+    reviewText = forms.CharField(
+        max_length=Review.TEXT_MAX_LENGTH,
+        help_text="Enter your review of the album",
+        widget=forms.Textarea(attrs={'rows':5, 'cols': 40}),
+        label=None
+    )
+
+    class Meta:
+        model = Review
+        fields = ('reviewText',)
