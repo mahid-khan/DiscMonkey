@@ -50,7 +50,10 @@
                                             <div class="album-info">
                                                 <span class="album-name">{{ album.albumName }}</span>
                                                 <span class="album-artist">by {{ album.artist }}</span>
-                                                <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
+                                                <a href="{% url 'rango:album' album_name_slug=album.slug %}">
+                                                    <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
+                                                </a>
+                                                <span class="album-score mx-1">Score: {{ album.score }}</span>
                                             </div>
                                         </div>
                                     </div>
