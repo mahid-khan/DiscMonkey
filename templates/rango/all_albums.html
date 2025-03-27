@@ -2,102 +2,54 @@
 {% load staticfiles %}
 
 {% block title_block %}
-    All Albums
+  All Albums
 {% endblock %}
 
 {% block body_block %}
-    <div class="albums-container">
-        <div class="albums-header">
-            <div class="header-content">
-                <h1>
-                    <i class="bi bi-collection-play"></i>
-                    {% if query %}
-                        Search Results for "{{ query }}"
-                    {% else %}
-                        All Albums
-                    {% endif %}
-                </h1>
-                <p class="albums-subtitle">
-                    {% if query %}
-                        Found {{ albums|length }} album(s) matching your search
-                    {% else %}
-                        Discover and explore our music collection
-                    {% endif %}
-                </p>
-            </div>
-            
-            <div class="search-container">
-                <form action="{% url 'rango:all_albums' %}" method="GET" class="search-form">
-                    <input type="text" name="q" placeholder="Search albums..." value="{{ query }}">
-                    <button type="submit" class="search-btn">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </form>
-            </div>
-            
-            {% if user.is_authenticated %}
-            <a href="{% url 'rango:add_category' %}" class="add-album-btn">
-                <i class="bi bi-plus-lg"></i>
-                Add New Album
-            </a>
-            {% endif %}
+<div class="container my-4">
+  <h1 class="mb-4"><i class="bi bi-collection-play"></i> All Albums</h1>
+  
+  <!-- Search Box Section -->
+  <div class="row mb-4">
+    <div class="col-md-6 offset-md-3">
+      <form action="{% url 'rango:all_albums' %}" method="GET" class="input-group">
+        <input type="text" name="q" class="form-control" placeholder="Search albums..." value="{{ query }}">
+        <div class="input-group-append">
+          <button type="submit" class="search-btn">
+            <i class="bi bi-search"></i>
+          </button>
         </div>
-
-        {% if albums %}
-            <div class="albums-grid">
-                {% for album in albums %}
-                    <div class="album-card">
-                        <div class="album-cover">
-                            <i class="bi bi-disc"></i>
-                        </div>
-                        <div class="album-info">
-                            <h3 class="album-title">{{ album.albumName }}</h3>
-                            <div class="album-stats">
-                                <span class="stat">
-                                    <i class="bi bi-person"></i>
-                                    Artist: {{ album.artist }}
-                                </span>
-                                <span class="stat score-container">
-                                    {% if user.is_authenticated %}
-                                        <button class="vote-btn upvote-btn" data-album-id="{{ album.id }}" data-vote-type="up">
-                                            <i class="bi bi-arrow-up-circle"></i>
-                                        </button>
-                                    {% endif %}
-                                    <span class="album-score {% if album.score < 0 %}negative{% elif album.score > 0 %}positive{% endif %}">
-                                        {{ album.score }}
-                                    </span>
-                                    {% if user.is_authenticated %}
-                                        <button class="vote-btn downvote-btn" data-album-id="{{ album.id }}" data-vote-type="down">
-                                            <i class="bi bi-arrow-down-circle"></i>
-                                        </button>
-                                    {% endif %}
-                                </span>
-                            </div>
-                            <a href="{% url 'rango:album' album_name_slug=album.slug %}" class="view-album-btn">
-                                View Album
-                                <i class="bi bi-arrow-right"></i>
-                            </a>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        {% else %}
-            <div class="empty-albums">
-                <i class="bi bi-music-note-list"></i>
-                {% if query %}
-                    <h2>No Albums Found</h2>
-                    <p>We couldn't find any albums matching "{{ query }}"</p>
-                {% else %}
-                    <h2>No Albums Yet</h2>
-                    <p>Be the first to add an album to our collection!</p>
-                {% endif %}
-                {% if user.is_authenticated %}
-                    <a href="{% url 'rango:add_category' %}" class="add-album-btn">
-                        <i class="bi bi-plus-lg"></i>
-                        Add New Album
-                    </a>
-                {% endif %}
-            </div>
-        {% endif %}
+      </form>
     </div>
+  </div>
+  
+  {% if albums %}
+    <div class="list-group">
+      {% for album in albums %}
+      <div class="list-group-item list-group-item-action d-flex align-items-center">
+        <!-- Album Cover on left -->
+        <div class="album-cover mr-3" style="width:150px; height:150px; flex-shrink: 0;">
+          {% if album.albumCover %}
+            <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="img-fluid h-100 w-100" style="object-fit: cover; border-radius:4px;">
+          {% else %}
+            <div class="d-flex h-100 w-100 align-items-center justify-content-center" style="background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%); border-radius:4px;">
+              <i class="bi bi-disc" style="font-size:2rem; color: rgba(255,255,255,0.8);"></i>
+            </div>
+          {% endif %}
+        </div>
+        <!-- Album Info on right -->
+        <div class="album-info flex-grow-1 ml-3">
+          <h4 class="album-title font-weight-bold mb-1">{{ album.albumName }}</h4>
+          <p class="album-artist mb-2 text-muted">by {{ album.artist }}</p>
+          <a href="{% url 'rango:album' album_name_slug=album.slug %}" class="btn btn-viewalbum">
+            View Album <i class="bi bi-arrow-right"></i>
+        </a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-info">There are no albums available yet.</div>
+  {% endif %}
+</div>
 {% endblock %}

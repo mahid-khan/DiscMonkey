@@ -192,7 +192,7 @@ tr:hover {
 
 .list-group-item a {
     text-decoration: none;
-    color: #ff00ff !important;
+    color: #000000;
     display: block;
     font-weight: 500;
 }
@@ -1107,3 +1107,39 @@ tr:hover {
 }
 
 /* -------------------- ------------ ------------ ------------------------------ */
+
+/* Override the default btn-dark styles */
+.btn-viewalbum {
+    background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover and focus states */
+.btn-viewalbum:hover,
+.btn-viewalbum:focus {
+    background: linear-gradient(135deg, #8822ee 0%, #5500bb 100%);
+    color: white;
+}
+
+/* Override the default btn-dark styles */
+.list-group-item a.btn-viewalbum {
+    background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
+    color: white !important; /* Ensure text is white */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Hover and focus states */
+.list-group-item a.btn-viewalbum:hover,
+.list-group-item a.btn-viewalbum:focus {
+    background: linear-gradient(135deg, #8822ee 0%, #5500bb 100%);
+    color: white !important; /* Ensure text remains white on hover/focus */
+}
