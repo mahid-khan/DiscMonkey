@@ -132,29 +132,7 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-        <br/>
-        <div class="list-group">
-            {% for review in reviews %}
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="review-content">
-                    <h5 class="mb-1">
-                        {{ review.userID.user.username }} reviewed 
-                        <strong>{{ review.albumID.albumName }}:</strong>
-                    </h5>
-                    <p class="mb-1">{{ review.reviewText }}</p>
-                </div>
-                <div class="reviewer-profile text-center">
-                    {% if review.userID.profilePicture %}
-                        <img src="{{ review.userID.profilePicture.url }}" alt="{{ review.userID.user.username }} Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
-                    {% else %}
-                        <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
-                    {% endif %}
-                    <small class="d-block">{{ review.userID.user.username }}</small>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+    
     {% else %}
         <div class="alert alert-info text-center">
             {{ profile_owner.user.username }} hasn't reviewed any albums yet.
