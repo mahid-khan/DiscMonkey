@@ -29,14 +29,12 @@ class ReviewForm(forms.ModelForm):
         model = Review
         fields = ('reviewText',)
 
-class EditProfileFrom(forms.Form):
-    bio = forms.CharField(required=False)
-    fav_album = forms.CharField(required=False)
-    fav_genre = forms.ModelChoiceField(queryset=Genre.objects.all(), required=False)
-    
+class EditProfileForm(forms.ModelForm):
+    profilePicture = forms.ImageField(required=False)
 
-    profile_picture = forms.ImageField(required=False)
-
+    class Meta:
+        model = UserProfile1
+        fields = ('profilePicture',)
 
 class AlbumForm(forms.ModelForm):
     class Meta:

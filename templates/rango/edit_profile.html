@@ -16,10 +16,8 @@
     <p><i class="bi bi-exclamation-square-fill"></i> The submitted genre isn't in our database. Please choose a different one.</p>
 {% endif %}
 
-<form id="edit_profile_form" method="post" action="{% url 'rango:edit_profile' %}" class="auth-form">
+<form id="edit_profile_form" method="post" action="{% url 'rango:edit_profile' %}" enctype="multipart/form-data" class="auth-form">
     {% csrf_token %}
-
-    {% comment %} {{ form.as_p }} {% endcomment %}
     
     <div class="form-group">
         <label for="bio">
@@ -40,26 +38,30 @@
                 <option value="{{ album.id }}">{{ album.albumName }}</option>
             {% endfor %}
         </select>
-        {% comment %} <input type="text" name="fav_album" id="fav_album" class="form-control"> {% endcomment %}
     </div>
 
     <div class="form-group">
-        <label for="password">
+        <label for="fav_genre">
             <i class="bi bi-headphones"></i>
             Favourite genre
         </label>
-        <input type="text" name="fav_genre" id="fav_genre" class="form-control">
+        <select name="fav_genre" id="fav_genre" class="form-control">
+            <option value=""></option>
+            {% for genre in genres %}
+                <option value="{{ genre.id }}">{{ genre.genreName }}</option>
+            {% endfor %}
+        </select>
     </div>
 
-    {% comment %} <div class="form-group">
-        <label for="password">
-            <i class="bi bi-headphones"></i>
-            Profile picture
+    <div class="form-group">
+        <label for="{{ form.profilePicture.label }}">
+            <i class="bi bi-person-bounding-box"></i>
+            {{ form.profilePicture.label }}
         </label>
-        <input type="file" name="profile_picture" id="profile_picture" class="form-control" accept="image/*">
-    </div> {% endcomment %}
+        {{ form.profilePicture }}
+    </div>
     
-    <button type="submit" class="auth-button">
+    <button type="submit" name="submit" class="auth-button">
         <i class="bi bi-check-circle-fill"></i>
         Confirm
     </button>

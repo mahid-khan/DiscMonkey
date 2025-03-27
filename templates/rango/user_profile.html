@@ -34,7 +34,7 @@
         <br/>
         
         {% if user.username == profile_owner.user.username %}
-        <a href="{% url 'rango:add_category' %}" class="add-album-btn">
+        <a href="{% url 'rango:add_album' %}" class="add-album-btn">
             <i class="bi bi-plus-lg"></i>
             Add New Album
         </a>
@@ -64,7 +64,9 @@
                         <div class="album-info">
                             <span class="album-name">{{ fav_album.albumID.albumName }}</span>
                             <span class="album-artist">by {{ fav_album.albumID.artist }}</span>
-                            <img src="{{ fav_album.albumID.albumCover.url }}" alt="{{ fav_album.albumID.albumName }} Cover" class="album-cover">
+                            <a href="{% url 'rango:album' album_name_slug=fav_album.albumID.slug %}">
+                                <img src="{{ fav_album.albumID.albumCover.url }}" alt="{{ fav_album.albumID.albumName }} Cover" class="album-cover">
+                            </a>
                             <span class="albums-subtitle"> posted on {{ fav_album.dateAdded }}</span><br/>
                         </div>
                     </div>
