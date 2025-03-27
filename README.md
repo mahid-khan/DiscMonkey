@@ -1,4 +1,3 @@
-Disk monkey read me!
+DiscMonkey - The place to check out the hottest albums right now!
 
-If you're seeing this Isla has managed to push for the first time frick yeah!
-
+A Django Project by WAD2 Team 8D:
