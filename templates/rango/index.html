@@ -14,20 +14,6 @@
         </p>
         <p class="lead">Take a look at what's trending below!</p>
     </div>
-    <!-- <div class="welcome-section">
-        <h1>
-            Welcome To DiscMonkey
-            <i class="bi bi-disc"></i>
-        </h1>
-        <div class="welcome-message">
-            {% if user.is_authenticated %}
-                <h2>Howdy, <span class="username">{{ user.username }}</span>!</h2>
-            {% else %}
-                <h2>Hey there, disc enjoyer!</h2>
-            {% endif %}
-            <p class="lead">Take a look at what's trending below!</p>
-        </div>
-    </div> -->
 
     <div class="trending-section">
         <div class="row">
@@ -36,7 +22,7 @@
                     <div class="trending-header">
                         <h2>
                             <i class="bi bi-heart-fill"></i>
-                            Most Liked Albums
+                            Top 5 Best-Rated Albums
                         </h2>
                     </div>
                     <div class="trending-content">
@@ -53,7 +39,25 @@
                                                 <a href="{% url 'rango:album' album_name_slug=album.slug %}">
                                                     <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
                                                 </a>
-                                                <span class="album-score mx-1">Score: {{ album.score }}</span>
+                                                <div class="d-flex align-items-center vote-container">
+                                                    {% if user.is_authenticated %}
+                                                      <button class="vote-btn upvote-btn btn btn-outline-secondary btn-sm mr-1" data-album-id="{{ album.id }}" data-vote-type="up">
+                                                        <i class="bi bi-arrow-up-circle"></i>
+                                                      </button>
+                                                      <span class="album-score mx-1">{{ album.score }}</span>
+                                                      <button class="vote-btn downvote-btn btn btn-outline-secondary btn-sm ml-1" data-album-id="{{ album.id }}" data-vote-type="down">
+                                                        <i class="bi bi-arrow-down-circle"></i>
+                                                      </button>
+                                                    {% else %}
+                                                      <button class="vote-btn btn btn-outline-secondary btn-sm mr-1" disabled>
+                                                        <i class="bi bi-arrow-up-circle"></i>
+                                                      </button>
+                                                      <span class="album-score mx-1 text-muted">{{ album.score }}</span>
+                                                      <button class="vote-btn btn btn-outline-secondary btn-sm ml-1" disabled>
+                                                        <i class="bi bi-arrow-down-circle"></i>
+                                                      </button>
+                                                    {% endif %}
+                                                  </div>
                                             </div>
                                         </div>
                                     </div>
@@ -68,6 +72,8 @@
                         {% endif %}
                     </div>
                 </div>
+
+                
             {% comment %} </div> {% endcomment %}
 
             {% comment %} <div class="col-md-6">

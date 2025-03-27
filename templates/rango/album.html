@@ -21,7 +21,25 @@
         <h2>Artist: {{ album.artist }}</h2>
         <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
 
-
+        <div class="d-flex align-items-center vote-container">
+            {% if user.is_authenticated %}
+              <button class="vote-btn upvote-btn btn btn-outline-secondary btn-sm mr-1" data-album-id="{{ album.id }}" data-vote-type="up">
+                <i class="bi bi-arrow-up-circle"></i>
+              </button>
+              <span class="album-score mx-1">{{ album.score }}</span>
+              <button class="vote-btn downvote-btn btn btn-outline-secondary btn-sm ml-1" data-album-id="{{ album.id }}" data-vote-type="down">
+                <i class="bi bi-arrow-down-circle"></i>
+              </button>
+            {% else %}
+              <button class="vote-btn btn btn-outline-secondary btn-sm mr-1" disabled>
+                <i class="bi bi-arrow-up-circle"></i>
+              </button>
+              <span class="album-score mx-1 text-muted">{{ album.score }}</span>
+              <button class="vote-btn btn btn-outline-secondary btn-sm ml-1" disabled>
+                <i class="bi bi-arrow-down-circle"></i>
+              </button>
+            {% endif %}
+          </div>
 
         <div class="container my-4">
             <h3 class="text-center mb-4">Reviews for {{ album.albumName }}</h3>

@@ -9,11 +9,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 def index(request):
-    album_list = Album.objects.order_by('albumName')
+    top_albums = Album.objects.all().order_by('-score')[:5]
 
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
-    context_dict['albums'] = album_list
+    context_dict['albums'] = top_albums
 
     visitor_cookie_handler(request)
 
