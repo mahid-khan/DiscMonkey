@@ -88,21 +88,33 @@
     {% endif %}
 
     <br/><br/>
+
+    <h2>{{ profile_owner.user.username }}'s Reviews:</h2>
     {% if reviews %}
-        <div class="header-content">
-            <h2>
-                <i class="bi bi-journal"></i>
-                Here are {{ profile_owner.user.username }}'s reviews:
-            </h2>
+    <div class="list-group">
+        {% for review in reviews %}
+        <div class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="review-content">
+                <h5 class="mb-1">
+                    {{ review.albumID.albumName }} by {{ review.albumID.artist }}
+                </h5>
+                <p class="mb-1">{{ review.reviewText }}</p>
+            </div>
+            <div class="reviewer-profile text-center">
+                {% if review.albumID.albumCover %}
+                    <a href="{% url 'rango:album' album_name_slug=review.albumID.slug %}">
+                        <img src="{{ review.albumID.albumCover.url }}" alt="{{ review.albumID.albumName }}" style="width: 50px; height: 50px; object-fit: cover;">
+                    </a>
+                {% else %}
+                    <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                {% endif %}
+            </div>
         </div>
-        <br/>
-        {% for review in reviews %}        
-            <li>{{ review.reviewText }} said user  {{review.userID.user.username}} about the album {{review.albumID.albumName}}</li> 
         {% endfor %}
+    </div>
     {% else %}
-        <div class="empty-albums">
-            <i class="bi bi-music-player"></i>
-            <h2>{{ profile_owner.user.username }} hasn't posted any reviews yet... Stay tuned!</h2>
+        <div class="alert alert-info text-center">
+            {{ profile_owner.user.username }} hasn't reviewed any albums yet.
         </div>
     {% endif %}
 </div>

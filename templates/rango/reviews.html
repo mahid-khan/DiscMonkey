@@ -17,7 +17,9 @@
                 </div>
                 <div class="reviewer-profile text-center">
                     {% if review.userID.profilePicture %}
+                    <a href="{% url 'rango:user_profile' user_id=review.userID.id %}">
                         <img src="{{ review.userID.profilePicture.url }}" alt="{{ review.userID.user.username }} Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    </a>
                     {% else %}
                         <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
                     {% endif %}
