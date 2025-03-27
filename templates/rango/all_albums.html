@@ -73,6 +73,7 @@
   {% else %}
     <div class="alert alert-info text-center">There are no albums available yet.</div>
   {% endif %}
+  <a href="{% url 'rango:add_album' %}">Add a New Album</a>
 </div>
 {% csrf_token %}
 {% endblock %}

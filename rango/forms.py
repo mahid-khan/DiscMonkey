@@ -28,3 +28,8 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ('reviewText',)
+
+class AlbumForm(forms.ModelForm):
+    class Meta:
+        model = Album
+        fields = ('albumName', 'artist', 'releaseDate', 'albumCover')

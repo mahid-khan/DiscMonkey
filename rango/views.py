@@ -2,7 +2,7 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from rango.models import Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre, Vote, Genre
-from rango.forms import UserForm, UserProfileForm, ReviewForm
+from rango.forms import UserForm, UserProfileForm, ReviewForm, AlbumForm
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -170,6 +170,18 @@ def add_review(request, album_id):
             print(form.errors)
 
     return render(request, 'rango/add_review.html', {'form':form, 'album': album})
+
+@login_required
+def add_album(request):
+    if request.method == 'POST':
+        form = AlbumForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            form.save()
+            return redirect('rango:all_albums')
+    else:
+        form = AlbumForm()
+    return render(request, 'rango/add_album.html', {'form':form})
 
 
 @login_required

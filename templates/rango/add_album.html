@@ -1,0 +1,18 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Add Album
+{% endblock %}
+
+{% block body_block %}
+
+    <h1>Add a New Album</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload Album</button>
+    </form>
+
+{% endblock %}
