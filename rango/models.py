@@ -12,7 +12,8 @@ class Album(models.Model):
     artist = models.CharField(max_length=255)
     releaseDate = models.CharField(max_length=255)
     albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
-    score = models.IntegerField(default=0)  # Add this field to track the total score
+    score = models.IntegerField(default=0)
+    genre = models.ForeignKey("Genre", on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.albumName

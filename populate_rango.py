@@ -20,50 +20,71 @@ def populate():
     ]
 
     albums = [
-    ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), 30],  # Positive score
-    ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'StraightFromTheHeart.jpg'), -23],  # Negative score
-    ["Brothers In Arms", "Dire Straits", "1985", os.path.join('albumCoversForPopulating', 'BrothersInArms.jpg'), 20],
-    ["Ege Bamyasi", "CAN", "1972", os.path.join('albumCoversForPopulating', 'EgeBamyasi.jpg'), 3],
-    ["I Can Hear The Heart Beating As One", "Yo La Tengo", "1997", os.path.join('albumCoversForPopulating', 'ICanHearTheHeartBeatingAsOne.jpg'), 43],
-    ["If You're Feeling Sinister", "Belle and Sebastian", "1996", os.path.join('albumCoversForPopulating', 'IfYoureFeelingSinister.jpg'), 62],
-    ["The Freewheelin' Bob Dylan", "Bob Dylan", "1963", os.path.join('albumCoversForPopulating', 'TheFreeWheelinBobDylan.jpg'), 100],
-    ["Parallel Lines", "Blondie", "1979", os.path.join('albumCoversForPopulating', 'ParallelLines.jpg'), -4],
-    ["Foxbase Alpha", "Saint Etienne", "1991", os.path.join('albumCoversForPopulating', 'FoxbaseAlpha.jpg'), 10],
-    ["Beaucoup Fish", "Underworld", "1999", os.path.join('albumCoversForPopulating', 'BeaucoupFish.jpg'), 6],
-    ["Debut", "Björk", "1993", os.path.join('albumCoversForPopulating', 'Debut.jpg'), 50]
+        ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), 30, "Rock"],
+        ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'StraightFromTheHeart.jpg'), -23, "Blues"],
+        ["Brothers In Arms", "Dire Straits", "1985", os.path.join('albumCoversForPopulating', 'BrothersInArms.jpg'), 20, "Pop"],
+        ["Ege Bamyasi", "CAN", "1972", os.path.join('albumCoversForPopulating', 'EgeBamyasi.jpg'), 3, "Rock"],
+        ["I Can Hear The Heart Beating As One", "Yo La Tengo", "1997", os.path.join('albumCoversForPopulating', 'ICanHearTheHeartBeatingAsOne.jpg'), 43, "Indie Rock"],
+        ["If You're Feeling Sinister", "Belle and Sebastian", "1996", os.path.join('albumCoversForPopulating', 'IfYoureFeelingSinister.jpg'), 62, "Indie Pop"],
+        ["The Freewheelin' Bob Dylan", "Bob Dylan", "1963", os.path.join('albumCoversForPopulating', 'TheFreeWheelinBobDylan.jpg'), 100, "Folk"],
+        ["Parallel Lines", "Blondie", "1979", os.path.join('albumCoversForPopulating', 'ParallelLines.jpg'), -4, "Rock"],
+        ["Foxbase Alpha", "Saint Etienne", "1991", os.path.join('albumCoversForPopulating', 'FoxbaseAlpha.jpg'), 10, "Alternative Dance"],
+        ["Beaucoup Fish", "Underworld", "1999", os.path.join('albumCoversForPopulating', 'BeaucoupFish.jpg'), 6, "Techno"],
+        ["Debut", "Björk", "1993", os.path.join('albumCoversForPopulating', 'Debut.jpg'), 50, "Alternative Dance"]
     ]
 
-    #reveiws contain UserID, AlbumID, reviewText
 
-    reviews = [["1","1", "this is so bad turn it off!!! turn it offff!!!"],["1","2", "this is so good turn it up bai"]]
+    reviews = [
+        ["1","1", "this is so bad turn it off!!! turn it offff!!!"],
+        ["1","2", "this is so good turn it up bai"]
+    ]
 
     #votes contain UserID AlbumID and votetype(either 1 for yes or 0 for no)
 
-    votes = [["1","1","0"], ["1","2","1"]]
+    votes = [
+    ["1","1","0"],
+    ["1","2","1"]
+    ]
 
     #genre contains name and description
 
-    genre = [["Irish traditional","Irish folk music often using traditional instruments"],["Jazz","Experimental classical music"]]
+    genre = [
+        ["Irish Traditional", "Irish folk music often using traditional instruments"],
+        ["Jazz", "distinctively American style of music"],
+        ["Pop", "Popular music with appealing melodies and catchy hooks"],
+        ["Rap", "Rhythmic and rhyming speech set to music"],
+        ["Hip-Hop", "Music genre that evolved from rap with urban influences"],
+        ["Blues", "Music that is blue in colour"],
+        ["Country", "American roots music telling heartfelt stories"],
+        ["Metal", "Heavy and aggressive style of rock music"],
+        ["Rock", "Broad genre featuring electric guitars and strong rhythms"],
+        ["Dance", "Music designed to facilitate dancing"],
+        ["Alternative Dance", "Alternative music with danceable beats"],
+        ["EDM", "Electronic Dance Music with energetic beats"],
+        ["Heavy Metal", "Intense and amplified style of rock"],
+        ["International", "Diverse musical styles from around the world"],
+        ["Techno", "Electronic dance music with repetitive beats"],
+        ["Indie Pop", "A genre of alternative rock music with pop sensibilities"],
+        ["Indie Rock", "A genre of alternative rock music with independent sensibilities"],
+        ["Folk", "Traditional music passed down through generations"],
+    ]
 
-    #favoriteAlbum contains date added UserID and AlbumID but date added is made automaticaly 
+    favoriteAlbums = [["1","2"]] #favoriteAlbum contains date added UserID and AlbumID but date added is made automaticaly 
 
-    favoriteAlbums = [["1","2"]]
-    
     for u in users:
         u = add_user(*u)
 
-    # Create albums
+    for g in genre:
+        g = add_genre(g[0],g[1])
+
     for a in albums:
-        add_album(*a)  # This will now pass all parameters including score
+        add_album(*a)
        
     for r in reviews:
         r = add_review(r[0],r[1],r[2])
 
     for v in votes:
         v = add_vote(v[0], v[1], v[2])
-
-    for g in genre:
-        g = add_genre(g[0],g[1])
 
     for fa in favoriteAlbums:
         fa = add_favoriteAlbum(fa[0], fa[1])
@@ -75,23 +96,6 @@ def populate():
         if user_profile:
             users_ids.append(user_profile.id)
 
-    # # First album - lots of upvotes (positive score)
-    # for i in range(35):  # 35 upvotes
-    #     if users_ids:
-    #         add_vote(random.choice(users_ids), 1, 'up')
-        
-    # for i in range(5):  # 5 downvotes
-    #     if users_ids:
-    #         add_vote(random.choice(users_ids), 1, 'down')
-        
-    # # Second album - lots of downvotes (negative score)
-    # for i in range(8):  # 8 upvotes
-    #     if users_ids:
-    #         add_vote(random.choice(users_ids), 2, 'up')
-        
-    # for i in range(31):  # 31 downvotes
-    #     if users_ids:
-    #         add_vote(random.choice(users_ids), 2, 'down')
 
 def add_user(username, password, bio, email, profilePicPath=None):
     # Check if user already exists
@@ -145,27 +149,10 @@ def add_user(username, password, bio, email, profilePicPath=None):
         print(f"Error creating user {username}: {e}")
         return None
 
-# def add_album(albumName, artist, releaseYear, albumCoverPath):
-#     try:
-#         with open(albumCoverPath, 'rb') as f:
-#             djangoFile = File(f)
-            
-#             album, created = Album.objects.get_or_create(
-#                 albumName=albumName,
-#                 defaults={'artist': artist, 'releaseDate': releaseYear}
-#             )
-                
-#             album.albumCover.save(os.path.basename(albumCoverPath), djangoFile, save=True)
-#         return album
-#     except FileNotFoundError:
-#         print(f"Warning: Album cover file not found at {albumCoverPath}. Creating album without image.")
-#         album, created = Album.objects.get_or_create(
-#             albumName=albumName,
-#             defaults={'artist': artist, 'releaseDate': releaseYear}
-#         )
-#         return album
 
-def add_album(albumName, artist, releaseYear, albumCoverPath, score=0):
+
+
+def add_album(albumName, artist, releaseYear, albumCoverPath, score=0, genreName=None):
     try:
         # First, check if album already exists
         album, created = Album.objects.get_or_create(
@@ -195,11 +182,21 @@ def add_album(albumName, artist, releaseYear, albumCoverPath, score=0):
                 )
         else:
             print(f"Warning: Album cover file not found at {albumCoverPath}")
+        
+        # Link album to genre if provided
+        if genreName:
+            try:
+                genre = Genre.objects.get(genreName__iexact=genreName)
+                album.genre = genre
+                album.save()
+            except Genre.DoesNotExist:
+                print(f"Warning: Genre '{genreName}' not found for album {albumName}")
             
         return album
     except Exception as e:
         print(f"Error creating album {albumName}: {e}")
         return None
+
 
 def add_review(userID, albumID, reviewText):
 
@@ -255,6 +252,42 @@ def add_favoriteAlbum(userID , albumID):
     )
 
     return genre
+
+# def add_album(albumName, artist, releaseYear, albumCoverPath, score=0):
+#     try:
+#         # First, check if album already exists
+#         album, created = Album.objects.get_or_create(
+#             albumName=albumName,
+#             defaults={
+#                 'artist': artist,
+#                 'releaseDate': releaseYear,
+#                 'score': score  # Use the score parameter
+#             }
+#         )
+        
+#         # If album already exists, update its fields
+#         if not created:
+#             album.artist = artist
+#             album.releaseDate = releaseYear
+#             album.score = score  # Update the score
+#             album.save()
+        
+#         # Try to add the cover image if a path is provided
+#         if os.path.exists(albumCoverPath):
+#             with open(albumCoverPath, 'rb') as f:
+#                 django_file = File(f)
+#                 album.albumCover.save(
+#                     os.path.basename(albumCoverPath),
+#                     django_file,
+#                     save=True
+#                 )
+#         else:
+#             print(f"Warning: Album cover file not found at {albumCoverPath}")
+            
+#         return album
+#     except Exception as e:
+#         print(f"Error creating album {albumName}: {e}")
+#         return None
 
 # Start execution here!
 if __name__ == '__main__':
