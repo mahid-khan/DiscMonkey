@@ -12,158 +12,169 @@
 {% block body_block %}
 
 {% if profile_owner %}
-<div class="album-container">
-    <div class="album-header">
-        <div class="header-content">
-            <h1>
-                <i class="bi bi-collection-play"></i>
-                {{ profile_owner.user.username }}'s profile
-            </h1>
-        </div>
-        <br/>
-        <div class="row">
-            <div class="col-md-3">     
-                {% if profile_owner.profilePicture%}
-                <img src="{{ profile_owner.profilePicture.url }}" alt="{{ profile_owner.user.username }}'s profile picture" class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+<div class="profile-container">
+    <div class="profile-header">
+        <div class="row align-items-center">
+            <div class="col-md-3 text-center">
+                {% if profile_owner.profilePicture %}
+                <img src="{{ profile_owner.profilePicture.url }}" alt="{{ profile_owner.user.username }}'s profile picture" class="profile-picture">
+                {% else %}
+                <i class="bi bi-person-circle profile-picture-placeholder"></i>
                 {% endif %}
             </div>
-            <div class="col">
-                <p class="albums-subtitle">{{ profile_owner.bio }}</p>
+            <div class="col-md-9">
+                <h1 class="profile-username">
+                    <i class="bi bi-person-circle"></i>
+                    {{ profile_owner.user.username }}
+                </h1>
+                <p class="profile-bio">{{ profile_owner.bio }}</p>
+                {% if user.username == profile_owner.user.username %}
+                <div class="profile-actions">
+                    <a href="{% url 'rango:add_album' %}" class="action-btn">
+                        <i class="bi bi-plus-lg"></i>
+                        Add New Album
+                    </a>
+                    <a href="{% url 'rango:edit_profile' %}" class="action-btn">
+                        <i class="bi bi-person-fill-gear"></i>
+                        Edit Profile
+                    </a>
+                </div>
+                {% endif %}
             </div>
         </div>
-        <br/>
-        
-        {% if user.username == profile_owner.user.username %}
-        <a href="{% url 'rango:add_album' %}" class="add-album-btn">
-            <i class="bi bi-plus-lg"></i>
-            Add New Album
-        </a>
-        <a href="{% url 'rango:edit_profile' %}" class="add-album-btn">
-            <i class="bi bi-person-fill-gear"></i>
-            Edit Profile
-        </a>
-        {% endif %}
     </div>
 
-    <br/>
-    {% if fav_albums %}
-    <div class="header-content">
-        <h2 class="profile-subtitle">
-            <i class="bi bi-vinyl"></i>
-            {% if fav_albums.count == 1 %}
-                {{ profile_owner.user.username }}'s favourite album is
-            {% else %}
-                {{ profile_owner.user.username }}'s favourite albums are
-            {% endif %}
-        </h2>
-        <div class="album-list">
-            <div class="row">
+    <div class="profile-sections">
+        <div class="profile-section">
+            <h2 class="section-title">
+                <i class="bi bi-vinyl"></i>
+                {% if fav_albums %}
+                    {% if fav_albums.count == 1 %}
+                        Favourite Album
+                    {% else %}
+                        Favourite Albums
+                    {% endif %}
+                {% else %}
+                    Favourite Albums
+                {% endif %}
+            </h2>
+            {% if fav_albums %}
+            <div class="album-grid">
                 {% for fav_album in fav_albums %}
-                <div class="col-sm-3">
-                    <div class="album-item">
+                <div class="album-card">
+                    <a href="{% url 'rango:album' album_name_slug=fav_album.albumID.slug %}" class="album-link">
+                        <img src="{{ fav_album.albumID.albumCover.url }}" alt="{{ fav_album.albumID.albumName }}" class="album-cover">
                         <div class="album-info">
-                            <span class="album-name">{{ fav_album.albumID.albumName }}</span>
-                            <span class="album-artist">by {{ fav_album.albumID.artist }}</span>
-                            <a href="{% url 'rango:album' album_name_slug=fav_album.albumID.slug %}">
-                                <img src="{{ fav_album.albumID.albumCover.url }}" alt="{{ fav_album.albumID.albumName }} Cover" class="album-cover">
-                            </a>
-                            <span class="albums-subtitle"> posted on {{ fav_album.dateAdded }}</span><br/>
+                            <h3 class="album-title">{{ fav_album.albumID.albumName }}</h3>
+                            <p class="album-artist">by {{ fav_album.albumID.artist }}</p>
+                            <span class="album-date">Added: {{ fav_album.dateAdded }}</span>
                         </div>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="bi bi-vinyl"></i>
+                <p>No favourite albums yet</p>
+                {% if user.username == profile_owner.user.username %}
+                <a href="{% url 'rango:all_albums' %}" class="action-btn">
+                    <i class="bi bi-search"></i>
+                    Browse Albums
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-section">
+            <h2 class="section-title">
+                <i class="bi bi-music-note"></i>
+                {% if fav_genres %}
+                    {% if fav_genres.count == 1 %}
+                        Favourite Genre
+                    {% else %}
+                        Favourite Genres
+                    {% endif %}
+                {% else %}
+                    Favourite Genres
+                {% endif %}
+            </h2>
+            {% if fav_genres %}
+            <div class="genre-list">
+                {% for fav_genre in fav_genres %}
+                <div class="genre-item">
+                    <span class="genre-name">{{ fav_genre.genreID.genreName }}</span>
+                    <span class="genre-date">Added: {{ fav_genre.dateAdded }}</span>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="bi bi-music-note"></i>
+                <p>No favourite genres yet</p>
+                {% if user.username == profile_owner.user.username %}
+                <a href="{% url 'rango:all_albums' %}" class="action-btn">
+                    <i class="bi bi-search"></i>
+                    Browse Genres
+                </a>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="profile-section">
+            <h2 class="section-title">
+                <i class="bi bi-chat-dots"></i>
+                Reviews
+            </h2>
+            {% if reviews %}
+            <div class="reviews-list">
+                {% for review in reviews %}
+                <div class="review-card">
+                    <div class="review-header">
+                        <a href="{% url 'rango:album' album_name_slug=review.albumID.slug %}" class="review-album-link">
+                            <img src="{{ review.albumID.albumCover.url }}" alt="{{ review.albumID.albumName }}" class="review-album-cover">
+                            <div class="review-album-info">
+                                <h4>{{ review.albumID.albumName }}</h4>
+                                <p>by {{ review.albumID.artist }}</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="review-content">
+                        <p>{{ review.reviewText }}</p>
                     </div>
                 </div>
                 {% endfor %}
             </div>
-        </div>    
-    </div>
-    {% else %}
-    <div class="header-content">
-        <h2>
-        <i class="bi bi-music-player"></i>
-        {{ profile_owner.user.username }} hasn't shared their favourite album with us.
-        </h2>
-    </div>
-    {% endif %}
-
-    <br/><br/>
-    {% if fav_genres %}
-    <div class="header-content">
-        <h2>
-            <i class="bi bi-music-note"></i>
-            {% if fav_genres.count == 1 %}
-                {{ profile_owner.user.username }}'s favourite genre is
             {% else %}
-                {{ profile_owner.user.username }}'s favourite genres are
-            {% endif %}
-        </h2>
-        {% for fav_genre in fav_genres %}
-            {{ fav_genre.genreID.genreName }}<span class="albums-subtitle"> posted on {{ fav_genre.dateAdded }}</span><br/>
-        {% endfor %}
-    </div>
-    {% else %}
-    <div class="header-content">
-        <h2>
-            <i class="bi bi-music-note"></i>
-            {{ profile_owner.user.username }} hasn't shared their favourite genre with us.
-        </h2>
-    </div>
-    {% endif %}
-
-    <br/><br/>
-
-    <h2>{{ profile_owner.user.username }}'s Reviews:</h2>
-    {% if reviews %}
-    <div class="list-group">
-        {% for review in reviews %}
-        <div class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="review-content">
-                <h5 class="mb-1">
-                    {{ review.albumID.albumName }} by {{ review.albumID.artist }}
-                </h5>
-                <p class="mb-1">{{ review.reviewText }}</p>
-            </div>
-            <div class="reviewer-profile text-center">
-                {% if review.albumID.albumCover %}
-                    <a href="{% url 'rango:album' album_name_slug=review.albumID.slug %}">
-                        <img src="{{ review.albumID.albumCover.url }}" alt="{{ review.albumID.albumName }}" style="width: 50px; height: 50px; object-fit: cover;">
-                    </a>
-                {% else %}
-                    <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+            <div class="empty-state">
+                <i class="bi bi-chat-dots"></i>
+                <p>No reviews yet</p>
+                {% if user.username == profile_owner.user.username %}
+                <a href="{% url 'rango:all_albums' %}" class="action-btn">
+                    <i class="bi bi-search"></i>
+                    Browse Albums to Review
+                </a>
                 {% endif %}
             </div>
+            {% endif %}
         </div>
-        {% endfor %}
-    
-    {% else %}
-        <div class="alert alert-info text-center">
-            {{ profile_owner.user.username }} hasn't reviewed any albums yet.
-        </div>
-    {% endif %}
+    </div>
 </div>
 
 {% else %}
-
-<div class="album-container">
-    <div class="album-header">
-        <div class="header-content">
-            <h1>
-                <i class="bi bi-collection-play"></i>
-                User not found
-            </h1>
-            <p class="albums-subtitle">{{ profile_owner.bio }}</p>
-        </div>
-    </div>
-
-    <div class="empty-albums">
+<div class="error-container">
+    <div class="error-state">
         <i class="bi bi-emoji-neutral"></i>
-        <h2>Uh oh, looks like this user doesn't exist in our database :/</h2>
-        <p>Do you want to return to the home page?</p>
-            <a href="{% url 'rango:index' %}" class="add-album-btn">
-                <i class="bi bi-house-door"></i>
-                Home
-            </a>
+        <h2>User not found</h2>
+        <p>This user doesn't exist in our database</p>
+        <a href="{% url 'rango:index' %}" class="action-btn">
+            <i class="bi bi-house-door"></i>
+            Return to Home
+        </a>
     </div>
 </div>
-
 {% endif %}
 
 {% endblock %}

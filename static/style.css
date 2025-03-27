@@ -1194,3 +1194,277 @@ tr:hover {
     background: linear-gradient(135deg, #8822ee 0%, #5500bb 100%);
     color: white !important; /* Ensure text remains white on hover/focus */
 }
+
+/* Profile Page Styles */
+.profile-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.profile-container:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+.profile-header {
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.profile-picture {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.profile-picture:hover {
+    transform: scale(1.05);
+}
+
+.profile-picture-placeholder {
+    font-size: 200px;
+    color: #e4e6eb;
+}
+
+.profile-username {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #1c1e21;
+    font-weight: 600;
+}
+
+.profile-bio {
+    font-size: 1.1rem;
+    color: #65676b;
+    margin-bottom: 1.5rem;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+.profile-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.profile-section {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    color: #1c1e21;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.album-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.album-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.album-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.album-cover {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.album-info {
+    padding: 1rem;
+}
+
+.album-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #1c1e21;
+    font-weight: 600;
+}
+
+.album-artist {
+    color: #65676b;
+    margin-bottom: 0.5rem;
+}
+
+.album-date {
+    font-size: 0.9rem;
+    color: #65676b;
+}
+
+.genre-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.genre-item {
+    background: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.genre-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.genre-name {
+    font-weight: 500;
+    color: #1c1e21;
+}
+
+.genre-date {
+    font-size: 0.9rem;
+    color: #65676b;
+}
+
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.review-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    margin-bottom: 1rem;
+}
+
+.review-album-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.review-album-cover {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.review-album-info h4 {
+    margin: 0;
+    color: #1c1e21;
+    font-weight: 600;
+}
+
+.review-album-info p {
+    margin: 0;
+    color: #65676b;
+}
+
+.review-content {
+    color: #1c1e21;
+    line-height: 1.6;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #65676b;
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.error-container {
+    background-color: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.error-state {
+    text-align: center;
+    padding: 3rem;
+}
+
+.error-state i {
+    font-size: 3rem;
+    color: #65676b;
+    margin-bottom: 1rem;
+}
+
+.error-state h2 {
+    color: #1c1e21;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.error-state p {
+    color: #65676b;
+    margin-bottom: 1.5rem;
+}
