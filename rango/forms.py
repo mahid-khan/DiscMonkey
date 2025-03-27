@@ -15,7 +15,7 @@ class UserForm(forms.ModelForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile1
-        fields = ('bio', 'profilePicture',)
+        fields = ('bio', 'profilePicture')
 
 class ReviewForm(forms.ModelForm):
     reviewText = forms.CharField(

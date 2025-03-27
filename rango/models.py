@@ -6,36 +6,6 @@ from django.contrib.auth.models import User
 # 
 # .
 
-class UserProfile1(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
-    bio = models.CharField(max_length=255)
-
-    #maybe consider password hashing
-
-    #profile picture
-    
-    profilePicture = models.ImageField(upload_to='profilePicture/', default='default_pro_pic.jpg')
-
-    def __str__(self):
-        return self.user.username
-
-
-# class Album(models.Model):
-    
-#     slug = models.SlugField(unique=True,blank=True)
-#     albumName = models.CharField(max_length=255)
-#     artist = models.CharField(max_length=255)
-#     releaseDate = models.CharField(max_length=255)
-#     albumCover = models.ImageField(upload_to='albumCover/', default='default_cover.jpg')
-
-#     def __str__(self):
-#         return self.albumName
-
-#     def save(self, *args, **kwargs):
-#         if not self.slug:
-#             self.slug = slugify(self.albumName)
-#             super(Album, self).save(*args, **kwargs)
-
 class Album(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     albumName = models.CharField(max_length=255)
@@ -51,6 +21,27 @@ class Album(models.Model):
         if not self.slug:
             self.slug = slugify(self.albumName)
         super(Album, self).save(*args, **kwargs)
+
+
+class UserProfile1(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    bio = models.CharField(max_length=255)
+
+    #maybe consider password hashing
+
+    #profile picture
+
+    fav_album = models.ForeignKey(
+        Album,
+        null=True,  # Allow the favorite album to be blank
+        blank=True,  # Allow it to be blank in forms
+        on_delete=models.SET_NULL  # This will set the favorite album to None when the album is deleted
+    )
+    
+    profilePicture = models.ImageField(upload_to='profilePicture/', default='default_pro_pic.jpg')
+
+    def __str__(self):
+        return self.user.username
 
 
 class Review(models.Model):

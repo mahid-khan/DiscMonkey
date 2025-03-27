@@ -106,6 +106,7 @@ def user_profile(request, user_id):
 @login_required
 def edit_profile(request):
     context_dict = {}
+    albums = Album.objects.all()
 
     if request.method == 'POST':
 
@@ -144,7 +145,7 @@ def edit_profile(request):
         
         return redirect(reverse('rango:user_profile', args=[user_profile.pk]))
     else:
-        return render(request, 'rango/edit_profile.html')
+        return render(request, 'rango/edit_profile.html', {'albums': albums})
 
 @login_required
 def add_review(request, album_id):
@@ -236,7 +237,7 @@ def register(request):
     if request.method == 'POST':
 
         user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST)
+        profile_form = UserProfileForm(request.POST, request.FILES)
 
         if user_form.is_valid() and profile_form.is_valid():
 
@@ -248,7 +249,6 @@ def register(request):
             profile = profile_form.save(commit=False)
             profile.user = user
 
-
             if 'picture' in request.FILES:
                 profile.picture = request.FILES['picture']
 
@@ -259,10 +259,8 @@ def register(request):
 
             print(user_form.errors, profile_form.errors)
     else:
-
         user_form = UserForm()
         profile_form = UserProfileForm()
-
 
     return render(request,
                   'rango/register.html',
