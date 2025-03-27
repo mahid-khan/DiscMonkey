@@ -20,7 +20,7 @@ def populate():
     ]
 
     albums = [
-        ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), 30, "Rock"],
+        ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), -347, "Rock"],
         ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'StraightFromTheHeart.jpg'), -23, "Blues"],
         ["Brothers In Arms", "Dire Straits", "1985", os.path.join('albumCoversForPopulating', 'BrothersInArms.jpg'), 20, "Pop"],
         ["Ege Bamyasi", "CAN", "1972", os.path.join('albumCoversForPopulating', 'EgeBamyasi.jpg'), 3, "Rock"],

@@ -30,15 +30,24 @@
           {% if album.albumCover %}
             <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="img-fluid h-100 w-100" style="object-fit: cover; border-radius:4px;">
           {% else %}
-            <div class="d-flex h-100 w-100 align-items-center justify-content-center" style="background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%); border-radius:4px;">
+            <div class="d-flex h-100 w-100 al-ign-items-center justify-content-center" style="background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%); border-radius:4px;">
               <i class="bi bi-disc" style="font-size:2rem; color: rgba(255,255,255,0.8);"></i>
             </div>
           {% endif %}
         </div>
         <!-- Album Info on right -->
         <div class="album-info flex-grow-1 ml-3">
-          <h4 class="album-title font-weight-bold mb-1">{{ album.albumName }}</h4>
-          <p class="album-artist mb-2 text-muted">by {{ album.artist }}</p>
+          <div class="d-flex justify-content-between align-items-baseline">
+            <div>
+              <h4 class="album-title font-weight-bold mb-1">{{ album.albumName }}</h4>
+              <p class="album-artist mb-2 text-muted">by {{ album.artist }}</p>
+            </div>
+            {% if album.genre %}
+              <div>
+                <span class="album-genre-text" style="font-size: 0.9rem;">{{ album.genre.genreName }}</span>
+              </div>
+            {% endif %}
+          </div>
           <!-- Action Buttons Row -->
           <div class="d-flex align-items-center">
             <!-- View Album button (smaller) -->

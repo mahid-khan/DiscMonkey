@@ -20,7 +20,7 @@
         <h1>{{ album.albumName }}</h1>
         <h2>Artist: {{ album.artist }}</h2>
         <!-- Display the genre here -->
-        <p><strong>Genre:</strong> {{ album.genre }}</p>
+        <p class="album-genre-text"><strong>Genre:</strong> {{ album.genre }}</p>
         <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
 
         <div class="d-flex align-items-center vote-container">

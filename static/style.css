@@ -561,9 +561,41 @@ tr:hover {
     color: #1c1e21;
 }
 
+.album-name-index {
+    font-size: 1.1rem;
+    color: hwb(343 15% 0%);  /* Neon pink */
+    text-shadow: 
+        0 0 1px #ff66cc, 
+        0 0 1px #9933ff;
+}
+
+.album-artist-index {
+    font-size: 1.1rem;
+    color: hwb(241 38% 0%);  /* Neon pink */
+    text-shadow: 
+        0 0 1px #ff66cc, 
+        0 0 1px #9933ff;
+}
+
 .album-artist {
     font-size: 0.9rem;
     color: #65676b;
+}
+
+.album-genre-text {
+    font-size: 1.1rem;
+    color: hwb(277 38% 0%);  /* Neon pink */
+    text-shadow: 
+        0 0 1px #ff66cc, 
+        0 0 1px #9933ff;
+}
+
+.album-genre-text-index {
+    font-size: 1rem;
+    color: hwb(277 38% 0%);  /* Neon pink */
+    text-shadow: 
+        0 0 1px #ff66cc, 
+        0 0 1px #9933ff;
 }
 
 .action-buttons {

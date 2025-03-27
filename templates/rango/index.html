@@ -8,7 +8,7 @@
 {% block body_block %}
 
     <div class="welcome-section">
-        <p class = "welcome-section">
+        <p class="welcome-section">
             Welcome To DiscMonkey
             <i class="bi bi-disc"></i>
         </p>
@@ -18,24 +18,27 @@
     <div class="trending-section">
         <div class="row">
             {% comment %} <div class="col-md-6"> {% endcomment %}
-                <div class="trending-card">
-                    <div class="trending-header">
-                        <h2>
-                            <i class="bi bi-heart-fill"></i>
-                            Top 5 Best-Rated Albums
-                        </h2>
-                    </div>
-                    <div class="trending-content">
-                        {% if albums %}
-                            <div class="album-list">
-                                <div class="row">
+            <div class="trending-card">
+                <div class="trending-header">
+                    <h2>
+                        <i class="bi bi-heart-fill"></i>
+                        Top 5 Best-Rated Albums
+                    </h2>
+                </div>
+                <div class="trending-content">
+                    {% if albums %}
+                        <div class="album-list">
+                            <div class="row">
                                 {% for album in albums %}
                                     <div class="col-sm-3">
                                         <div class="album-item">
                                             <i class="bi bi-vinyl"></i>
                                             <div class="album-info">
-                                                <span class="album-name">{{ album.albumName }}</span>
-                                                <span class="album-artist">by {{ album.artist }}</span>
+                                                <span class="album-name-index">{{ album.albumName }}</span>
+                                                <span class="album-artist-index">by {{ album.artist }}</span>
+                                                {% if album.genre %}
+                                                  <span class="album-genre-text-index">Genre: {{ album.genre.genreName }}</span>
+                                                {% endif %}
                                                 <a href="{% url 'rango:album' album_name_slug=album.slug %}">
                                                     <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
                                                 </a>
@@ -57,57 +60,24 @@
                                                         <i class="bi bi-arrow-down-circle"></i>
                                                       </button>
                                                     {% endif %}
-                                                  </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 {% endfor %}
-                                </div>
                             </div>
-                        {% else %}
-                            <div class="empty-state">
-                                <i class="bi bi-emoji-neutral"></i>
-                                <p>There are no albums present.</p>
-                            </div>
-                        {% endif %}
-                    </div>
+                        </div>
+                    {% else %}
+                        <div class="empty-state">
+                            <i class="bi bi-emoji-neutral"></i>
+                            <p>There are no albums present.</p>
+                        </div>
+                    {% endif %}
                 </div>
-
-                
-            {% comment %} </div> {% endcomment %}
-
-            {% comment %} <div class="col-md-6">
-                <div class="trending-card">
-                    <div class="trending-header">
-                        <h2>
-                            <i class="bi bi-eye-fill"></i>
-                            Most Viewed Pages
-                        </h2>
-                    </div>
-                    <div class="trending-content">
-                        {% if pages %}
-                            <div class="page-list">
-                                {% for page in pages %}
-                                    <div class="page-item">
-                                        <a href="{{ page.url }}" class="page-link">
-                                            <i class="bi bi-link-45deg"></i>
-                                            {{ page.title }}
-                                        </a>
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <div class="empty-state">
-                                <i class="bi bi-emoji-neutral"></i>
-                                <p>No albums have been viewed.</p>
-                            </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div> {% endcomment %}
+            </div>
         </div>
     </div>
-
+    
     <div class="action-buttons">
         <a href="{% url 'rango:reviews' %}" class="btn btn-primary action-btn">
             <i class="bi bi-chat-square-text"></i>
