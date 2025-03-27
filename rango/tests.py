@@ -79,27 +79,33 @@ class ModelTests(TestCase):
         populate_albums()
         populate_users()
         populate_reviews()
+        populate_genres()
+
+        user = User.objects.get(username='Dr  bob')
+        self.user_profile = UserProfile1.objects.get(user=user)
+        self.album = Album.objects.get(albumName='AM')
+        self.genre = Genre.objects.get(genreName='Indie rock')
 
     def test_review_uniqueness(self):
         """
         Checks that an IntegrityError is raised if the uniqueness constraints of the Review model are violated
         """
-        self.assertRaises(IntegrityError, add_review, 'Dr  bob', 'AM', 'I should not be able to add a second review')
+        
+        self.assertRaises(IntegrityError, Review.objects.create, userID=self.user_profile, albumID=self.album, reviewText='I should not be able to add a second review')
 
     def test_fav_album_uniqueness(self):
         """
         Checks that an IntegrityError is raised if the uniqueness constraints of the FavoriteAlbum model are violated
         """
         populate_fav_albums()
-        self.assertRaises(IntegrityError, add_fav_album, 'Dr  bob', 'AM')
+        self.assertRaises(IntegrityError, FavoriteAlbum.objects.create, userID=self.user_profile, albumID=self.album)
 
     def test_fav_genre_uniqueness(self):
         """
         Checks that an IntegrityError is raised if the uniqueness constraints of the FavoriteGenre model are violated
         """
-        populate_genres()
         populate_fav_genres()
-        self.assertRaises(IntegrityError, add_fav_genre, 'Dr  bob', 'Indie rock')
+        self.assertRaises(IntegrityError, FavoriteGenre.objects.create, userID=self.user_profile, genreID=self.genre)
 
     #add tests for vote and albumgenre unqiueness after they are properly implemented
 
@@ -165,7 +171,7 @@ class NewReviewsPageEmptyDatabaseTests(TestCase):
         Checks if correct message displays when database contains no reviews
         """
 
-        self.assertContains(self.response, 'There are no albums present.')
+        self.assertContains(self.response, 'There are no album reviews yet.')
         self.assertQuerysetEqual(self.response.context['reviews'], [])
 
 class NewReviewsPagePopulatedDatabaseTests(TestCase):
@@ -220,7 +226,7 @@ class NewReviewsPagePopulatedDatabaseTests(TestCase):
     def tearDown(self):
         shutil.rmtree(TEST_DIR)
 
-class AllAlbumsPageEmptyDatabaseTest(TestCase):
+class AllAlbumsPageEmptyDatabaseTests(TestCase):
     def setUp(self):
         self.response = self.client.get(reverse('rango:all_albums'))
     
@@ -236,7 +242,7 @@ class AllAlbumsPageEmptyDatabaseTest(TestCase):
         Checks if correct message displays when database contains no albums
         """
 
-        self.assertContains(self.response, 'Be the first to add an album to our collection!')     
+        self.assertContains(self.response, 'There are no albums available yet.')     
 
     def test_all_albums_view_context_dict_is_empty(self):
         """
@@ -338,6 +344,23 @@ class UserProfilePageTest(TestCase):
     def tearDown(self):
         shutil.rmtree(TEST_DIR)
 
+class AlbumViewTests(TestCase):
+    def setUp(self):
+        populate_albums()
+        populate_users()
+        populate_reviews()
+
+        album = Album.objects.get(albumName='AM')
+        
+        self.response = self.client.get(reverse('rango:user_profile', args=[album.slug]))
+
+
+    def test_own_user_profile_view_loads(self):
+        """
+        Checks if the status code of the returned HttpResponse is 200
+        """
+
+        self.assertEqual(self.response.status_code, 200)
     
 
 
