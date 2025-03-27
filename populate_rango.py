@@ -19,15 +19,24 @@ def populate():
          'paddymcguinnes@country.com', os.path.join('profilePicsForPopulating', 'paddyMcG.jpg')]
     ]
  
-    albums = [
-        ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg')],
-        [" Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'mrBeanAlbum.jpg')]
-    ]
+    #albums = [
+    #    ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg')],
+    #    [" Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'mrBeanAlbum.jpg')]
+    #]
 
     albums = [
     ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), 30],  # Positive score
-    ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'StraightFromTheHeart.jpg'), -23]  # Negative score
-]
+    ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'StraightFromTheHeart.jpg'), -23],  # Negative score
+    ["Brothers In Arms", "Dire Straits", "1985", os.path.join('albumCoversForPopulating', 'BrothersInArms.jpg'), 20],
+    ["Ege Bamyasi", "CAN", "1972", os.path.join('albumCoversForPopulating', 'EgeBamyasi.jpg'), 3],
+    ["I Can Hear The Heart Beating As One", "Yo La Tengo", "1997", os.path.join('albumCoversForPopulating', 'ICanHearTheHeartBeatingAsOne.jpg'), 43],
+    ["If You're Feeling Sinister", "Belle and Sebastian", "1996", os.path.join('albumCoversForPopulating', 'IfYoureFeelingSinister.jpg'), 62],
+    ["The Freewheelin' Bob Dylan", "Bob Dylan", "1963", os.path.join('albumCoversForPopulating', 'TheFreeWheelinBobDylan.jpg'), 100],
+    ["Parallel Lines", "Blondie", "1979", os.path.join('albumCoversForPopulating', 'ParallelLines.jpg'), -4],
+    ["Foxbase Alpha", "Saint Etienne", "1991", os.path.join('albumCoversForPopulating', 'FoxbaseAlpha.jpg'), 10],
+    ["Beaucoup Fish", "Underworld", "1999", os.path.join('albumCoversForPopulating', 'BeaucoupFish.jpg'), 6],
+    ["Debut", "Björk", "1993", os.path.join('albumCoversForPopulating', 'Debut.jpg'), 50]
+    ]
 
     #reveiws contain UserID, AlbumID, reviewText
 
@@ -39,7 +48,7 @@ def populate():
 
     #genre contains name and description
 
-    genre = [["Irish traditional","Irish folk music often using traditional instruments"],["Soul","idk how to explain"]]
+    genre = [["Irish traditional","Irish folk music often using traditional instruments"],["Jazz","Experimental classical music"]]
 
     #favoriteAlbum contains date added UserID and AlbumID but date added is made automaticaly 
 
