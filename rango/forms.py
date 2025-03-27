@@ -40,3 +40,6 @@ class AlbumForm(forms.ModelForm):
     class Meta:
         model = Album
         fields = ('albumName', 'artist', 'releaseDate', 'albumCover')
+
+class GenreFilterForm(forms.Form):
+    genre = forms.ModelChoiceField(queryset=Genre.objects.all(), required=False, label="Genre")

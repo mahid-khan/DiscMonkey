@@ -34,17 +34,24 @@ def add_category(request):
 
 def all_albums(request):
     query = request.GET.get('q', '')  # Get the search query from the URL
+    genre_filter = request.GET.get('genre', '')
+
+    albums = Album.objects.all()
     
     if query:
         # Filter albums by name or artist (case-insensitive)
-        albums = Album.objects.filter(albumName__icontains=query) | Album.objects.filter(artist__icontains=query)
-    else:
-        # Get all albums if no query is provided
-        albums = Album.objects.order_by('albumName')
+        albums = albums.filter(albumName__icontains=query) | Album.objects.filter(artist__icontains=query)
+
+    if genre_filter:
+        albums = albums.filter(genre_id=genre_filter)
+
+    genres = Genre.objects.all()
 
     context_dict = {
         'albums': albums,
         'query': query,
+        'genres': genres,
+        'genre_filter': genre_filter
     }
     
     return render(request, 'rango/all_albums.html', context=context_dict)

@@ -6,12 +6,29 @@
 {% block body_block %}
 <div class="container my-4">
   <h1 class="mb-4"><i class="bi bi-collection-play"></i> All Albums</h1>
-  
-  <!-- Search Box Section -->
+
   <div class="row mb-4">
-    <div class="col-md-6 offset-md-3">
+    <!-- Search Box Section -->
+    <div class="col-md-6">
       <form action="{% url 'rango:all_albums' %}" method="GET" class="input-group">
-        <input type="text" name="q" class="form-control" placeholder="Search albums..." value="{{ query }}">
+        <input type="text" name="q" class="form-control" placeholder="Search album/artist..." value="{{ query }}">
+        <div class="input-group-append">
+          <button type="submit" class="search-btn btn btn-secondary">
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Genre Filter Section -->
+    <div class="col-md-6">
+      <form action="{% url 'rango:all_albums' %}" method="GET" class="input-group">
+        <select name="genre" class="form-control">
+          <option value="">Filter by Genre...</option>
+          {% for genre in genres %}
+            <option value="{{ genre.id }}" {% if genre.id == genre_filter %}selected{% endif %}>{{ genre.genreName }}</option>
+          {% endfor %}
+        </select>
         <div class="input-group-append">
           <button type="submit" class="search-btn btn btn-secondary">
             <i class="bi bi-search"></i>
@@ -20,6 +37,14 @@
       </form>
     </div>
   </div>
+
+  
+  {% if user.is_authenticated %}
+    <a href="{% url 'rango:add_album' %}" class="add-album-btn" style="display: block; text-align: center; margin: 0 auto;">
+        <i class="bi bi-plus-lg"></i>
+        Add New Album
+    </a>
+  {% endif %}
   
   {% if albums %}
     <div class="list-group">
@@ -82,7 +107,9 @@
   {% else %}
     <div class="alert alert-info text-center">There are no albums available yet.</div>
   {% endif %}
-  <a href="{% url 'rango:add_album' %}">Add a New Album</a>
+
+  
+
 </div>
 {% csrf_token %}
 {% endblock %}
