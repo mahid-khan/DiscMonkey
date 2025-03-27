@@ -1,0 +1,53 @@
+{% extends 'rango/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Edit profile - {{ user.username }}
+{% endblock %}
+
+{% block body_block %}
+
+<h1>Edit profile</h1>
+
+{% if album_not_found %}
+    <p><i class="bi bi-exclamation-square-fill"></i> The submitted album isn't in our database. Please add it first, or choose a different album.</p>
+{% endif %}
+{% if genre_not_found %}
+    <p><i class="bi bi-exclamation-square-fill"></i> The submitted genre isn't in our database. Please choose a different one.</p>
+{% endif %}
+
+<form id="edit_profile_form" method="post" action="{% url 'rango:edit_profile' %}" class="auth-form">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="bio">
+            <i class="bi bi-person"></i>
+            Bio
+        </label>
+        <input type="text" name="bio" id="bio" class="form-control">
+    </div>
+    
+    <div class="form-group">
+        <label for="password">
+            <i class="bi bi-cassette"></i>
+            Favourite album
+        </label>
+        <input type="text" name="fav_album" id="password" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="password">
+            <i class="bi bi-headphones"></i>
+            Favourite genre
+        </label>
+        <input type="text" name="fav_genre" id="password" class="form-control">
+    </div>
+    
+    <button type="submit" class="auth-button">
+        <i class="bi bi-check-circle-fill"></i>
+        Confirm
+    </button>
+
+
+</form>
+{% endblock %}

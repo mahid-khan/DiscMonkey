@@ -1,7 +1,7 @@
 from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
-from rango.models import Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre, Vote
+from rango.models import Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre, Vote, Genre
 from rango.forms import UserForm, UserProfileForm, ReviewForm
 from django.urls import reverse
 from django.contrib import messages
@@ -18,6 +18,9 @@ def index(request):
     visitor_cookie_handler(request)
 
     return render(request, 'rango/index.html', context=context_dict)
+
+def add_category(request):
+    pass
 
 # def all_albums(request):
 #     context_dict = {}
@@ -84,25 +87,64 @@ def user_profile(request, user_id):
             reviews = None
 
         try:
-            fav_album = FavoriteAlbum.objects.get(userID=user_id)
+            fav_albums = FavoriteAlbum.objects.filter(userID=user_id).order_by('dateAdded')
         except FavoriteAlbum.DoesNotExist:
-            fav_album = None
+            fav_albums = None
 
         try:
-            fav_genre = FavoriteGenre.objects.get(userID=user_id)
+            fav_genres = FavoriteGenre.objects.filter(userID=user_id).order_by('dateAdded')
         except FavoriteGenre.DoesNotExist:
-            fav_genre = None
+            fav_genres = None
 
         context_dict['profile_owner'] = profile_owner
         context_dict['reviews'] = reviews
-        context_dict['fav_album'] = fav_album
-        context_dict['fav_genre'] = fav_genre
+        context_dict['fav_albums'] = fav_albums
+        context_dict['fav_genres'] = fav_genres
 
     return render(request, 'rango/user_profile.html', context=context_dict)
 
 @login_required
 def edit_profile(request):
-    pass
+    context_dict = {}
+
+    if request.method == 'POST':
+
+        new_bio = request.POST.get('bio')
+        new_fav_album = request.POST.get('fav_album')
+        new_fav_genre = request.POST.get('fav_genre')
+
+        user = request.user
+        user_profile = UserProfile1.objects.get(user=user)
+
+        if len(new_fav_album) > 0:
+            try:
+                album = Album.objects.get(albumName=new_fav_album)
+                
+            except:
+                context_dict['album_not_found'] = True
+        
+        if len(new_fav_genre) > 0:
+            try:
+                genre = Genre.objects.get(genreName=new_fav_genre)
+            except:
+                context_dict['genre_not_found'] = True
+
+        if len(context_dict) > 0:
+            return render(request, 'rango/edit_profile.html', context_dict)
+
+        if len(new_bio) > 0:
+            user_profile.bio = new_bio
+            user_profile.save()
+
+        if len(new_fav_album) > 0:
+            FavoriteAlbum.objects.get_or_create(userID=user_profile, albumID=album, dateAdded = datetime.now()) 
+
+        if len(new_fav_genre) > 0:
+            FavoriteGenre.objects.get_or_create(userID=user_profile, genreID=genre, dateAdded = datetime.now())
+        
+        return redirect(reverse('rango:user_profile', args=[user_profile.pk]))
+    else:
+        return render(request, 'rango/edit_profile.html')
 
 @login_required
 def add_review(request, album_id):

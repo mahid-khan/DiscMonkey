@@ -16,6 +16,6 @@ urlpatterns = [
     path('profile/<int:user_id>/', views.user_profile, name='user_profile'),
     path('add_review/<int:album_id>/', views.add_review, name='add_review'),
     path('vote/', views.vote_album, name='vote_album'),
+    path('profile/edit/', views.edit_profile, name='edit_profile')
 ]
 
-#path('profile/<int:user_id>/edit', views.edit_profile, name='edit_profile')

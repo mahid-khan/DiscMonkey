@@ -19,9 +19,11 @@
                 <i class="bi bi-collection-play"></i>
                 {{ profile_owner.user.username }}'s profile
             </h1>
+            <br/>
             {% if profile_owner.profilePicture%}
             <img src="{{ profile_owner.profilePicture.url }}" alt="{{ profile_owner.user.username }}' profile picture" class="album-cover">
             {% endif %}
+            <br/>
             <p class="albums-subtitle">{{ profile_owner.bio }}</p>
         </div>
         
@@ -30,22 +32,27 @@
             <i class="bi bi-plus-lg"></i>
             Add New Album
         </a>
-        <a href="{% url 'rango:index' %}" class="add-album-btn">
+        <a href="{% url 'rango:edit_profile' %}" class="add-album-btn">
             <i class="bi bi-person-fill-gear"></i>
             Edit Profile
         </a>
         {% endif %}
     </div>
 
-    <br/><br/>
-    {% if fav_album %}
-    
+    <br/>
+    {% if fav_albums %}
     <div class="header-content">
         <h2 class="profile-subtitle">
             <i class="bi bi-vinyl"></i>
-            {{ profile_owner.user.username }}'s favourite album 
+            {% if fav_albums.count == 1 %}
+                {{ profile_owner.user.username }}'s favourite album is
+            {% else %}
+                {{ profile_owner.user.username }}'s favourite albums are
+            {% endif %}
         </h2>
-        <p class="albums-subtitle">is {{ fav_album.albumName }} by {{ fav_album.artist }}</p>
+        {% for fav_album in fav_albums %}
+            {{ fav_album.albumID.albumName }} by {{ fav_album.albumID.artist }}<span class="albums-subtitle"> posted on {{ fav_album.dateAdded }}</span><br/>
+        {% endfor %}
     </div>
     {% else %}
     <div class="header-content">
@@ -57,14 +64,19 @@
     {% endif %}
 
     <br/><br/>
-    {% if fav_genre %}
-    
+    {% if fav_genres %}
     <div class="header-content">
         <h2>
             <i class="bi bi-music-note"></i>
-            {{ profile_owner.user.username }}'s favourite genre
+            {% if fav_genres.count == 1 %}
+                {{ profile_owner.user.username }}'s favourite genre is
+            {% else %}
+                {{ profile_owner.user.username }}'s favourite genres are
+            {% endif %}
         </h2>
-        <p class="albums-subtitle">is {{ fav_genre.genreID.genreName }}</p>
+        {% for fav_genre in fav_genres %}
+            {{ fav_genre.genreID.genreName }}<span class="albums-subtitle"> posted on {{ fav_genre.dateAdded }}</span><br/>
+        {% endfor %}
     </div>
     {% else %}
     <div class="header-content">
@@ -80,36 +92,13 @@
         <div class="header-content">
             <h2>
                 <i class="bi bi-journal"></i>
-                Here are all of {{ profile_owner.user.username }}'s reviews:
+                Here are {{ profile_owner.user.username }}'s reviews:
             </h2>
         </div>
         <br/>
-        <div class="albums-grid">
-            {% for review in reviews %}
-                <div class="album-card">
-                    <div class="album-cover">
-                        <i class="bi bi-disc"></i>
-                    </div>
-                    <div class="album-info">
-                        <h3 class="album-title">{{ review.albumID.albumName }}</h3>
-                        <div class="album-stats">
-                            <span class="stat">
-                                <i class="bi bi-eye"></i>
-                                {{ review.albumID.albumName }} views
-                            </span>
-                            <span class="stat">
-                                <i class="bi bi-heart"></i>
-                                {{ category.likes }} likes
-                            </span>
-                        </div>
-                        <a href="{% url 'rango:index' %}" class="view-album-btn">
-                            View Details
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            {% endfor %}
-        </div>
+        {% for review in reviews %}        
+            <li>{{ review.reviewText }} said user  {{review.userID.user.username}} about the album {{review.albumID.albumName}}</li> 
+        {% endfor %}
     {% else %}
         <div class="empty-albums">
             <i class="bi bi-music-player"></i>
