@@ -66,11 +66,6 @@ def album(request, album_name_slug):
 
 def about(request):
     context_dict = {}
-    visitor_cookie_handler(request)
-    context_dict['visits'] = request.session['visits']
-    print(request.method)
-    print(request.user)
-
     return render(request, 'rango/about.html', context=context_dict)
 
 def reviews(request):
