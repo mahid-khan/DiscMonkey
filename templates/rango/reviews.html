@@ -1,54 +1,35 @@
 {% extends "rango/base.html" %}
 {% load staticfiles %}
-
 {% block title_block %}Reviews{% endblock %}
-
 {% block body_block %}
-    <!-- <style>
-    /* Set the background image for the entire page */
-        body {
-            background-image: url("{% static 'images/calmChicken.jpg' %}");
-            background-size: 40% auto;
-            background-position: center; 
-            background-repeat: no-repeat; 
-            background-attachment: fixed; 
-            margin: 0; 
-            padding: 0; 
-     }
-
-    
-        .content {
-        background-color: rgba(255, 255, 255, 0.8); 
-        padding: 20px;
-        border-radius: 10px;
-        margin: 20px;
-    }
-    </style> -->
-
-    <div class="content">
-        
-        <div>
-            <h3>Here are some of the hottest reviews being written by the hottest of the hot</h3>
-            
+<div class="container my-4">
+    <h3 class="text-center mb-4">Album Reviews</h3>
+    {% if reviews %}
+        <div class="list-group">
+            {% for review in reviews %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="review-content">
+                    <h5 class="mb-1">
+                        {{ review.userID.user.username }} reviewed 
+                        <strong>{{ review.albumID.albumName }}:</strong>
+                    </h5>
+                    <p class="mb-1">{{ review.reviewText }}</p>
+                </div>
+                <div class="reviewer-profile text-center">
+                    {% if review.userID.profilePicture %}
+                        <img src="{{ review.userID.profilePicture.url }}" alt="{{ review.userID.user.username }} Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                    {% endif %}
+                    <small class="d-block">{{ review.userID.user.username }}</small>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-
-        <div>
-           
-            {% if reviews %}
-                <ul>
-                    {% for review in reviews %}
-                        
-                            <li>{{ review.reviewText }} said user  {{review.userID.user.username}} about the album {{review.albumID.albumName}}</li>
-                        
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <strong>There are no albums present.</strong>
-            {% endif %}
+    {% else %}
+        <div class="alert alert-info text-center">
+            There are no album reviews yet.
         </div>
-
-        url("{% static 'images/calmChicken.jpg' %}");
-        <img src="{% static 'images/calmChicken.jpg' %}" alt="My Image">
-    </div>
-
+    {% endif %}
+</div>
 {% endblock %}

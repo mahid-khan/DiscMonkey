@@ -66,23 +66,6 @@ class Review(models.Model):
     def __str__(self):
         return self.userID.user.username + ", " + self.albumID.albumName
 
-
-# class Vote(models.Model):
-#     #composite primary key (UserID/AlbumID)
-#     #make uniqe key constraint instead of composite primary key
-
-
-
-#     voteType = models.CharField(max_length=255)
-#     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
-#     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
-
-#     class Meta:
-#         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
-
-#     def __str__(self):
-#         return self.userID.user.username + ", " + self.albumID.albumName
-
 class Vote(models.Model):
     VOTE_TYPES = (
         ('up', 'Upvote'),

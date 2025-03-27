@@ -446,18 +446,36 @@ tr:hover {
 
 /* Homepage Styles */
 .welcome-section {
+    width: 100%;
+    background: #ffecbd;
+    padding: 0.5rem 0;
+    margin-bottom: 2rem;
     text-align: center;
-    margin-bottom: 3rem;
-    padding: 2rem;
-    background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%);
     border-radius: 15px;
-    color: white;
+    font-family: "Inter", sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px;
+    font-weight: 300 !important; /* Apply the extralight weight */
+    font-size: 2.5rem;
 }
 
-.welcome-section h1 {
-    color: white !important;
+/* Centered translucent overlay for welcome message */
+.welcome-section .welcome-message {
+    background: rgba(255, 182, 193, 0.6); /* light pink, semi-transparent */
+    padding: 0px 0px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    border: none;
+    border-radius: 15; /* no rounded edges */
+}
+
+.welcome-section .lead {
+    color: rgb(0, 0, 0) !important;
     margin-bottom: 1rem;
     font-size: 2.5rem;
+    padding: 0px 0px;
+    font-size: 1.5rem;
 }
 
 .welcome-section .username {
@@ -468,6 +486,7 @@ tr:hover {
 .welcome-message {
     max-width: 600px;
     margin: 0 auto;
+    border-radius: 15; /* no rounded edges */
 }
 
 .lead {

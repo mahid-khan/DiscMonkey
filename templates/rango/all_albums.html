@@ -1,9 +1,7 @@
 {% extends 'rango/base.html' %}
 {% load staticfiles %}
 
-{% block title_block %}
-  All Albums
-{% endblock %}
+{% block title_block %}All Albums{% endblock %}
 
 {% block body_block %}
 <div class="container my-4">
@@ -15,7 +13,7 @@
       <form action="{% url 'rango:all_albums' %}" method="GET" class="input-group">
         <input type="text" name="q" class="form-control" placeholder="Search albums..." value="{{ query }}">
         <div class="input-group-append">
-          <button type="submit" class="search-btn">
+          <button type="submit" class="search-btn btn btn-secondary">
             <i class="bi bi-search"></i>
           </button>
         </div>
@@ -41,15 +39,40 @@
         <div class="album-info flex-grow-1 ml-3">
           <h4 class="album-title font-weight-bold mb-1">{{ album.albumName }}</h4>
           <p class="album-artist mb-2 text-muted">by {{ album.artist }}</p>
-          <a href="{% url 'rango:album' album_name_slug=album.slug %}" class="btn btn-viewalbum">
-            View Album <i class="bi bi-arrow-right"></i>
-        </a>
+          <!-- Action Buttons Row -->
+          <div class="d-flex align-items-center">
+            <!-- View Album button (smaller) -->
+            <a href="{% url 'rango:album' album_name_slug=album.slug %}" class="btn btn-viewalbum mr-2" style="flex: 1;">
+              View Album <i class="bi bi-arrow-right"></i>
+            </a>
+            <!-- Vote buttons container -->
+            <div class="d-flex align-items-center vote-container">
+              {% if user.is_authenticated %}
+                <button class="vote-btn upvote-btn btn btn-outline-secondary btn-sm mr-1" data-album-id="{{ album.id }}" data-vote-type="up">
+                  <i class="bi bi-arrow-up-circle"></i>
+                </button>
+                <span class="album-score mx-1">{{ album.score }}</span>
+                <button class="vote-btn downvote-btn btn btn-outline-secondary btn-sm ml-1" data-album-id="{{ album.id }}" data-vote-type="down">
+                  <i class="bi bi-arrow-down-circle"></i>
+                </button>
+              {% else %}
+                <button class="vote-btn btn btn-outline-secondary btn-sm mr-1" disabled>
+                  <i class="bi bi-arrow-up-circle"></i>
+                </button>
+                <span class="album-score mx-1 text-muted">{{ album.score }}</span>
+                <button class="vote-btn btn btn-outline-secondary btn-sm ml-1" disabled>
+                  <i class="bi bi-arrow-down-circle"></i>
+                </button>
+              {% endif %}
+            </div>
+          </div>
         </div>
       </div>
       {% endfor %}
     </div>
   {% else %}
-    <div class="alert alert-info">There are no albums available yet.</div>
+    <div class="alert alert-info text-center">There are no albums available yet.</div>
   {% endif %}
 </div>
+{% csrf_token %}
 {% endblock %}
