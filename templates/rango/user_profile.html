@@ -19,13 +19,19 @@
                 <i class="bi bi-collection-play"></i>
                 {{ profile_owner.user.username }}'s profile
             </h1>
-            <br/>
-            {% if profile_owner.profilePicture%}
-            <img src="{{ profile_owner.profilePicture.url }}" alt="{{ profile_owner.user.username }}' profile picture" class="album-cover">
-            {% endif %}
-            <br/>
-            <p class="albums-subtitle">{{ profile_owner.bio }}</p>
         </div>
+        <br/>
+        <div class="row">
+            <div class="col-md-3">     
+                {% if profile_owner.profilePicture%}
+                <img src="{{ profile_owner.profilePicture.url }}" alt="{{ profile_owner.user.username }}'s profile picture" class="rounded-circle" style="width: 200px; height: 200px; object-fit: cover;">
+                {% endif %}
+            </div>
+            <div class="col">
+                <p class="albums-subtitle">{{ profile_owner.bio }}</p>
+            </div>
+        </div>
+        <br/>
         
         {% if user.username == profile_owner.user.username %}
         <a href="{% url 'rango:add_category' %}" class="add-album-btn">
@@ -50,9 +56,22 @@
                 {{ profile_owner.user.username }}'s favourite albums are
             {% endif %}
         </h2>
-        {% for fav_album in fav_albums %}
-            {{ fav_album.albumID.albumName }} by {{ fav_album.albumID.artist }}<span class="albums-subtitle"> posted on {{ fav_album.dateAdded }}</span><br/>
-        {% endfor %}
+        <div class="album-list">
+            <div class="row">
+                {% for fav_album in fav_albums %}
+                <div class="col-sm-3">
+                    <div class="album-item">
+                        <div class="album-info">
+                            <span class="album-name">{{ fav_album.albumID.albumName }}</span>
+                            <span class="album-artist">by {{ fav_album.albumID.artist }}</span>
+                            <img src="{{ fav_album.albumID.albumCover.url }}" alt="{{ fav_album.albumID.albumName }} Cover" class="album-cover">
+                            <span class="albums-subtitle"> posted on {{ fav_album.dateAdded }}</span><br/>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>    
     </div>
     {% else %}
     <div class="header-content">
@@ -112,6 +131,28 @@
         </div>
         {% endfor %}
     </div>
+        <br/>
+        <div class="list-group">
+            {% for review in reviews %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="review-content">
+                    <h5 class="mb-1">
+                        {{ review.userID.user.username }} reviewed 
+                        <strong>{{ review.albumID.albumName }}:</strong>
+                    </h5>
+                    <p class="mb-1">{{ review.reviewText }}</p>
+                </div>
+                <div class="reviewer-profile text-center">
+                    {% if review.userID.profilePicture %}
+                        <img src="{{ review.userID.profilePicture.url }}" alt="{{ review.userID.user.username }} Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                    {% else %}
+                        <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                    {% endif %}
+                    <small class="d-block">{{ review.userID.user.username }}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     {% else %}
         <div class="alert alert-info text-center">
             {{ profile_owner.user.username }} hasn't reviewed any albums yet.

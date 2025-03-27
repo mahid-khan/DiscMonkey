@@ -2,11 +2,12 @@ from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from rango.models import Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre, Vote, Genre
-from rango.forms import UserForm, UserProfileForm, ReviewForm, AlbumForm
+from rango.forms import UserForm, UserProfileForm, ReviewForm, AlbumForm, EditProfileFrom
 from django.urls import reverse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import os
 
 def index(request):
     top_albums = Album.objects.all().order_by('-score')[:5]
@@ -106,20 +107,26 @@ def user_profile(request, user_id):
 @login_required
 def edit_profile(request):
     context_dict = {}
-    albums = Album.objects.all()
+    context_dict['form'] = EditProfileFrom()
+    context_dict['albums'] = Album.objects.all()
 
     if request.method == 'POST':
 
         new_bio = request.POST.get('bio')
-        new_fav_album = request.POST.get('fav_album')
+        new_fav_album_id = request.POST.get('fav_album')
         new_fav_genre = request.POST.get('fav_genre')
+
+        # if 'profile_picture' in request.FILES:
+        #         new_profile_picture = request.FILES['profile_picture']
+
+        # print(new_profile_picture)
 
         user = request.user
         user_profile = UserProfile1.objects.get(user=user)
 
-        if len(new_fav_album) > 0:
+        if new_fav_album_id:
             try:
-                album = Album.objects.get(albumName=new_fav_album)
+                album = Album.objects.get(pk=new_fav_album_id)
                 
             except:
                 context_dict['album_not_found'] = True
@@ -130,22 +137,28 @@ def edit_profile(request):
             except:
                 context_dict['genre_not_found'] = True
 
-        if len(context_dict) > 0:
-            return render(request, 'rango/edit_profile.html', context_dict)
+        if len(context_dict) > 2:
+            return render(request, 'rango/edit_profile.html', context=context_dict)
 
         if len(new_bio) > 0:
             user_profile.bio = new_bio
             user_profile.save()
 
-        if len(new_fav_album) > 0:
+        if new_fav_album_id:
             FavoriteAlbum.objects.get_or_create(userID=user_profile, albumID=album, dateAdded = datetime.now()) 
 
         if len(new_fav_genre) > 0:
             FavoriteGenre.objects.get_or_create(userID=user_profile, genreID=genre, dateAdded = datetime.now())
+
+        # if new_profile_picture:
+        #     #if user_profile.profilePicture.path != 
+        #     #os.remove(user_profile.profilePicture.path)
+        #     user_profile.profilePicture = new_profile_picture
+        #     user_profile.save()
         
         return redirect(reverse('rango:user_profile', args=[user_profile.pk]))
     else:
-        return render(request, 'rango/edit_profile.html', {'albums': albums})
+        return render(request, 'rango/edit_profile.html', context=context_dict)
 
 @login_required
 def add_review(request, album_id):
@@ -250,7 +263,7 @@ def register(request):
             profile.user = user
 
             if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+                profile.profilePicture = request.FILES['picture']
 
             profile.save()
 
