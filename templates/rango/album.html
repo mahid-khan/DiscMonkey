@@ -21,20 +21,37 @@
         <h2>Artist: {{ album.artist }}</h2>
         <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
 
-        <h2>Reviews:</h2>
-        {% if reviews %}
-            <ul>
-                {% for review in reviews %}
-                    <li>
-                        <strong>{{ review.userID }}</strong> said:
-                        <p>{{ review.reviewText }}</p>
-                        <hr>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No reviews yet. Be the first to review this album!</p>
-        {% endif %}
+
+
+        <div class="container my-4">
+            <h3 class="text-center mb-4">Reviews for {{ album.albumName }}</h3>
+            {% if reviews %}
+                <div class="list-group">
+                    {% for review in reviews %}
+                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="review-content">
+                            <h5 class="mb-1">
+                                {{ review.userID.user.username }}
+                            </h5>
+                            <p class="mb-1">{{ review.reviewText }}</p>
+                        </div>
+                        <div class="reviewer-profile text-center">
+                            {% if review.userID.profilePicture %}
+                                <img src="{{ review.userID.profilePicture.url }}" alt="{{ review.userID.user.username }} Profile" class="rounded-circle" style="width: 50px; height: 50px; object-fit: cover;">
+                            {% else %}
+                                <i class="bi bi-person-circle" style="font-size: 2rem;"></i>
+                            {% endif %}
+                            <small class="d-block">{{ review.userID.user.username }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info text-center">
+                    There are no album reviews yet.
+                </div>
+            {% endif %}
+        </div>
 
         <a href="{% url 'rango:add_review' album.id %}">Write a Review</a><br />
         

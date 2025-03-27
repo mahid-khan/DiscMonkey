@@ -26,7 +26,7 @@ def populate():
 
     albums = [
     ["Parklife", "Blur", "1994", os.path.join('albumCoversForPopulating', 'BlurParklife.jpg'), 30],  # Positive score
-    ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'mrBeanAlbum.jpg'), -23]  # Negative score
+    ["Straight From The Heart", "Ann Peebles", "1972", os.path.join('albumCoversForPopulating', 'StraightFromTheHeart.jpg'), -23]  # Negative score
 ]
 
     #reveiws contain UserID, AlbumID, reviewText
