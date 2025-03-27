@@ -22,7 +22,7 @@
                 <div class="trending-header">
                     <h2>
                         <i class="bi bi-heart-fill"></i>
-                        Top 5 Best-Rated Albums
+                        Best-Rated Albums
                     </h2>
                 </div>
                 <div class="trending-content">
@@ -73,6 +73,63 @@
                             <p>There are no albums present.</p>
                         </div>
                     {% endif %}
+                </div>
+                <div class="trending-card">
+                    <div class="trending-header">
+                        <h2>
+                            <i class="bi bi-heart-fill"></i>
+                            Worst Rated Albums
+                        </h2>
+                    </div>
+                    <div class="trending-content">
+                        {% if bottom_albums %}
+                            <div class="album-list">
+                                <div class="row">
+                                    {% for bottom_album in bottom_albums %}
+                                        <div class="col-sm-3">
+                                            <div class="album-item">
+                                                <i class="bi bi-vinyl"></i>
+                                                <div class="album-info">
+                                                    <span class="album-name-index">{{ bottom_album.albumName }}</span>
+                                                    <span class="album-artist-index">by {{ bottom_album.artist }}</span>
+                                                    {% if bottom_album.genre %}
+                                                    <span class="album-genre-text-index">Genre: {{ bottom_album.genre.genreName }}</span>
+                                                    {% endif %}
+                                                    <a href="{% url 'rango:album' album_name_slug=bottom_album.slug %}">
+                                                        <img src="{{ bottom_album.albumCover.url }}" alt="{{ bottom_album.albumName }} Cover" class="album-cover">
+                                                    </a>
+                                                    <div class="d-flex align-items-center vote-container">
+                                                        {% if user.is_authenticated %}
+                                                        <button class="vote-btn upvote-btn btn btn-outline-secondary btn-sm mr-1" data-album-id="{{ bottom_album.id }}" data-vote-type="up">
+                                                            <i class="bi bi-arrow-up-circle"></i>
+                                                        </button>
+                                                        <span class="album-score mx-1">{{ bottom_album.score }}</span>
+                                                        <button class="vote-btn downvote-btn btn btn-outline-secondary btn-sm ml-1" data-album-id="{{ bottom_album.id }}" data-vote-type="down">
+                                                            <i class="bi bi-arrow-down-circle"></i>
+                                                        </button>
+                                                        {% else %}
+                                                        <button class="vote-btn btn btn-outline-secondary btn-sm mr-1" disabled>
+                                                            <i class="bi bi-arrow-up-circle"></i>
+                                                        </button>
+                                                        <span class="album-score mx-1 text-muted">{{ bottom_album.score }}</span>
+                                                        <button class="vote-btn btn btn-outline-secondary btn-sm ml-1" disabled>
+                                                            <i class="bi bi-arrow-down-circle"></i>
+                                                        </button>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="empty-state">
+                                <i class="bi bi-emoji-neutral"></i>
+                                <p>There are no albums present.</p>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

@@ -12,11 +12,12 @@ from os.path import join
 from django.conf import settings
 
 def index(request):
-    top_albums = Album.objects.all().order_by('-score')[:5]
-
+    top_albums = Album.objects.all().order_by('-score')[:4]
+    lowest_rated_albums = Album.objects.all().order_by('score')[:4]
     context_dict = {}
     context_dict['boldmessage'] = 'Crunchy, creamy, cookie, candy, cupcake!'
     context_dict['albums'] = top_albums
+    context_dict['bottom_albums'] = lowest_rated_albums
 
     visitor_cookie_handler(request)
 
