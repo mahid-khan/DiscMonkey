@@ -253,42 +253,6 @@ def add_favoriteAlbum(userID , albumID):
 
     return genre
 
-# def add_album(albumName, artist, releaseYear, albumCoverPath, score=0):
-#     try:
-#         # First, check if album already exists
-#         album, created = Album.objects.get_or_create(
-#             albumName=albumName,
-#             defaults={
-#                 'artist': artist,
-#                 'releaseDate': releaseYear,
-#                 'score': score  # Use the score parameter
-#             }
-#         )
-        
-#         # If album already exists, update its fields
-#         if not created:
-#             album.artist = artist
-#             album.releaseDate = releaseYear
-#             album.score = score  # Update the score
-#             album.save()
-        
-#         # Try to add the cover image if a path is provided
-#         if os.path.exists(albumCoverPath):
-#             with open(albumCoverPath, 'rb') as f:
-#                 django_file = File(f)
-#                 album.albumCover.save(
-#                     os.path.basename(albumCoverPath),
-#                     django_file,
-#                     save=True
-#                 )
-#         else:
-#             print(f"Warning: Album cover file not found at {albumCoverPath}")
-            
-#         return album
-#     except Exception as e:
-#         print(f"Error creating album {albumName}: {e}")
-#         return None
-
 # Start execution here!
 if __name__ == '__main__':
     print('Starting Rango population script...')
