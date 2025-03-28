@@ -162,10 +162,40 @@ def add_review(request, album_id):
 
     return render(request, 'rango/add_review.html', {'form':form, 'album': album})
 
+
+
+
 @login_required
 def add_album(request):
     context_dict = {}
     context_dict['form'] = AlbumForm()
+
+    genres = [
+        ["Irish Traditional", "Irish folk music often using traditional instruments"],
+        ["Jazz", "distinctively American style of music"],
+        ["Pop", "Popular music with appealing melodies and catchy hooks"],
+        ["Rap", "Rhythmic and rhyming speech set to music"],
+        ["Hip-Hop", "Music genre that evolved from rap with urban influences"],
+        ["Blues", "Music that is blue in colour"],
+        ["Country", "American roots music telling heartfelt stories"],
+        ["Metal", "Heavy and aggressive style of rock music"],
+        ["Rock", "Broad genre featuring electric guitars and strong rhythms"],
+        ["Dance", "Music designed to facilitate dancing"],
+        ["Alternative Dance", "Alternative music with danceable beats"],
+        ["EDM", "Electronic Dance Music with energetic beats"],
+        ["Heavy Metal", "Intense and amplified style of rock"],
+        ["International", "Diverse musical styles from around the world"],
+        ["Techno", "Electronic dance music with repetitive beats"],
+        ["Indie Pop", "A genre of alternative rock music with pop sensibilities"],
+        ["Indie Rock", "A genre of alternative rock music with independent sensibilities"],
+        ["Folk", "Traditional music passed down through generations"],
+    ]
+    for genre in genres:
+        genre, created = Genre.objects.get_or_create(
+        genreName=genre[0],
+        genreDescription=genre[1],
+    )
+
     context_dict['genres'] = Genre.objects.all()
 
     if request.method == 'POST':
