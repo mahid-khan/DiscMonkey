@@ -2,10 +2,6 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 
-# database for new project disc monkey
-# 
-# .
-
 class Album(models.Model):
     slug = models.SlugField(unique=True, blank=True)
     albumName = models.CharField(max_length=255)
@@ -23,27 +19,13 @@ class Album(models.Model):
             self.slug = slugify(self.albumName)
         super(Album, self).save(*args, **kwargs)
 
-
 class UserProfile1(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     bio = models.CharField(max_length=255)
-
-    #maybe consider password hashing
-
-    #profile picture
-
-    fav_album = models.ForeignKey(
-        Album,
-        null=True,  # Allow the favorite album to be blank
-        blank=True,  # Allow it to be blank in forms
-        on_delete=models.SET_NULL  # This will set the favorite album to None when the album is deleted
-    )
-    
     profilePicture = models.ImageField(upload_to='profilePicture/', default='default_pro_pic.jpg')
 
     def __str__(self):
         return self.user.username
-
 
 class Review(models.Model):
     #just one review using composite key  UserID/AlbumID
@@ -120,17 +102,6 @@ class FavoriteAlbum(models.Model):
 
     def __str__(self):
         return self.userID.user.username
-
-class GenreAlbum(models.Model):
-    albumname = models.CharField(max_length=255)
-    genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
-    albumID  = models.ForeignKey(Album, on_delete=models.CASCADE)
-
-    class Meta:
-        constraints = [models.UniqueConstraint(fields=['genreID', 'albumID'], name='uniqueGenreAlbum') ]
-
-    def __str__(self):
-        return self.albumname
 
 class FavoriteGenre(models.Model):
     dateAdded = models.DateField(max_length=255)

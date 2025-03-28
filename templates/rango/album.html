@@ -21,6 +21,7 @@
         <h2>Artist: {{ album.artist }}</h2>
         <!-- Display the genre here -->
         <p class="album-genre-text"><strong>Genre:</strong> {{ album.genre }}</p>
+        <p class="album-genre-text"><strong>Release year:</strong> {{ album.releaseDate }}</p>
         <img src="{{ album.albumCover.url }}" alt="{{ album.albumName }} Cover" class="album-cover">
 
         <div class="d-flex align-items-center vote-container">
@@ -75,7 +76,7 @@
             {% endif %}
         </div>
 
-        <a href="{% url 'rango:add_review' album.id %}">Write a Review</a><br />
+        <a href="{% url 'rango:add_review' album.id %}" class="action-btn">Write a Review</a><br />
         
     {% else %}
 

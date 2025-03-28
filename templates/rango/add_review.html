@@ -9,15 +9,22 @@
     <h2>Write a Review for {{ album.albumName }}</h2>
     <div>
         <div>
-            <form id="review_form" method="post" action="{% url 'rango:add_review' album.id %}">
+            <form id="review_form" method="post" action="{% url 'rango:add_review' album.id %}" class="auth-form">
                 {% csrf_token %}
-                {{ form.as_p }}
+
+                <div class="form-group">
+                    <label for="{{ form.reviewText.label }}">
+                        <i class="bi bi-pencil"></i>
+                        Enter your review of the album
+                    </label>
+                    {{ form.reviewText }}
+                </div>
 
                 <button type="submit">Submit Review</button>
-            </form>
-
-            <a href="{% url 'rango:album' album.slug %}">Back to Album</a>
+            </form>            
         </div>
+        <br/>
+        <a href="{% url 'rango:album' album.slug %}" class="action-btn">Back to Album</a>
     </div>
 
 {% endblock %}

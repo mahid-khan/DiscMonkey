@@ -9,13 +9,6 @@
 
 <h1>Edit profile</h1>
 
-{% if album_not_found %}
-    <p><i class="bi bi-exclamation-square-fill"></i> The submitted album isn't in our database. Please add it first, or choose a different album.</p>
-{% endif %}
-{% if genre_not_found %}
-    <p><i class="bi bi-exclamation-square-fill"></i> The submitted genre isn't in our database. Please choose a different one.</p>
-{% endif %}
-
 <form id="edit_profile_form" method="post" action="{% url 'rango:edit_profile' %}" enctype="multipart/form-data" class="auth-form">
     {% csrf_token %}
     
@@ -30,7 +23,7 @@
     <div class="form-group">
         <label for="fav_album">
             <i class="bi bi-cassette"></i>
-            Favourite album
+            Favourite Album
         </label>
         <select name="fav_album" id="fav_album" class="form-control">
             <option value=""></option>
@@ -43,7 +36,7 @@
     <div class="form-group">
         <label for="fav_genre">
             <i class="bi bi-headphones"></i>
-            Favourite genre
+            Favourite Genre
         </label>
         <select name="fav_genre" id="fav_genre" class="form-control">
             <option value=""></option>
@@ -56,7 +49,7 @@
     <div class="form-group">
         <label for="{{ form.profilePicture.label }}">
             <i class="bi bi-person-bounding-box"></i>
-            {{ form.profilePicture.label }}
+            Profile Picture
         </label>
         {{ form.profilePicture }}
     </div>

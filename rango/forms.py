@@ -17,8 +17,7 @@ class UserProfileForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     reviewText = forms.CharField(
         max_length=Review.TEXT_MAX_LENGTH,
-        help_text="Enter your review of the album",
-        widget=forms.Textarea(attrs={'rows':5, 'cols': 40}),
+        widget=forms.Textarea(attrs={'rows':5, 'cols': 60}),
         label=None
     )
 
