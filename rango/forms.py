@@ -1,9 +1,6 @@
 from django import forms
 from rango.models import UserProfile1, Review, Album, Genre
 from django.contrib.auth.models import User
-from django.core.validators import URLValidator
-from django.core.exceptions import ValidationError
-import re
 
 class UserForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput())
@@ -39,7 +36,7 @@ class EditProfileForm(forms.ModelForm):
 class AlbumForm(forms.ModelForm):
     class Meta:
         model = Album
-        fields = ('albumName', 'artist', 'releaseDate', 'albumCover')
+        fields = ('albumName', 'artist', 'releaseDate', 'genre', 'albumCover')
 
 class GenreFilterForm(forms.Form):
     genre = forms.ModelChoiceField(queryset=Genre.objects.all(), required=False, label="Genre")

@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 import os
 from os.path import join
 from django.conf import settings
+from django.db import IntegrityError
 
 def index(request):
     top_albums = Album.objects.all().order_by('-score')[:4]
@@ -127,9 +128,6 @@ def edit_profile(request):
             new_fav_album_id = request.POST.get('fav_album')
             new_fav_genre_id = request.POST.get('fav_genre')
 
-            # Removing the old profile picture currently doesn't work
-            # The path obtained from user_profile.profilePicture on line 132
-            # already leads to the new picture even though it hasn't been saved yet 
             if 'profilePicture' in request.FILES:
                 try:
                     old_path = os.path.join(settings.MEDIA_ROOT, "profilePicture", str(user_profile.profilePicture))
@@ -182,15 +180,30 @@ def add_review(request, album_id):
 
 @login_required
 def add_album(request):
+    context_dict = {}
+    context_dict['form'] = AlbumForm()
+    context_dict['genres'] = Genre.objects.all()
+
     if request.method == 'POST':
         form = AlbumForm(request.POST, request.FILES)
 
         if form.is_valid():
-            form.save()
+            try:
+                album = form.save(commit=False)
+
+                if request.POST['genre']:
+                    genre_id = request.POST['genre']
+                    genre = Genre.objects.get(pk=genre_id)
+                    album.genre = genre
+                
+                album.save()
+            except IntegrityError:
+                context_dict['album_exists'] = True
+                return render(request, 'rango/add_album.html', context=context_dict)
+            
             return redirect('rango:all_albums')
-    else:
-        form = AlbumForm()
-    return render(request, 'rango/add_album.html', {'form':form})
+        
+    return render(request, 'rango/add_album.html', context=context_dict)
 
 
 @login_required

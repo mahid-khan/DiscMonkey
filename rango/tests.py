@@ -124,6 +124,13 @@ class ModelTests(TestCase):
 
         self.assertRaises(IntegrityError, User.objects.create_user, username='Dr bob', email='drBobsSecondEmail@email.com', password='drBobsNewPassword')
 
+    def test_album_slug_uniqueness(self):
+        """
+        Checks that an IntegrityError is raised if the uniqueness constraints of the Album model are violated
+        """
+
+        self.assertRaises(IntegrityError, Album.objects.create, albumName='AM', artist="Arctic Monkeys", releaseDate="2013")
+
     def tearDown(self):
         shutil.rmtree(TEST_DIR)
 

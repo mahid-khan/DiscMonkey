@@ -9,9 +9,59 @@
 
     <h1>Add a New Album</h1>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form id="add-album-form" method="POST" action="{% url 'rango:add_album' %}" enctype="multipart/form-data" class="auth-form">
+        {% if album_exists %}
+        <div class="auth-header">    
+            <p><i class="bi bi-exclamation-square-fill"></i> An album with this name has already been added</p>
+        </div>
+        {% endif %}
+
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="form-group">
+            <label for="{{ form.albumName.label }}">
+                <i class="bi bi-pencil"></i>
+                Album Name
+            </label>
+            {{ form.albumName }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.artist.label }}">
+                <i class="bi bi-person-fill"></i>
+                Artist
+            </label>
+            {{ form.artist }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.releaseDate.label }}">
+                <i class="bi bi-calendar4"></i>
+                Release Year
+            </label>
+            {{ form.releaseDate }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.genre.label }}">
+                <i class="bi bi-boombox"></i>
+                Genre
+            </label>
+            <select name="genre" id="genre" class="form-control">
+                <option value=""></option>
+                {% for genre in genres %}
+                    <option value="{{ genre.id }}">{{ genre.genreName }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.albumCover.label }}">
+                <i class="bi bi-vinyl"></i>
+                Album Cover
+            </label>
+            {{ form.albumCover }}
+        </div>
+
         <button type="submit">Upload Album</button>
     </form>
 
