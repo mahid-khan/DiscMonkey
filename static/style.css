@@ -1157,9 +1157,10 @@ tr:hover {
     margin-top: 5px;
 }
 
-/* -------------------- ------------ ------------ ------------------------------ */
+/* -------------------- ---end of section--------- ------------ ------------------------------ */
 
-/* Override the default btn-dark styles */
+
+/* --------------- ---------- Override the default btn-dark styles ------- -------------------- */
 .btn-viewalbum {
     background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
     color: white;
@@ -1195,8 +1196,11 @@ tr:hover {
     color: white !important; /* Ensure text remains white on hover/focus */
 }
 
-/* Profile Page Styles */
-.profile-container {
+/* -------------------- ---end of section--------- ------------ ------------------------------ */
+
+
+/*-------- ------------ ------ Profile Page Styles ------------- --------------------------- */
+.profile-container-userprofile {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 10px;
@@ -1206,19 +1210,19 @@ tr:hover {
     animation: fadeIn 0.5s ease-out;
 }
 
-.profile-container:hover {
+.profile-container-userprofile:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
 }
 
-.profile-header {
+.profile-header-userprofile {
     padding: 2rem;
     background: #f8f9fa;
     border-radius: 10px;
     margin-bottom: 2rem;
 }
 
-.profile-picture {
+.profile-picture-userprofile {
     width: 200px;
     height: 200px;
     border-radius: 50%;
@@ -1227,34 +1231,34 @@ tr:hover {
     transition: transform 0.3s ease;
 }
 
-.profile-picture:hover {
+.profile-picture-userprofile:hover {
     transform: scale(1.05);
 }
 
-.profile-picture-placeholder {
+.profile-picture-placeholder-userprofile {
     font-size: 200px;
     color: #e4e6eb;
 }
 
-.profile-username {
+.profile-username-userprofile {
     font-size: 2.5rem;
     margin-bottom: 1rem;
     color: #1c1e21;
     font-weight: 600;
 }
 
-.profile-bio {
+.profile-bio-userprofile {
     font-size: 1.1rem;
     color: #65676b;
     margin-bottom: 1.5rem;
 }
 
-.profile-actions {
+.profile-actions-userprofile {
     display: flex;
     gap: 1rem;
 }
 
-.action-btn {
+.action-btn-userprofile {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
@@ -1267,25 +1271,25 @@ tr:hover {
     transition: all 0.3s ease;
 }
 
-.action-btn:hover {
+.action-btn-userprofile:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     color: white;
 }
 
-.profile-sections {
+.profile-sections-userprofile {
     display: flex;
     flex-direction: column;
     gap: 2rem;
 }
 
-.profile-section {
+.profile-section-userprofile {
     background: #f8f9fa;
     border-radius: 10px;
     padding: 2rem;
 }
 
-.section-title {
+.section-title-userprofile {
     font-size: 1.8rem;
     color: #1c1e21;
     margin-bottom: 1.5rem;
@@ -1295,13 +1299,13 @@ tr:hover {
     font-weight: 600;
 }
 
-.album-grid {
+.album-grid-userprofile {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1.5rem;
 }
 
-.album-card {
+.album-card-userprofile {
     background: white;
     border-radius: 8px;
     overflow: hidden;
@@ -1309,50 +1313,50 @@ tr:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.album-card:hover {
+.album-card-userprofile:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.album-link {
+.album-link-userprofile {
     text-decoration: none;
     color: inherit;
 }
 
-.album-cover {
+.album-cover-userprofile {
     width: 100%;
     height: 250px;
     object-fit: cover;
 }
 
-.album-info {
+.album-info-userprofile {
     padding: 1rem;
 }
 
-.album-title {
+.album-title-userprofile {
     font-size: 1.2rem;
     margin-bottom: 0.5rem;
     color: #1c1e21;
     font-weight: 600;
 }
 
-.album-artist {
+.album-artist-userprofile {
     color: #65676b;
     margin-bottom: 0.5rem;
 }
 
-.album-date {
+.album-date-userprofile {
     font-size: 0.9rem;
     color: #65676b;
 }
 
-.genre-list {
+.genre-list-userprofile {
     display: flex;
     flex-wrap: wrap;
     gap: 1rem;
 }
 
-.genre-item {
+.genre-item-userprofile {
     background: white;
     padding: 0.8rem 1.2rem;
     border-radius: 20px;
@@ -1363,39 +1367,39 @@ tr:hover {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.genre-item:hover {
+.genre-item-userprofile:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-.genre-name {
+.genre-name-userprofile {
     font-weight: 500;
     color: #1c1e21;
 }
 
-.genre-date {
+.genre-date-userprofile {
     font-size: 0.9rem;
     color: #65676b;
 }
 
-.reviews-list {
+.reviews-list-userprofile {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-.review-card {
+.review-card-userprofile {
     background: white;
     border-radius: 8px;
     padding: 1.5rem;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.review-header {
+.review-header-userprofile {
     margin-bottom: 1rem;
 }
 
-.review-album-link {
+.review-album-link-userprofile {
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -1403,41 +1407,41 @@ tr:hover {
     color: inherit;
 }
 
-.review-album-cover {
+.review-album-cover-userprofile {
     width: 80px;
     height: 80px;
     border-radius: 8px;
     object-fit: cover;
 }
 
-.review-album-info h4 {
+.review-album-info-userprofile h4 {
     margin: 0;
     color: #1c1e21;
     font-weight: 600;
 }
 
-.review-album-info p {
+.review-album-info-userprofile p {
     margin: 0;
     color: #65676b;
 }
 
-.review-content {
+.review-content-userprofile {
     color: #1c1e21;
     line-height: 1.6;
 }
 
-.empty-state {
+.empty-state-userprofile {
     text-align: center;
     padding: 3rem;
     color: #65676b;
 }
 
-.empty-state i {
+.empty-state-userprofile i {
     font-size: 3rem;
     margin-bottom: 1rem;
 }
 
-.error-container {
+.error-container-userprofile {
     background-color: #ffffff;
     padding: 25px;
     border-radius: 10px;
@@ -1447,24 +1451,25 @@ tr:hover {
     animation: fadeIn 0.5s ease-out;
 }
 
-.error-state {
+.error-state-userprofile {
     text-align: center;
     padding: 3rem;
 }
 
-.error-state i {
+.error-state-userprofile i {
     font-size: 3rem;
     color: #65676b;
     margin-bottom: 1rem;
 }
 
-.error-state h2 {
+.error-state-userprofile h2 {
     color: #1c1e21;
     margin-bottom: 1rem;
     font-weight: 600;
 }
 
-.error-state p {
+.error-state-userprofile p {
     color: #65676b;
     margin-bottom: 1.5rem;
 }
+/* -------------------- ---end of section--------- ------------ ------------------------------ */
