@@ -83,6 +83,10 @@
                     There are no album reviews yet.
                 </div>
             {% endif %}
+            <a href="{% url 'rango:add_review' album.id %}" class="btn btn-primary action-btn">
+                <i class="bi bi-collection"></i>
+                Write a Review
+            </a>
         </div>
     {% else %}
         <strong>Album doesn't exist.</strong>
