@@ -1473,3 +1473,64 @@ tr:hover {
     margin-bottom: 1.5rem;
 }
 /* -------------------- ---end of section--------- ------------ ------------------------------ */
+
+
+
+
+/*-------- ------------ ------ about page stuff ------------- --------------------------- */
+
+.add-review-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #0396FF 0%, #0D47A1 100%);
+    color: white;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.add-review-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+
+
+
+.about-thankyou-message {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 15; /* no rounded edges */
+    color: rgb(0, 0, 0);
+}
+
+.about-thankyou-section {
+    width: 100%;
+    background: #ffecbd;
+    padding: 0.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-radius: 15px;
+    font-family: "Inter", sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px;
+    font-weight: 300 !important; /* Apply the extralight weight */
+    font-size: 2.5rem;
+}
+
+/* Centered translucent overlay for welcome message */
+.about-thankyou-section .about-thankyou-message {
+    background: rgba(255, 182, 193, 0.6); /* light pink, semi-transparent */
+    padding: 0px 0px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    border: none;
+    border-radius: 15; /* no rounded edges */
+}
+
+/* -------------------- ---end of section--------- ------------ ------------------------------ */
