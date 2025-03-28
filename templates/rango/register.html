@@ -13,9 +13,13 @@
                     <i class="bi bi-check-circle-fill"></i>
                     <h2>Thank you for registering!</h2>
                     <p>Your account has been created successfully.</p>
-                    <a href="{% url 'rango:index' %}" class="auth-button">
+                    <a href="{% url 'rango:index' %}" class="registersuccess-index-button">
                         <i class="bi bi-house-door"></i>
                         Return to Homepage
+                    </a>
+                    <a href="{% url 'rango:login' %}" class="registersuccess-index-button">
+                        <i class="bi bi-arrow-right"></i>
+                        Login Now
                     </a>
                 </div>
             {% else %}
