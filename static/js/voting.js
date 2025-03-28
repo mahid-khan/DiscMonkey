@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    // Add CSRF token to all AJAX requests
+    // CSRF token function remains unchanged
     function getCookie(name) {
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -29,7 +29,8 @@ $(document).ready(function() {
     $('.vote-btn').click(function() {
         const albumId = $(this).data('album-id');
         const voteType = $(this).data('vote-type');
-        const scoreContainer = $(this).closest('.score-container').find('.album-score');
+        // Use closest .vote-container (adjust if your markup differs) to find the album score display
+        const scoreContainer = $(this).closest('.vote-container').find('.album-score');
         
         $.ajax({
             url: '/rango/vote/',
@@ -40,32 +41,21 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.status === 'success') {
-                    // Update the score display
+                    // Update the score immediately on success
                     scoreContainer.text(response.new_score);
                     
-                    // Update classes based on score
-                    scoreContainer.removeClass('positive negative');
-                    if (response.new_score > 0) {
-                        scoreContainer.addClass('positive');
-                    } else if (response.new_score < 0) {
-                        scoreContainer.addClass('negative');
-                    }
+                    // Remove active states from vote buttons in container
+                    const voteContainer = $(scoreContainer).closest('.vote-container');
+                    voteContainer.find('.vote-btn').removeClass('active');
                     
-                    // Update button styles
-                    const upvoteBtn = $(`.upvote-btn[data-album-id="${albumId}"]`);
-                    const downvoteBtn = $(`.downvote-btn[data-album-id="${albumId}"]`);
-                    
-                    upvoteBtn.removeClass('active');
-                    downvoteBtn.removeClass('active');
-                    
+                    // Mark the clicked button as active if vote was applied
                     if (response.action !== 'removed') {
-                        if (voteType === 'up') {
-                            upvoteBtn.addClass('active');
-                        } else {
-                            downvoteBtn.addClass('active');
-                        }
+                        $(this).addClass('active');
                     }
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
             }
         });
     });
