@@ -2,8 +2,16 @@
 {% load staticfiles %}
 {% block title_block %}Reviews{% endblock %}
 {% block body_block %}
+
 <div class="container my-4">
-    <h1 class="mb-4"><i class="bi bi-chat-left-text"></i> All Reviews</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">
+            <i class="bi bi-chat-left-text"></i> All Reviews
+        </h1>
+        <a href="{% url 'rango:index' %}" class="btn btn-primary action-btn">
+            <i class="bi bi-house"></i> Return to Homepage
+        </a>
+    </div>
     {% if reviews %}
         <div class="list-group">
             {% for review in reviews %}

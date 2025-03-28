@@ -63,6 +63,12 @@
         </div>
 
         <button type="submit">Upload Album</button>
+
+        <a href="{% url 'rango:all_albums' %}" class="btn btn-primary action-btn">
+            <i class="bi bi-collection"></i>
+            Cancel and return to Albums
+        </a>
     </form>
+    
 
 {% endblock %}

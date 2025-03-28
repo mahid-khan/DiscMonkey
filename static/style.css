@@ -55,17 +55,17 @@ body {
     font-family: "Inter", sans-serif !important;
     text-transform: uppercase !important;
     letter-spacing: 1px;
-    font-weight: 300 !important; /* Apply the extralight weight */
+    font-weight: 300 !important;
 }
 
 .navbar-brand {
-    font-weight: 350 !important; /* Apply the extralight weight */
+    font-weight: 350 !important;
     font-size: 1.5rem !important;
     color: #aa63c4 !important;
 }
 
 .navbar-nav .nav-link {
-    font-weight: 300 !important; /* Apply the extralight weight */
+    font-weight: 300 !important;
     color: rgba(0, 0, 0, 0.9) !important;
     transition: color 0.3s ease, transform 0.3s ease !important;
 }
@@ -455,7 +455,7 @@ tr:hover {
     font-family: "Inter", sans-serif !important;
     text-transform: uppercase !important;
     letter-spacing: 1px;
-    font-weight: 300 !important; /* Apply the extralight weight */
+    font-weight: 300 !important;
     font-size: 2.5rem;
 }
 
@@ -467,7 +467,7 @@ tr:hover {
     margin: 0 auto;
     text-align: center;
     border: none;
-    border-radius: 15; /* no rounded edges */
+    border-radius: 15;
 }
 
 .welcome-section .lead {
@@ -486,7 +486,7 @@ tr:hover {
 .welcome-message {
     max-width: 600px;
     margin: 0 auto;
-    border-radius: 15; /* no rounded edges */
+    border-radius: 15;
 }
 
 .lead {
@@ -1181,7 +1181,7 @@ tr:hover {
 /* Override the default btn-dark styles */
 .list-group-item a.btn-viewalbum {
     background: linear-gradient(135deg, #9933ff 0%, #6600cc 100%);
-    color: white !important; /* Ensure text is white */
+    color: white !important;
     border: none;
     padding: 10px 15px;
     border-radius: 0 5px 5px 0;
@@ -1193,7 +1193,7 @@ tr:hover {
 .list-group-item a.btn-viewalbum:hover,
 .list-group-item a.btn-viewalbum:focus {
     background: linear-gradient(135deg, #8822ee 0%, #5500bb 100%);
-    color: white !important; /* Ensure text remains white on hover/focus */
+    color: white !important;
 }
 
 /* -------------------- ---end of section--------- ------------ ------------------------------ */
@@ -1514,7 +1514,7 @@ tr:hover {
     font-family: "Inter", sans-serif !important;
     text-transform: uppercase !important;
     letter-spacing: 1px;
-    font-weight: 300 !important; /* Apply the extralight weight */
+    font-weight: 300 !important;
     font-size: 2.5rem;
 }
 
@@ -1548,7 +1548,7 @@ tr:hover {
     font-family: "Inter", sans-serif !important;
     text-transform: uppercase !important;
     letter-spacing: 1px;
-    font-weight: 300 !important; /* Apply the extralight weight */
+    font-weight: 300 !important;
     font-size: 1.0rem;
 }
 
@@ -1560,7 +1560,7 @@ tr:hover {
     margin: 0 auto;
     text-align: center;
     border: none;
-    border-radius: 15; /* no rounded edges */
+    border-radius: 15;
 }
 
 
