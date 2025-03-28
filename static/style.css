@@ -1475,10 +1475,6 @@ tr:hover {
 /* -------------------- ---end of section--------- ------------ ------------------------------ */
 
 
-
-
-/*-------- ------------ ------ about page stuff ------------- --------------------------- */
-
 .add-review-btn {
     display: inline-flex;
     align-items: center;
@@ -1498,7 +1494,7 @@ tr:hover {
     color: white;
 }
 
-
+/*-------- ------------ ------ about page stuff ------------- --------------------------- */
 
 
 .about-thankyou-message {
@@ -1532,5 +1528,76 @@ tr:hover {
     border: none;
     border-radius: 15; /* no rounded edges */
 }
+
+
+
+.about-end-message {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 15; /* no rounded edges */
+    color: rgb(0, 0, 0);
+}
+
+.about-end-section {
+    width: 100%;
+    background: hwb(308 72% 0%);
+    padding: 0.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-radius: 15px;
+    font-family: "Inter", sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px;
+    font-weight: 300 !important; /* Apply the extralight weight */
+    font-size: 1.0rem;
+}
+
+/* Centered translucent overlay for welcome message */
+.about-end-section .about-end-message {
+    background: rgba(255, 182, 193, 0.6); /* light pink, semi-transparent */
+    padding: 0px 0px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    border: none;
+    border-radius: 15; /* no rounded edges */
+}
+
+
+
+
+.about-body-message {
+    max-width: 600px;
+    margin: 0 auto;
+    border-radius: 15px;
+    color: rgb(0, 0, 0);
+    padding: 20px; 
+}
+
+.about-body-section {
+    width: 100%;
+    background: hwb(176 77% 0%);
+    padding: 0.5rem 0;
+    margin-bottom: 2rem;
+    text-align: center;
+    border-radius: 15px;
+    font-family: "Inter", sans-serif !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px;
+    font-weight: 300 !important;
+    font-size: 1.5rem;
+}
+
+
+.about-body-section .about-body-message {
+    background: rgba(255, 182, 193, 0.6);
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    border: none;
+    border-radius: 15px;
+}
+
 
 /* -------------------- ---end of section--------- ------------ ------------------------------ */
