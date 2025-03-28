@@ -1,14 +1,15 @@
 import os
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'tango_with_django_project.settings')
 
 import django
-import datetime
 from django.core.files import File
 from pathlib import Path
 
 django.setup()
 from django.contrib.auth.models import User
-from rango.models import UserProfile1, Album, Review, Vote, Genre, FavoriteAlbum
+from rango.models import UserProfile1, Album, Review, Vote, Genre, FavoriteAlbum, FavoriteGenre
+from django.utils import timezone
 
 def populate():
 
@@ -33,21 +34,34 @@ def populate():
         ["Debut", "Björk", "1993", os.path.join('albumCoversForPopulating', 'Debut.jpg'), 50, "Alternative Dance"]
     ]
 
-
     reviews = [
         ["1","1", "this is so bad turn it off!!! turn it offff!!!"],
-        ["1","2", "this is so good turn it up bai"]
+        ["2","5", "not their best work to be honest"],
+        ["1","2", "this is so good turn it up bai"],
+        ["2","4", "One of my all time favourite albums, I can never get enough of it"],
+        ["2","6", "You should go listen to this right now!"],
+        ["1","3", "What a great album!! I love dire straits"],
+        ["1","6", "this is absolutely horrible!!1! please remove immediately"],
+        ["2","2", "WOOOO YEAAAAH what a banger!!"],
+        ["1","7", "This is the music of my childhood, it brings back memories!"],
+        ["2","11", "What a jaw-dropping piece of art this album is."],
+        ["1","9", "some revolutionary pieces in this one"],
+        ["1","11", "Usually I'm not a fan of Bjork, but this is not bad"],
+        ["2","3", "I agree with Dr bob, this is great"],
+        ["1","5", "I could listen to this all day every day"],
+        ["2","7", "incredible."],
+        ["1","8", "never heard of this before but i like what i'm hearing"],
+        ["2","8", "wait this actually sounds pretty ok"],
+        ["2","9", "Simply breathtaking. I will definitely be playing this to my children one day."],   
     ]
 
     #votes contain UserID AlbumID and votetype(either 1 for yes or 0 for no)
-
     votes = [
     ["1","1","0"],
     ["1","2","1"]
     ]
 
     #genre contains name and description
-
     genre = [
         ["Irish Traditional", "Irish folk music often using traditional instruments"],
         ["Jazz", "distinctively American style of music"],
@@ -69,7 +83,9 @@ def populate():
         ["Folk", "Traditional music passed down through generations"],
     ]
 
-    favoriteAlbums = [["1","2"]] #favoriteAlbum contains date added UserID and AlbumID but date added is made automaticaly 
+    favoriteAlbums = [["1","2"], ["1","5"], ["1","7"], ["2","2"], ["2","4"]] #favoriteAlbum contains date added UserID and AlbumID but date added is made automaticaly 
+
+    favoriteGenres = [["1","2"], ["1","4"], ["1","8"], ["2","1"], ["2","13"], ["2", "7"]]
 
     for u in users:
         u = add_user(*u)
@@ -89,13 +105,15 @@ def populate():
     for fa in favoriteAlbums:
         fa = add_favoriteAlbum(fa[0], fa[1])
 
+    for fg in favoriteGenres:
+        fg = add_favoriteGenre(fg[0], fg[1])
+
     # Create users and store their IDs
     users_ids = []
     for u in users:
         user_profile = add_user(*u)
         if user_profile:
             users_ids.append(user_profile.id)
-
 
 def add_user(username, password, bio, email, profilePicPath=None):
     # Check if user already exists
@@ -149,9 +167,6 @@ def add_user(username, password, bio, email, profilePicPath=None):
         print(f"Error creating user {username}: {e}")
         return None
 
-
-
-
 def add_album(albumName, artist, releaseYear, albumCoverPath, score=0, genreName=None):
     try:
         # First, check if album already exists
@@ -197,9 +212,7 @@ def add_album(albumName, artist, releaseYear, albumCoverPath, score=0, genreName
         print(f"Error creating album {albumName}: {e}")
         return None
 
-
 def add_review(userID, albumID, reviewText):
-
     user = UserProfile1.objects.get(pk=userID)
     album = Album.objects.get(pk=albumID)
 
@@ -207,9 +220,8 @@ def add_review(userID, albumID, reviewText):
         userID=user,
         albumID=album,
         
-        defaults={'reviewText': reviewText}
+        defaults={'reviewText': reviewText, 'dateAdded': timezone.now()}
     )
-
     return review
 
 def add_vote(userID, albumID, voteType):
@@ -245,13 +257,23 @@ def add_favoriteAlbum(userID , albumID):
     user = UserProfile1.objects.get(pk=userID)
     album = Album.objects.get(pk=albumID)
 
-    genre, created = FavoriteAlbum.objects.get_or_create(
+    fav_album, created = FavoriteAlbum.objects.get_or_create(
         userID=user,
         albumID=album,
-        defaults={'dateAdded': datetime.datetime.now()}
+        defaults={'dateAdded': timezone.now()}
     )
+    return fav_album
 
-    return genre
+def add_favoriteGenre(userID , genreID):
+    user = UserProfile1.objects.get(pk=userID)
+    genre = Genre.objects.get(pk=genreID)
+
+    fav_genre, created = FavoriteGenre.objects.get_or_create(
+        userID=user,
+        genreID=genre,
+        defaults={'dateAdded': timezone.now()}
+    )
+    return fav_genre
 
 # Start execution here!
 if __name__ == '__main__':

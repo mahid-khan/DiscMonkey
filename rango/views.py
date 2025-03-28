@@ -1,4 +1,3 @@
-from datetime import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, JsonResponse
 from rango.models import Album, Review, UserProfile1, FavoriteAlbum, FavoriteGenre, Vote, Genre
@@ -11,6 +10,7 @@ import os
 from os.path import join
 from django.conf import settings
 from django.db import IntegrityError
+from django.utils import timezone
 
 def index(request):
     top_albums = Album.objects.all().order_by('-score')[:4]
@@ -49,7 +49,7 @@ def all_albums(request):
 def album(request, album_name_slug):
     context_dict = {}
     album = get_object_or_404(Album, slug=album_name_slug)
-    reviews = Review.objects.filter(albumID=album)
+    reviews = Review.objects.filter(albumID=album).order_by('-dateAdded')
     context_dict['album'] = album
     context_dict['reviews'] = reviews
     return render(request, 'rango/album.html', context=context_dict)
@@ -59,7 +59,7 @@ def about(request):
     return render(request, 'rango/about.html', context=context_dict)
 
 def reviews(request):
-    review_list = Review.objects.order_by("userID")
+    review_list = Review.objects.order_by("-dateAdded")
     context_dict = {}
     context_dict['reviews'] = review_list
 
@@ -77,7 +77,7 @@ def user_profile(request, user_id):
         context_dict['fav_genre'] = None
     else:
         try:
-            reviews = Review.objects.filter(userID=user_id)
+            reviews = Review.objects.filter(userID=user_id).order_by('-dateAdded')
         except Review.DoesNotExist:
             reviews = None
 
@@ -126,11 +126,11 @@ def edit_profile(request):
 
             if new_fav_album_id:
                 album = Album.objects.get(pk=new_fav_album_id)
-                FavoriteAlbum.objects.get_or_create(userID=user_profile, albumID=album, dateAdded = datetime.now()) 
+                FavoriteAlbum.objects.get_or_create(userID=user_profile, albumID=album, dateAdded=timezone.now()) 
 
             if new_fav_genre_id:
                 genre = Genre.objects.get(pk=new_fav_genre_id)
-                FavoriteGenre.objects.get_or_create(userID=user_profile, genreID=genre, dateAdded = datetime.now())
+                FavoriteGenre.objects.get_or_create(userID=user_profile, genreID=genre, dateAdded=timezone.now())
                     
             return redirect(reverse('rango:user_profile', args=[user_profile.pk]))
         
@@ -153,6 +153,7 @@ def add_review(request, album_id):
             review = form.save(commit=False)
             review.userID = user_profile
             review.albumID = album 
+            review.dateAdded = timezone.now()
             review.save()
 
             return redirect('rango:album', album_name_slug=album.slug)

@@ -9,11 +9,14 @@
             {% for review in reviews %}
             <div class="list-group-item d-flex justify-content-between align-items-center">
                 <div class="review-content">
+                    <a href="{% url 'rango:album' album_name_slug=review.albumID.slug %}">
                     <h5 class="mb-1">
                         {{ review.userID.user.username }} reviewed 
                         <strong>{{ review.albumID.albumName }}:</strong>
                     </h5>
+                    </a>
                     <p class="mb-1">{{ review.reviewText }}</p>
+                    <span class="album-date-userprofile">{{ review.dateAdded }}</span>
                 </div>
                 <div class="reviewer-profile text-center">
                     {% if review.userID.profilePicture %}

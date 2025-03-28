@@ -3,6 +3,7 @@ from django.urls import reverse
 from rango.models import Album, User, UserProfile1, Review, Genre, FavoriteAlbum, FavoriteGenre, Vote
 from django.core.files import File
 from django.db import IntegrityError
+from django.utils import timezone
 import os
 import datetime
 import shutil
@@ -27,7 +28,7 @@ def add_review(username, album_name, text):
     user = User.objects.get(username=username)
     user_profile = UserProfile1.objects.get(user=user)
     album = Album.objects.get(albumName = album_name)
-    review = Review.objects.get_or_create(userID=user_profile, albumID=album, reviewText=text)
+    review = Review.objects.get_or_create(userID=user_profile, albumID=album, reviewText=text, defaults={'dateAdded': timezone.now()})
     return review
 
 def add_genre(name, description):
@@ -38,14 +39,14 @@ def add_fav_album(username, album_name):
     user = User.objects.get(username=username)
     user_profile = UserProfile1.objects.get(user=user)
     album = Album.objects.get(albumName = album_name)
-    fav_album = FavoriteAlbum.objects.get_or_create(userID=user_profile, albumID=album, defaults={'dateAdded': datetime.datetime.now()})
+    fav_album = FavoriteAlbum.objects.get_or_create(userID=user_profile, albumID=album, defaults={'dateAdded': timezone.now()})
     return fav_album
 
 def add_fav_genre(username, genre_name):
     user = User.objects.get(username=username)
     user_profile = UserProfile1.objects.get(user=user)
     genre = Genre.objects.get(genreName=genre_name)
-    fav_genre = FavoriteGenre.objects.get_or_create(userID=user_profile, genreID=genre, defaults={'dateAdded': datetime.datetime.now()})
+    fav_genre = FavoriteGenre.objects.get_or_create(userID=user_profile, genreID=genre, defaults={'dateAdded': timezone.now()})
     return fav_genre
 
 def populate_albums():

@@ -55,6 +55,7 @@
                                 {{ review.userID.user.username }}
                             </h5>
                             <p class="mb-1">{{ review.reviewText }}</p>
+                            <span class="album-date-userprofile">{{ review.dateAdded }}</span>
                         </div>
                         <div class="reviewer-profile text-center">
                             {% if review.userID.profilePicture %}

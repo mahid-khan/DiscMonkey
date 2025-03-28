@@ -33,6 +33,7 @@ class Review(models.Model):
     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
     reviewText = models.CharField(max_length=TEXT_MAX_LENGTH)
+    dateAdded = models.DateTimeField(max_length=255)
 
     class Meta:
         constraints = [models.UniqueConstraint(fields=['userID', 'albumID'], name='uniqueVoteID') ]
@@ -93,7 +94,7 @@ class Genre(models.Model):
         return self.genreName
 
 class FavoriteAlbum(models.Model):
-    dateAdded = models.DateField(max_length=255)
+    dateAdded = models.DateTimeField(max_length=255)
     userID = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
     albumID = models.ForeignKey(Album, on_delete=models.CASCADE)
 
@@ -104,7 +105,7 @@ class FavoriteAlbum(models.Model):
         return self.userID.user.username
 
 class FavoriteGenre(models.Model):
-    dateAdded = models.DateField(max_length=255)
+    dateAdded = models.DateTimeField(max_length=255)
     genreID = models.ForeignKey(Genre, on_delete=models.CASCADE)
     userID  = models.ForeignKey(UserProfile1, on_delete=models.CASCADE)
 
